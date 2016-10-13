@@ -40,7 +40,7 @@ legend([h1 h2],'all','60>P<180')
 xlabel('log_{10}\Gamma')
 ylabel('pdf')
 
-figdir='/Users/Andy/Cruises_Research/ChiPod/Cham_Eq14_Compare/mfiles/Patches'
+figdir='/Users/Andy/Cruises_Research/ChiPod/Cham_Eq14_Compare/Figures'
 print(fullfile(figdir,'gam_cham_hist'),'-dpng')
 
 % but the distribution doens't change. So it doesn't seem like including
@@ -139,7 +139,7 @@ ylabel('patch size [db]')
 grid on
 title('Distribution of patch sizes from EQ14 Cham profiles')
 
-figdir='/Users/Andy/Cruises_Research/ChiPod/Cham_Eq14_Compare/mfiles/Patches'
+figdir='/Users/Andy/Cruises_Research/ChiPod/Cham_Eq14_Compare/Figures'
 print(fullfile(figdir,'GamByPatch_patchsize_boxplot'),'-dpng')
 
 
@@ -283,7 +283,7 @@ legend([h1 h2],'All data','patches','location','best')
 xlabel('log_{10}\epsilon','fontsize',15)
 ylabel('pdf')
 
-figdir='/Users/Andy/Cruises_Research/ChiPod/Cham_Eq14_Compare/mfiles/Patches'
+figdir='/Users/Andy/Cruises_Research/ChiPod/Cham_Eq14_Compare/Figures'
 print(fullfile(figdir,'hists_allVspatch'),'-dpng')
 
 
@@ -294,41 +294,38 @@ i3=find(gam_cham<10);
 i4=find(cham.P>60 & cham.P<180);
 
 figure(1);clf
-agutwocolumn(1);wysiwyg
-
-ax1=subplot(311);
-h1=histogram(log10(gam_all),50,'Normalization','pdf');
+h1=histogram(log10(gam_all),50,'Normalization','pdf','edgecolor','none');
 hold on
-xlim([-5 4])
-grid on
-title(['all points in patches, median \Gamma=' num2str(nanmedian(gam_all))])
-
-ax2=subplot(312);
-h2=histogram(log10(gam_patch_all),h1.BinEdges,'Normalization','pdf')
+h2=histogram(log10(gam_patch_all),h1.BinEdges,'Normalization','pdf','edgecolor','none')
 hold on
-grid on
-title(['patch average values, median \Gamma=' num2str(nanmedian(gam_patch_all))])
-
-ax3=subplot(313);
-h3=histogram(log10(gam_cham(i4)),h1.BinEdges,'Normalization','pdf')
-%legend([h1 h2 h3],'patch_all','patch_avg','all')
-xlabel('log_{10}\Gamma')
-grid on
-ylabel('pdf')
-title(['all points, median \Gamma=' num2str(nanmedian(gam_cham(i4)))])
-linkaxes([ax1 ax2 ax3])
-
-figdir='/Users/Andy/Cruises_Research/ChiPod/Cham_Eq14_Compare/mfiles/Patches'
-print(fullfile(figdir,'hists_gamma_allVspatch'),'-dpng')
-
+h3=histogram(log10(gam_cham(i4)),h1.BinEdges,'Normalization','pdf','edgecolor','none')
+legend([h1 h2 h3],'patch_)
 %%
 nanmean(gam_all)
 nanmean(gam_patch_all)
-nanmean(gam_cham(i4))
 
-nanmedian(gam_all)
-nanmedian(gam_patch_all)
-nanmedian(gam_cham(i4))
+ig1=find(gam_all<10);
+ig2=find(gam_patch_all<10);
+
+nanmean(gam_all(ig1))
+nanmean(gam_patch_all(ig2))
 
 %%
+figure(1);clf
+
+ax1=subplot(121);
+boxplot(gam_all(:))
+%ylim([-0.1 0.8])
+grid on
+title('each point in patch')
+
+ax2=subplot(122);
+boxplot(gam_patch_all(:))
+grid on
+title('patch average')
+
+linkaxes([ax1 ax2])
+
+%%
+
 
