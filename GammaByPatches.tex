@@ -52,9 +52,7 @@ Figure \ref{gam_cham} shows the distribution of estimated gammas using all the c
 %~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 \section{Identifying Patches}
 
-Code: \verb+Compute_gamma_by_patches.m+
-
-I first identify patches (overturns) using potnential density computed from 1m binned temperature and salinity from Chameleon profiles.
+I first identify patches (overturns) using potnential density computed from 1m binned temperature and salinity from Chameleon profiles. This is dones w/ \verb+IdentifyPatches.m+.
 
 \begin{itemize}
 \item Figure \ref{psizebox} shows the distribution of patch sizes from all profiles (exluding those above 20m and below 180m). Only about 11\% of the orginal patches are in this good depth range. Most of the patches are very small (1-2m).
@@ -62,7 +60,6 @@ I first identify patches (overturns) using potnential density computed from 1m b
 \item Below that, overturns generally co-occur with larger $\epsilon$ measured by chameleon shear probe. There are some that occur where chameleon $\epsilon$ is small, however.
 \item Figure \ref{hists_allVspatch} shows distributions of all data versus just data within the identified patches. Patches are associated with lower N2 and dtdz, and higher epsilon. The distribution of chi does not appear to be significantly different.
 \end{itemize}
-
 
 
 \begin{figure}[htbp]
@@ -76,7 +73,6 @@ I first identify patches (overturns) using potnential density computed from 1m b
 \caption{$\epsilon$ measured by chameleon shear probes on EQ14 profiles. Identified overturns are plotted in green/red. Black diamonds indicate overturns larger than 20m, these are ignored (there are only 2).}
 \label{epswot}
 \end{figure}
-
 
 \begin{figure}[htbp]
 \includegraphics[scale=0.8]{hists_allVspatch.png}
@@ -95,7 +91,7 @@ So far this doesn't seem to be giving me anything close to $\Gamma=0.2$ (figure 
 
 \begin{figure}[htbp]
 \includegraphics[scale=0.8]{hists_gamma_allVspatch.png}
-\caption{Histograms of gamma for (1) all points within patches (2) using averaged values from patches (3) using all points. Only data between 60-180m depth is used for all. }
+\caption{Histograms of gamma for (1) all points within patches (2) using averaged values from patches (3) using all points. Only data between 60-180m depth is used for all.  Blue line shows median of each distribution, and black dashed line is 0.2.}
 \label{hists_gamma_allVspatch}
 \end{figure}
 

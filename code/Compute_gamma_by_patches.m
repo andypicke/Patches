@@ -54,7 +54,6 @@ nanmedian(gam_cham(:))
 nanmedian(gam_cham(i4))
 
 
-
 %% Identify patches in 1-m binned EQ14 profiles
 
 clear ; close all
@@ -302,12 +301,19 @@ hold on
 xlim([-5 4])
 grid on
 title(['all points in patches, median \Gamma=' num2str(nanmedian(gam_all))])
+freqline(log10(0.2),'k--')
+text(log10(0.2),0.5,'0.2')
+freqline(nanmean(log10(gam_all)),'b')
 
 ax2=subplot(312);
 h2=histogram(log10(gam_patch_all),h1.BinEdges,'Normalization','pdf')
 hold on
 grid on
 title(['patch average values, median \Gamma=' num2str(nanmedian(gam_patch_all))])
+freqline(log10(0.2),'k--')
+text(log10(0.2),0.5,'0.2')
+freqline(nanmean(log10(gam_patch_all)),'b')
+
 
 ax3=subplot(313);
 h3=histogram(log10(gam_cham(i4)),h1.BinEdges,'Normalization','pdf')
@@ -316,6 +322,10 @@ xlabel('log_{10}\Gamma')
 grid on
 ylabel('pdf')
 title(['all points, median \Gamma=' num2str(nanmedian(gam_cham(i4)))])
+freqline(log10(0.2),'k--')
+text(log10(0.2),0.5,'0.2')
+freqline(nanmean(log10(gam_cham(i4))),'b')
+
 linkaxes([ax1 ax2 ax3])
 
 figdir='/Users/Andy/Cruises_Research/ChiPod/Cham_Eq14_Compare/mfiles/Patches'
