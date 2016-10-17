@@ -1,0 +1,20 @@
+%~~~~~~~~~~~~~~~~~~~~~~~~~
+%
+% LookAtFlux91Data_Jim.m
+%
+% Look at flux 91 data that Jim shared. Will compute gamma etc. similar to
+% EQ14 and compare results..
+%
+% I downloaded the data to my laptop at /Chipod/Flux91/
+%
+%-------------
+% 10/17/16 - A.Pickering - andypicke@gmail.com
+%~~~~~~~~~~~~~~~~~~~~~~~~~
+%%
+
+clear ; close all
+
+load('/Users/Andy/Cruises_Research/ChiPod/Flux91/flx91_patch_out_nov94.mat')
+
+
+%%

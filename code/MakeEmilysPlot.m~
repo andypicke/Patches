@@ -196,47 +196,19 @@ print( fullfile( figdir,'2X2_2dhist_Gamma'), '-dpng')
 
 % brute force method (there has to be some better way of doing this?)
 
-dchi=logspace(-12,-4,100); % make different lengths so we can't confuse axes
-dN=logspace(-6,-2.5,95);
+dchi=logspace(-12,-4,50);
+dN=logspace(-6,-2.5,50);
 mean_gamma=nan*ones(length(dchi)-1,length(dN)-1);
-median_gamma=mean_gamma;
 for m=1:length(dchi)-1;
         for n=1:length(dN-1)-1;
-            clear ind
-                ind=find( n2>dN(n) & n2<dN(n+1) & chi>dchi(m) & chi<dchi(m+1) );
-                mean_gamma(m,n)=nanmean(gam_cham(ind));
-                median_gamma(m,n)=nanmedian(gam_cham(ind));
+                ind=find( log10(n2)>dN(n) & log10(n2)<dN(n+1) & log10(chi)>dchi(m) & log10(chi)<dchi(m+1) );
+                mean_gamma(m,n)=nanmean(gamma(ind));
         end
 end
 
 %%
 
 figure(1);clf
-agutwocolumn(1)
-wysiwyg
+pcolor(dchi(1:end-1),dN(1:end-1),mean_gamma,'shading=flat)
 
-subplot(211)
-pcolor(log10(dN(1:end-1)),log10(dchi(1:end-1)),mean_gamma)
-%pcolor(log10(dN(1:end-1)),log10(dchi(1:end-1)),median_gamma)
-shading flat
-caxis([0 0.15])
-colorbar
-ylabel('log_{10}\chi','fontsize',16)
-xlabel('log_{10}N^2','fontsize',16)
-grid on
-title('mean gamma')
-
-subplot(212)
-%pcolor(log10(dN(1:end-1)),log10(dchi(1:end-1)),mean_gamma)
-pcolor(log10(dN(1:end-1)),log10(dchi(1:end-1)),median_gamma)
-shading flat
-caxis([0 0.15])
-colorbar
-ylabel('log_{10}\chi','fontsize',16)
-xlabel('log_{10}N^2','fontsize',16)
-grid on
-title('median gamma')
-
-figdir='/Users/Andy/Cruises_Research/ChiPod/Cham_Eq14_Compare/mfiles/Patches'
-print( fullfile( figdir,'Gamma_binnedBy_N2_chi'), '-dpng')
 %%
