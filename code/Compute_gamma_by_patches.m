@@ -211,7 +211,8 @@ for ip=1:length(patches)
             
     % get data in patch
     n2=avg.N2(iz);
-    dtdz=avg.DTDZ(iz);
+%   dtdz=avg.DTDZ(iz);
+    dtdz=avg.DTDZ_RHOORDER(iz);
     chi=avg.CHI(iz);
     eps=avg.EPSILON(iz);
     
@@ -289,9 +290,10 @@ print(fullfile(figdir,'hists_allVspatch'),'-dpng')
 %% Also compute gamma using ALL cham values (versus just those in patches)
 
 gam_cham=cham.N2 .* cham.CHI ./2 ./ cham.EPSILON ./ (cham.DTDZ.^2);
+%gam_cham1=cham.N2 .* cham.CHI ./2 ./ cham.EPSILON ./ (cham.DTDZ_RHOORDER.^2);
 i3=find(gam_cham<10);
 i4=find(cham.P>60 & cham.P<180);
-
+%%
 figure(1);clf
 agutwocolumn(1);wysiwyg
 
