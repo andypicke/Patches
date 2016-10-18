@@ -192,10 +192,5 @@ scatter(patches(:,4),gam_patch_all,100,'filled','MarkerFaceAlpha',0.1)
 grid on
 ylim([0 1])
 xlim([0 20])
-xlabel('patch size [m]','fontsize',16)
-ylabel('\Gamma','fontsize',16)
-
-figdir='/Users/Andy/Cruises_Research/ChiPod/Cham_Eq14_Compare/mfiles/Patches'
-print(fullfile(figdir,'gamma_Vs_patchsize'),'-dpng')
-
-%%
+xlabel('patch size','fontsize',16)
+ylabel('\Gamma',)

@@ -109,12 +109,18 @@ I first identify patches (overturns) using potnential density computed from 1m b
 
 The next step is to compute $\Gamma$ over each patch. I will use $N^2$ and $dT/dz$ averaged over the patch (since most patches are very small, this probably won't differ too much?). For $\chi$ and $\epsilon$, I should compute these from spectra over the entire patch. This will involve hacking into the chameleon processing codes a bit... Before I do this, I will try just using the 1m binned values within each patch.
 
-So far this doesn't seem to be giving me anything close to $\Gamma=0.2$ (figure \ref{hists_gamma_allVspatch}).
+So far this doesn't seem to be giving me anything close to $\Gamma=0.2$ (figure \ref{hists_gamma_allVspatch}). Figure \ref{gamvspatchsize} shows gamma plotted vs patch size. It seems like the maximum gamma decreases linearly with patch size. We can also see that gamma is dominated by a very large number of small values, especially for smaller patch sizes.
 
 \begin{figure}[htbp]
 \includegraphics[scale=0.8]{hists_gamma_allVspatch.png}
 \caption{Histograms of gamma for (1) all points within patches (2) using averaged values from patches (3) using all points. Only data between 60-180m depth is used for all.  Blue line shows median of each distribution, and black dashed line is 0.2.}
 \label{hists_gamma_allVspatch}
+\end{figure}
+
+\begin{figure}[htbp]
+\includegraphics[scale=0.8]{gamma_Vs_patchsize.png}
+\caption{Scatter plot of gamma vs patch size for EQ14 profiles.}
+\label{gamvspatchsize}
 \end{figure}
 
 
