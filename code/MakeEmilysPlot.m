@@ -39,7 +39,6 @@ gam_cham=n2 .* chi ./2 ./ eps ./ (dtdz.^2);
 % 
 
 
-
 %% Plot N2 vs chi, color by gamma ?
 % 
 % % There's too many points and they are being overplotted, try taking a
@@ -160,40 +159,70 @@ figure(1);clf
 agutwocolumn(1)
 wysiwyg
 
+yl=[-6 2]
+yl=[-5 1]
+%yl=[-3 0]
+
 ax1=subplot(221);
 histogram2(real(log10(n2)),log10(gam_cham),200,'DisplayStyle','tile')
 xlabel('log_{10}N^2','fontsize',16)
 ylabel('log_{10}\Gamma','fontsize',16)
 colorbar
-ylim([-6 3])
+ylim(yl)
 xlim([-6 -2])
+hold on
+xvec=linspace(-6,-2,100);
+plot(xvec,xvec+2,'k--')
+
+ax1.XTick=[-6:-2];
+ax1.YTick=yl(1):yl(2);
 
 ax2=subplot(222);
 histogram2(real(log10(dtdz)),log10(gam_cham),200,'DisplayStyle','tile')
 xlabel('log_{10}dT/dz','fontsize',16)
 ylabel('log_{10}\Gamma','fontsize',16)
 colorbar
-ylim([-6 3])
+ylim(yl)
 xlim([-4 -0])
+ax2.XTick=[-4:0];
+ax1.YTick=yl(1):yl(2);
+hold on
+xvec=linspace(-4,0,100);
+plot(xvec,xvec,'k--')
+
 
 ax3=subplot(223);
 histogram2(real(log10(chi)),log10(gam_cham),200,'DisplayStyle','tile')
-xlabel('log_{10}dT/dz','fontsize',16)
+xlabel('log_{10}\chi','fontsize',16)
 ylabel('log_{10}\Gamma','fontsize',16)
 colorbar
-ylim([-6 3])
-xlim([-13 -3])
+ylim(yl)
+xlim([-12 -4])
+ax3.XTick=[-12:-4];
+ax1.YTick=yl(1):yl(2);
+
+hold on
+xvec=linspace(-12,-4,100);
+plot(xvec,xvec+6,'k--')
+
+
 
 ax4=subplot(224);
-histogram2(real(log10(eps)),log10(gam_cham),200,'DisplayStyle','tile')
-xlabel('log_{10}dT/dz','fontsize',16)
+h=histogram2(real(log10(eps)),log10(gam_cham),200,'DisplayStyle','tile')
+xlabel('log_{10}\epsilon','fontsize',16)
 ylabel('log_{10}\Gamma','fontsize',16)
 colorbar
-ylim([-6 3])
-xlim([-8 -3])
+ylim(yl)
+xlim([-8 -5])
+ax4.XTick=[-8:-5];
+ax1.YTick=yl(1):yl(2);
+
+hold on
+xvec=linspace(-8,-5,100);
+plot(xvec,xvec+4,'k--')
 
 linkaxes([ax1 ax2 ax3 ax4],'y')
-
+%
 figdir='/Users/Andy/Cruises_Research/ChiPod/Cham_Eq14_Compare/mfiles/Patches'
 print( fullfile( figdir,'2X2_2dhist_Gamma'), '-dpng')
 
@@ -214,7 +243,7 @@ for m=1:length(dchi)-1;
         end
 end
 
-%%
+%
 
 figure(1);clf
 agutwocolumn(1)
@@ -222,7 +251,6 @@ wysiwyg
 
 subplot(211)
 pcolor(log10(dN(1:end-1)),log10(dchi(1:end-1)),mean_gamma)
-%pcolor(log10(dN(1:end-1)),log10(dchi(1:end-1)),median_gamma)
 shading flat
 caxis([0 0.1])
 cb=colorbar;
@@ -233,7 +261,6 @@ grid on
 title('mean gamma') 
 
 subplot(212)
-%pcolor(log10(dN(1:end-1)),log10(dchi(1:end-1)),mean_gamma)
 pcolor(log10(dN(1:end-1)),log10(dchi(1:end-1)),median_gamma)
 shading flat
 caxis([0 0.11])

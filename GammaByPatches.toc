@@ -1,3 +1,4 @@
 \contentsline {section}{\numberline {1}Intro}{2}{section.1}
-\contentsline {section}{\numberline {2}Identifying Patches}{3}{section.2}
-\contentsline {section}{\numberline {3}Computing gamma by patch}{7}{section.3}
+\contentsline {section}{\numberline {2} Looking at stratification etc.}{3}{section.2}
+\contentsline {section}{\numberline {3}Identifying Patches}{6}{section.3}
+\contentsline {section}{\numberline {4}Computing gamma by patch}{10}{section.4}
