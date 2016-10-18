@@ -302,7 +302,7 @@ h1=histogram(log10(gam_all),50,'Normalization','pdf');
 hold on
 xlim([-5 4])
 grid on
-title(['all points in patches, median \Gamma=' num2str(nanmedian(gam_all))])
+title(['all points in patches, median \Gamma=' num2str(roundx(nanmedian(gam_all),3))])
 freqline(log10(0.2),'k--')
 text(log10(0.2),0.5,'0.2')
 freqline(nanmean(log10(gam_all)),'b')
@@ -311,7 +311,7 @@ ax2=subplot(312);
 h2=histogram(log10(gam_patch_all),h1.BinEdges,'Normalization','pdf')
 hold on
 grid on
-title(['patch average values, median \Gamma=' num2str(nanmedian(gam_patch_all))])
+title(['patch average values, median \Gamma=' num2str(roundx(nanmedian(gam_patch_all),3))])
 freqline(log10(0.2),'k--')
 text(log10(0.2),0.5,'0.2')
 freqline(nanmean(log10(gam_patch_all)),'b')
@@ -323,7 +323,7 @@ h3=histogram(log10(gam_cham(i4)),h1.BinEdges,'Normalization','pdf')
 xlabel('log_{10}\Gamma')
 grid on
 ylabel('pdf')
-title(['all points, median \Gamma=' num2str(nanmedian(gam_cham(i4)))])
+title(['all points, median \Gamma=' num2str(roundx(nanmedian(gam_cham(i4)),3))])
 freqline(log10(0.2),'k--')
 text(log10(0.2),0.5,'0.2')
 freqline(nanmean(log10(gam_cham(i4))),'b')
