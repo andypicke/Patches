@@ -28,7 +28,7 @@ gam =  n2 .* chi ./2 ./ eps ./ (dtdz.^2);
 
 figure(1);clf
 histogram(gam(:),30)
-
-nanmedian(gam)
+freqline(nanmedian(gam))
+title(['median=' num2str(roundx(nanmedian(gam),2))])
 
 %%
