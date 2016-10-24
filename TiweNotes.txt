@@ -1,0 +1,18 @@
+
+Jonathan shared the TIWE folder (from Ganges?) with me.
+
+I’m using the processed mat files in /xxxx/
+
+I combine all the profiles in xxx.m, interpolating each profile onto the same depth vector w/ 1m spacing.
+
+Weird values in t,dt/dz below 160m?
+
+Compare histograms of all data w/ those from EQ14. Results:
+
+Compute gamma from all data: 
+
+Compute gamma from data excluding surface/bottom.
+
+Identify patches in tiwe:
+
+gamma in patches only

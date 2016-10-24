@@ -49,11 +49,19 @@ for ip=1:length(file_list)
     
 end % ip
 
-%
+%%
 tiwe.P=p_com;
 tiwe.ip=1:length(file_list);
-
+%
+tiwe.MakeInfo=['Made ' datestr(now) ' w/ Combine_TIWE.m, source is /Tiwe91/mat_Greg_analysis/']
+%
 % save combined structure
+save(fullfile('/Users/Andy/Cruises_Research/ChiPod/Cham_Eq14_Compare/mfiles/Patches','tiwe_comb_AP.mat'),'tiwe')
+%%
+
+clear ; close all
+
+load(fullfile('/Users/Andy/Cruises_Research/ChiPod/Cham_Eq14_Compare/mfiles/Patches','tiwe_comb_AP.mat') )
 
 %% Plot temperature and salinity
 
@@ -83,7 +91,7 @@ agutwocolumn(1)
 wysiwyg
 
 subplot(411)
-ezpc(tiwe.ip,tiwe.P,real(log10(tiwe.n2)))
+ezpc(tiwe.ip,tiwe.P,real(log10(tiwe.N2)))
 colorbar
 %caxis([-11 -5])
 xlabel('profile index')
@@ -94,7 +102,7 @@ cmap=colormap;
 colormap([0.5*[1 1 1] ; cmap ])
 
 subplot(412)
-ezpc(tiwe.ip,tiwe.P,real(log10(tiwe.dtdz)))
+ezpc(tiwe.ip,tiwe.P,real(log10(tiwe.DTDZ)))
 colorbar
 %caxis([-11 -5])
 xlabel('profile index')
@@ -102,7 +110,7 @@ ylabel('P')
 title('dT/dz')
 
 subplot(413)
-ezpc(tiwe.ip,tiwe.P,log10(tiwe.chi))
+ezpc(tiwe.ip,tiwe.P,log10(tiwe.CHI))
 colorbar
 caxis([-11 -5])
 xlabel('profile index')
@@ -110,7 +118,7 @@ ylabel('P')
 title('\chi')
 
 subplot(414)
-ezpc(tiwe.ip,tiwe.P,log10(tiwe.eps))
+ezpc(tiwe.ip,tiwe.P,log10(tiwe.EPSILON))
 colorbar
 caxis([-11 -5])
 xlabel('profile index')
