@@ -2,3 +2,4 @@
 \contentsline {section}{\numberline {2} Looking at stratification etc.}{3}{section.2}
 \contentsline {section}{\numberline {3}Identifying Patches}{6}{section.3}
 \contentsline {section}{\numberline {4}Computing gamma by patch}{10}{section.4}
+\contentsline {section}{\numberline {5}TIWE Comparisons}{13}{section.5}

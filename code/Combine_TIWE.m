@@ -84,6 +84,11 @@ title('salinity')
 xlabel('profile index')
 ylabel('P')
 
+%%
+
+figdir='/Users/Andy/Cruises_Research/ChiPod/Cham_Eq14_Compare/mfiles/Patches/figures/'
+print( fullfile( figdir,'tiwe_comb_t_ts'), '-dpng')
+
 %% Plot N2,dtdz,chi,eps
 
 figure(1);clf
@@ -127,5 +132,149 @@ title('\epsilon')
 
 %%
 
+figdir='/Users/Andy/Cruises_Research/ChiPod/Cham_Eq14_Compare/mfiles/Patches/figures/'
+print( fullfile( figdir,'tiwe_comb_n2_dtdz_chi_eps'), '-dpng')
+
+
+%%
+% compare to EQ distributions
+
+dir_base='/Users/Andy/Cruises_Research/ChiPod/Cham_Eq14_Compare/Data/chameleon/processed';
+clear cham
+load( fullfile( dir_base, '/Cstar=0_01366/sum/eq14_sum.mat') )
+
+n2=tiwe.N2;
+dtdz=tiwe.DTDZ;
+chi=tiwe.CHI;
+eps=tiwe.EPSILON;
+
+Nm='pdf';
+
+figure(1);clf
+agutwocolumn(1)
+wysiwyg
+
+subplot(221)
+h1=histogram(real(log10(n2(:))),'edgecolor','none','Normalization',Nm);
+hold on
+h2=histogram(real(log10(cham.N2(:))),h1.BinEdges,'edgecolor','none','Normalization',Nm);
+xlabel('log_{10}N^2')
+grid on
+
+
+subplot(222)
+h1=histogram(real(log10(dtdz(:))),'edgecolor','none','Normalization',Nm);
+hold on
+h2=histogram(real(log10(cham.DTDZ(:))),h1.BinEdges,'edgecolor','none','Normalization',Nm);
+%h3=histogram(real(log10(dtdz_2(:))),h1.BinEdges,'edgecolor','none','Normalization',Nm);
+xlabel('log_{10}dT/dz')
+grid on
+
+subplot(223)
+h1=histogram(log10(chi(:)),'edgecolor','none','Normalization',Nm);
+hold on
+h2=histogram(real(log10(cham.CHI(:))),h1.BinEdges,'edgecolor','none','Normalization',Nm);
+xlabel('log_{10}\chi')
+grid on
+freqline(nanmedian(log10(chi(:))),'b')
+freqline(nanmedian(log10(cham.CHI(:))),'r')
+
+subplot(224)
+h1=histogram(log10(eps(:)),'edgecolor','none','Normalization',Nm);
+hold on
+h2=histogram(real(log10(cham.EPSILON(:))),h1.BinEdges,'edgecolor','none','Normalization',Nm);
+xlabel('log_{10}\epsilon')
+grid on
+legend([h1 h2],'TIWE','EQ14')
+
+%%
+
+figdir='/Users/Andy/Cruises_Research/ChiPod/Cham_Eq14_Compare/mfiles/Patches/figures/'
+print( fullfile( figdir,'tiwe_eq14_hist_compare'), '-dpng')
+
+%% get rid of those weird dtdz values
+
+% try removing the weird spike in values near 1e-4
+%dtdz_2=dtdz;
+ib2=find(log10(dtdz)<-3.7);
+%dtdz_2(ib2)=nan;
+
+n2_2=n2;n2_2(ib2)=nan;
+dtdz_2=dtdz;dtdz_2(ib2)=nan;
+chi_2=chi;chi_2(ib2)=nan;
+eps_2=eps;eps_2(ib2)=nan;
+
+% plot distributions again
+Nm='pdf';
+
+figure(1);clf
+agutwocolumn(1)
+wysiwyg
+
+subplot(221)
+h1=histogram(real(log10(n2_2(:))),'edgecolor','none','Normalization',Nm);
+hold on
+h2=histogram(real(log10(cham.N2(:))),h1.BinEdges,'edgecolor','none','Normalization',Nm);
+xlabel('log_{10}N^2')
+grid on
+
+
+subplot(222)
+h1=histogram(real(log10(dtdz_2(:))),'edgecolor','none','Normalization',Nm);
+hold on
+h2=histogram(real(log10(cham.DTDZ(:))),h1.BinEdges,'edgecolor','none','Normalization',Nm);
+%h3=histogram(real(log10(dtdz_2(:))),h1.BinEdges,'edgecolor','none','Normalization',Nm);
+xlabel('log_{10}dT/dz')
+grid on
+
+subplot(223)
+h1=histogram(log10(chi_2(:)),'edgecolor','none','Normalization',Nm);
+hold on
+h2=histogram(real(log10(cham.CHI(:))),h1.BinEdges,'edgecolor','none','Normalization',Nm);
+xlabel('log_{10}\chi')
+grid on
+freqline(nanmedian(log10(chi_2(:))),'b')
+freqline(nanmedian(log10(cham.CHI(:))),'r')
+
+subplot(224)
+h1=histogram(real(log10(eps_2(:))),'edgecolor','none','Normalization',Nm);
+hold on
+h2=histogram(real(log10(cham.EPSILON(:))),h1.BinEdges,'edgecolor','none','Normalization',Nm);
+xlabel('log_{10}\epsilon')
+grid on
+legend([h1 h2],'TIWE','EQ14')
+
+%%
+
+figdir='/Users/Andy/Cruises_Research/ChiPod/Cham_Eq14_Compare/mfiles/Patches/figures/'
+print( fullfile( figdir,'tiwe_eq14_hist_compare_fixdtdz'), '-dpng')
+
+
+%% Compute gamma
+
+%gam_tiwe=n2 .* chi ./2 ./ eps ./ (dtdz.^2);
+gam_tiwe=n2 .* chi ./2 ./ eps ./ (dtdz_2.^2);
+gam_eq14=cham.N2 .* cham.CHI ./2 ./cham.EPSILON ./(cham.DTDZ.^2);
+
+% plot distributions
+figure(1);clf
+agutwocolumn(0.6)
+wysiwyg
+h1=histogram(real(log10(gam_tiwe(:))),'edgecolor','none','Normalization','pdf');
+hold on
+h2=histogram(log10(gam_eq14(:)),h1.BinEdges,'edgecolor','none','Normalization','pdf');
+%hold on
+%h3=histogram(real(log10(gam_tiwe_2(:))),'edgecolor','none','Normalization','pdf');
+grid on
+xlim([-5 4])
+legend([h1 h2],'tiwe','eq14')
+xlabel('log_{10}\Gamma','fontsize',16)
+freqline(nanmedian(h1.Data),'b')
+freqline(nanmedian(h2.Data),'r')
+
+%%
+
+figdir='/Users/Andy/Cruises_Research/ChiPod/Cham_Eq14_Compare/mfiles/Patches/figures/'
+print( fullfile( figdir,'tiwe_eq14_gamma_compare'), '-dpng')
 
 %%

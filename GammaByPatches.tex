@@ -13,7 +13,7 @@
 
 
 \graphicspath{
-{/Users/Andy/Cruises_Research/ChiPod/Cham_Eq14_Compare/mfiles/Patches/}
+{/Users/Andy/Cruises_Research/ChiPod/Cham_Eq14_Compare/mfiles/Patches/figures/}
 }
 
 \title{EQ14 - Computing gamma by patches}
@@ -122,6 +122,56 @@ So far this doesn't seem to be giving me anything close to $\Gamma=0.2$ (figure 
 \caption{Scatter plot of gamma vs patch size for EQ14 profiles.}
 \label{gamvspatchsize}
 \end{figure}
+
+
+
+\clearpage
+%~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+\section{TIWE Comparisons}
+
+Jonathan shared the entire TIWE folder (from Ganges I think?) with me on Dropbox. There are a lot of different folders/versions. 
+IÕm going to try using the processed mat files for each cast in \verb+Tiwe91/mat_Greg_analysis/+.
+
+I first combine all the profiles in \verb+Combine_TIWE.m+, interpolating each profile onto the same depth vector w/ 1m spacing. Figure \ref{tiwe_comb} shows data from all the combined profiles. Note that something seems weird with dT/dz; many profiles have a constant near-zero dTdz below 150m.  Other than that, the data look qualitatively similar to EQ14.
+
+
+\begin{figure}[htbp]
+\includegraphics[scale=0.8]{tiwe_comb_n2_dtdz_chi_eps.png}
+\caption{N2,dtdz,chi, and eps from combined TIWE data.}
+\label{tiwe_comb}
+\end{figure}
+\clearpage
+
+Next i'll compare the distributions of each variable to the EQ14 data (Figure \ref{tiwe_eq14_comp}). N2 and epsilon look very similar. Chi from tiwe is a bit narrower but they have similar medians. Dt/dz from tiwe has a spike at those weird small values, and then a sort of two-peak distribution. Figure \ref{tiwe_eq14_comp_fix} shows the same plots with the bad dtdz values removed.L
+
+
+\begin{figure}[htbp]
+\includegraphics[scale=0.8]{tiwe_eq14_hist_compare.png}
+\caption{Histograms of N2,dtdz,chi, and eps from combined TIWE data and EQ14 data.}
+\label{tiwe_eq14_comp}
+\end{figure}
+
+\begin{figure}[htbp]
+\includegraphics[scale=0.8]{tiwe_eq14_hist_compare_fixdtdz.png}
+\caption{Histograms of N2,dtdz,chi, and eps from combined TIWE data and EQ14 data, with bad dT/dz values not included.}
+\label{tiwe_eq14_comp_fix}
+\end{figure}
+
+\clearpage
+
+What does gamma look like for the tiwe data? Figure \ref{tiwe_eq14_gamma_hist}. Gamma from tiwe is larger than eq14, with a median of about 0.06 , compared to 0.02 .
+
+\begin{figure}[htbp]
+\includegraphics[scale=0.8]{tiwe_eq14_gamma_compare.png}
+\caption{Histograms of gamma computed fromcombined TIWE data and EQ14 data.}
+\label{tiwe_eq14_gamma_hist}
+\end{figure}
+
+\clearpage
+
+Next I identify patches the same way in the tiwe data. 
+
+
 
 
 
