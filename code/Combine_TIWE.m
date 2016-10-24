@@ -7,7 +7,10 @@
 %
 % I'm using the processed mat files in /Tiwe91/mat_Greg_analysis/
 %
-%-------------
+% All the profiles are interpolated onto a common depth vector with 1 m
+% spacing
+%
+%----------------------
 % 10/21/16 - A.Pickering - andypicke@gmail.com
 %~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 %%
@@ -21,15 +24,14 @@ p_com=0:210; % interp all profiles to this common pressure vector
 %addpath /Users/Andy/Cruises_Research/seawater_ver3_2/
 datdir='/Users/Andy/Dropbox/ap_share_with_jn/date_from_jim/Tiwe91/mat_Greg_analysis/'
 file_list=dir( fullfile( datdir,['tw91*' '*.mat']) );
-%dat_sum=[]
 
 tiwe=struct()
 tiwe.t=nan*ones(length(p_com),length(file_list));
 tiwe.s=nan*ones(length(p_com),length(file_list));
-tiwe.n2=nan*ones(length(p_com),length(file_list));
-tiwe.dtdz=nan*ones(length(p_com),length(file_list));
-tiwe.chi=nan*ones(length(p_com),length(file_list));
-tiwe.eps=nan*ones(length(p_com),length(file_list));
+tiwe.N2=nan*ones(length(p_com),length(file_list));
+tiwe.DTDZ=nan*ones(length(p_com),length(file_list));
+tiwe.CHI=nan*ones(length(p_com),length(file_list));
+tiwe.EPSILON=nan*ones(length(p_com),length(file_list));
 
 %warning off
 for ip=1:length(file_list)
@@ -37,15 +39,13 @@ for ip=1:length(file_list)
 %    try
         load( fullfile('/Users/Andy/Dropbox/ap_share_with_jn/date_from_jim/Tiwe91/mat_Greg_analysis/',file_list(ip).name ) )
         
-        % this is 1m binned data ; see if there are any overturns
-        
+        % this is 1m binned data ; see if there are any overturns        
         tiwe.t(:,ip)=interp1(avg.P,avg.T1,p_com);
         tiwe.s(:,ip)=interp1(avg.P,avg.S,p_com);
-        tiwe.n2(:,ip)=interp1(avg.P,avg.N2,p_com);
-        tiwe.dtdz(:,ip)=interp1(avg.P,avg.DTDZ,p_com);
-        tiwe.chi(:,ip)=interp1(avg.P,avg.CHI,p_com);
-        tiwe.eps(:,ip)=interp1(avg.P,avg.EPSILON,p_com);
-        
+        tiwe.N2(:,ip)=interp1(avg.P,avg.N2,p_com);
+        tiwe.DTDZ(:,ip)=interp1(avg.P,avg.DTDZ,p_com);
+        tiwe.CHI(:,ip)=interp1(avg.P,avg.CHI,p_com);
+        tiwe.EPSILON(:,ip)=interp1(avg.P,avg.EPSILON,p_com);        
     
 end % ip
 
@@ -55,17 +55,69 @@ tiwe.ip=1:length(file_list);
 
 % save combined structure
 
-%%
+%% Plot temperature and salinity
 
 figure(1);clf
-%ezpc(tiwe.ip,tiwe.P,tiwe.t)
+agutwocolumn(0.8)
+wysiwyg
+
+subplot(211)
+ezpc(tiwe.ip,tiwe.P,tiwe.t)
+colorbar
+title('temperature')
+xlabel('profile index')
+ylabel('P')
+
+subplot(212)
+ezpc(tiwe.ip,tiwe.P,tiwe.s)
+colorbar
+caxis([32 36])
+title('salinity')
+xlabel('profile index')
+ylabel('P')
+
+%% Plot N2,dtdz,chi,eps
+
+figure(1);clf
+agutwocolumn(1)
+wysiwyg
+
+subplot(411)
+ezpc(tiwe.ip,tiwe.P,real(log10(tiwe.n2)))
+colorbar
+%caxis([-11 -5])
+xlabel('profile index')
+ylabel('P')
+title('N^2')
+
+cmap=colormap;
+colormap([0.5*[1 1 1] ; cmap ])
+
+subplot(412)
+ezpc(tiwe.ip,tiwe.P,real(log10(tiwe.dtdz)))
+colorbar
+%caxis([-11 -5])
+xlabel('profile index')
+ylabel('P')
+title('dT/dz')
+
+subplot(413)
+ezpc(tiwe.ip,tiwe.P,log10(tiwe.chi))
+colorbar
+caxis([-11 -5])
+xlabel('profile index')
+ylabel('P')
+title('\chi')
+
+subplot(414)
 ezpc(tiwe.ip,tiwe.P,log10(tiwe.eps))
 colorbar
 caxis([-11 -5])
 xlabel('profile index')
 ylabel('P')
+title('\epsilon')
 
 %%
 
-%gam=tiwe.n2 .* tiwe.chi .
 
+%%
