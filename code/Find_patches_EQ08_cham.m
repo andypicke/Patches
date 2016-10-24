@@ -1,6 +1,6 @@
 %~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 %
-% Find_patches_EQ14_cham.m
+% Find_patches_EQ08_cham.m
 %
 % Goal is to identify patches (via overturns codes etc.), and then compute
 % gamma using values averaged over those patches.
@@ -8,7 +8,7 @@
 % * (1) Loop through all files and find overturns, make table of cast#,
 % overturn depths, patch size etc.
 %
-% * formerly part of Compute_gamma_by_patches.m
+% Modified from Find_patches_EQ14_cham.m
 %
 %----------------------
 % 10/18/16 - A.Pickering - andypicke@gmail.com
@@ -18,8 +18,7 @@
 clear ; close all
 
 % load EQ14 data
-dir_base='/Users/Andy/Cruises_Research/ChiPod/Cham_Eq14_Compare/Data/chameleon/processed';
-clear cham
+dir_base='/Users/Andy/Cruises_Research/ChiPod/clear cham
 load( fullfile( dir_base, '/Cstar=0_01366/sum/eq14_sum.mat') )
 
 % gamma using all data points
@@ -116,15 +115,6 @@ patches_60_180=dat_sum(ig,:);
 
 datadir='/Users/Andy/Cruises_Research/ChiPod/Cham_Eq14_Compare/mfiles/Patches'
 save( fullfile( datadir, 'eq14_1m_patches.mat'), 'patches_all','patches_60_180')
-
-%%
-
-clear ; close all
-
-datadir='/Users/Andy/Cruises_Research/ChiPod/Cham_Eq14_Compare/mfiles/Patches'
-
-% load identifed patches
-load( fullfile( datadir,'eq14_1m_patches.mat') )
 
 
 %% Plot histogram of patch sizes

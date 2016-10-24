@@ -74,6 +74,9 @@ for ip=1:length(patches)
     
 end
 
+% save the data
+save(fullfile('/Users/Andy/Cruises_Research/ChiPod/Cham_Eq14_Compare/mfiles/Patches/','eq14_INpatch.mat'),...
+    'n2_patches','dtdz_patches','chi_patches','eps_patches')
 
 %% Compare distributions from all points in patch with patch-average values
 
