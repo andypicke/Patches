@@ -159,6 +159,8 @@ Next i'll compare the distributions of each variable to the EQ14 data (Figure \r
 
 \clearpage
 
+
+\subsection{Gamma}
 What does gamma look like for the tiwe data? Figure \ref{tiwe_eq14_gamma_hist}. Gamma from tiwe is larger than eq14, with a median of about 0.06 , compared to 0.02 .
 
 \begin{figure}[htbp]
@@ -169,10 +171,45 @@ What does gamma look like for the tiwe data? Figure \ref{tiwe_eq14_gamma_hist}. 
 
 \clearpage
 
-Next I identify patches the same way in the tiwe data. 
+\subsection{Patches}
+Next I identify patches the same way in the tiwe data in \verb+Find_patches_TIWE_cham.m+.
 
 
+\begin{figure}[htbp]
+\includegraphics[scale=0.8]{tiwe_patchsize_hist.png}
+\caption{Histograms of patch sizes from combined TIWE.}
+\label{tiwe_patchsize_hist}
+\end{figure}
 
+
+\begin{figure}[htbp]
+\includegraphics[scale=0.8]{tiwe_pcolor_wpatches.png}
+\caption{patches  from combined TIWE.}
+\label{tiwe_pcolor_patchs}
+\end{figure}
+
+
+\clearpage
+
+Most of the really big patches are down below 150m where dtDz is weird. I'll exclude that data, and the surface mixed layer also.
+
+\begin{figure}[htbp]
+\includegraphics[scale=0.8]{tiwe_patchsize_mid_hist.png}
+\caption{Histograms of patch sizes from combined TIWE.}
+\label{}
+\end{figure}
+
+
+\begin{figure}[htbp]
+\includegraphics[scale=0.8]{tiwe_pcolor_wpatches_mid.png}
+\caption{patches  from combined TIWE.}
+\label{}
+\end{figure}
+
+
+\subsection{Gamma in patches}
+
+Ok, first what does gamma look like if just use data within or near these patches?
 
 
 \end{document}  

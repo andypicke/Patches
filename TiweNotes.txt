@@ -13,6 +13,12 @@ Compute gamma from all data:
 
 Compute gamma from data excluding surface/bottom.
 
+
 Identify patches in tiwe:
+
+
+** compare distributions of n2,chi,eps etc from my patches to bill’s patches **
+
+
 
 gamma in patches only
