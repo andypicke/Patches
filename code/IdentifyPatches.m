@@ -20,7 +20,7 @@ function [pstarts pstops]=IdentifyPatches(s,t,p,lat)
 % DEPENDENCIES
 % sw_pden.m
 % sw_ptmp.m
-% sw_bfrq.m 
+% sw_bfrq.m
 %
 %-------------------------
 % 10/7/16 - A.Pickering - andypicke@gmail.com
@@ -127,14 +127,30 @@ if plots==1
     
     linkaxes([ax1 ax2 ax3],'y')
 end
-%%
 
-pstarts=p0(start);
-pstops=p0(stops);
+%% require overturn size > min resolvable overturn based on N2 and density noise level
+
+clear ipass
+ipass=[];
+sigma=5e-4;
+
+for ii=1:length(start)
+    clear ind drho n2avg indp
+    ind=start(ii):stops(ii);
+    indp=find( p_ave>min(pg(ind)) & p_ave<max(pg(ind)) );
+    drho=(max(pden(ind))-min(pden(ind)));
+    n2avg=nanmean(n2(indp));
+    delz=abs(max(pg(ind))-min(pg(ind)));
+    
+    if   delz>(2*9.8/n2avg*sigma/1027)
+        ipass=[ipass ; ii];
+    else
+    end
+    
+end
+
+pstarts=p0(start(ipass));
+pstops=p0(stops(ipass));
 
 
-%%
-%end % try
-
-%end % cnum
 %%
