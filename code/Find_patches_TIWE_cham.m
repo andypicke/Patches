@@ -48,7 +48,6 @@ end % ip
 warning on
 
 % save data
-
 save( fullfile( '/Users/Andy/Cruises_Research/ChiPod/Cham_Eq14_Compare/mfiles/Patches/','tiwe_patches.mat'), 'patches')
 
 %%
@@ -183,10 +182,21 @@ end % ipatch
 %save( fullfile( '/Users/Andy/Cruises_Research/ChiPod/Cham_Eq14_Compare/mfiles/Patches/','tiwe_patches_trim_data.mat'), 'n2_patches','dtdz_patches','chi_patches','eps_patches')
 save( fullfile( '/Users/Andy/Cruises_Research/ChiPod/Cham_Eq14_Compare/mfiles/Patches/','tiwe_patches_data.mat'), 'n2_patches','dtdz_patches','chi_patches','eps_patches')
 
+%%
+
+clear ; close all
+
+% load data from patches
+load( fullfile( '/Users/Andy/Cruises_Research/ChiPod/Cham_Eq14_Compare/mfiles/Patches/','tiwe_patches_data.mat') )
+
+% load combined TIWE data
+load(fullfile('/Users/Andy/Cruises_Research/ChiPod/Cham_Eq14_Compare/mfiles/Patches','tiwe_comb_AP.mat') )
+cham=tiwe;
+
+
 %% Plot distributions of these data
 
 h=Plot4hist(n2_patches,dtdz_patches,chi_patches,eps_patches);
-
 
 %% Compare distributions from all points in patch with patch-average values
 
@@ -273,58 +283,36 @@ dtdz=A.tgrad;
 chi=A.chi;
 eps=A.eps;
 
-figure(1);clf
-nbins=50
-m=4;
-n=1;
+[h h1 h2]=Plot4hist_2(n2,dtdz,chi,eps,n2_patches,dtdz_patches,chi_patches,eps_patches)
+legend([h1 h2],'Bill patches','AP patches','location','best')
+
+%% Compare gamma
+
+% compute gamma from this data
+gam_bill =  n2 .* chi ./2 ./ eps ./ (dtdz.^2);
+gam_AP= n2_patches .* chi_patches ./2 ./eps_patches ./ (dtdz_patches.^2);
+
+ig1=find(gam_bill<5);
+ig2=find(gam_AP<5);
 
 figure(1);clf
-agutwocolumn(1)
+agutwocolumn(0.5)
 wysiwyg
 
-subplot(m,n,1)
-h1=histogram(real(log10(A.N2(:))),nbins,'Normalization','pdf','edgecolor','none');
+h1=histogram(gam_bill(ig1),'Normalization','pdf');
 hold on
-h2=histogram(real(log10(n2_patches(:))),h1.BinEdges,'Normalization','pdf','edgecolor','none');
-grid on
-xlim([-7 -2])
-xlabel('log_{10}N^2','fontsize',15)
-ylabel('pdf')
+h2=histogram(gam_AP(ig2),'Normalization','pdf');
 freqline(nanmedian(h1.Data),'b')
 freqline(nanmedian(h2.Data),'r')
+grid on
+text(2,2.5,['median=' num2str(nanmedian(gam_bill))],'color','b','fontsize',16)
+text(2,2.2,['median=' num2str(nanmedian(gam_AP))],'color','r','fontsize',16)
+legend([h1 h2],'Bill patches','AP patches 1m')
+xlabel('\Gamma','fontsize',16)
+ylabel('pdf','fontsize',16)
+title('\Gamma from tiwe patches')
 
-subplot(m,n,2)
-h1=histogram(real(log10(A.tgrad(:))),nbins,'Normalization','pdf','edgecolor','none');
-hold on
-h2=histogram(real(log10(dtdz_patches(:))),h1.BinEdges,'Normalization','pdf','edgecolor','none');
-grid on
-xlim([-5 0])
-xlabel('log_{10}dT/dz','fontsize',15)
-ylabel('pdf')
-freqline(nanmedian(h1.Data),'b')
-freqline(nanmedian(h2.Data),'r')
-
-subplot(m,n,3)
-h1=histogram(real(log10(A.chi(:))),nbins,'Normalization','pdf','edgecolor','none');
-hold on
-h2=histogram(real(log10(chi_patches(:))),h1.BinEdges,'Normalization','pdf','edgecolor','none');
-grid on
-xlim([-13 -4])
-xlabel('log_{10}\chi','fontsize',15)
-ylabel('pdf')
-freqline(nanmedian(h1.Data),'b')
-freqline(nanmedian(h2.Data),'r')
-
-subplot(m,n,4)
-h1=histogram(real(log10(A.eps(:))),nbins,'Normalization','pdf','edgecolor','none');
-hold on
-h2=histogram(real(log10(eps_patches(:))),h1.BinEdges,'Normalization','pdf','edgecolor','none');
-grid on
-xlim([-11 -4])
-legend([h1 h2],'Bill patches','AP patches','location','best')
-xlabel('log_{10}\epsilon','fontsize',15)
-ylabel('pdf')
-freqline(nanmedian(h1.Data),'b')
-freqline(nanmedian(h2.Data),'r')
+figdir='/Users/Andy/Cruises_Research/ChiPod/Cham_Eq14_Compare/mfiles/Patches/figures'
+print(fullfile(figdir,'tiwe_gam_billvsAP'),'-dpng')
 
 %%

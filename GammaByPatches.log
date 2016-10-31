@@ -1,4 +1,4 @@
-This is pdfTeX, Version 3.1415926-2.5-1.40.14 (TeX Live 2013) (format=pdflatex 2013.5.30)  24 OCT 2016 15:59
+This is pdfTeX, Version 3.1415926-2.5-1.40.14 (TeX Live 2013) (format=pdflatex 2013.5.30)  31 OCT 2016 11:35
 entering extended mode
  \write18 enabled.
  file:line:error style messages enabled.
@@ -300,6 +300,33 @@ Package uniquecounter Info: New unique counter `rerunfilecheck' on input line 2
 
 LaTeX Warning: Label `' multiply defined.
 
+
+LaTeX Warning: Label `' multiply defined.
+
+
+LaTeX Warning: Label `' multiply defined.
+
+
+LaTeX Warning: Label `' multiply defined.
+
+
+LaTeX Warning: Label `' multiply defined.
+
+
+LaTeX Warning: Label `' multiply defined.
+
+
+LaTeX Warning: Label `' multiply defined.
+
+
+LaTeX Warning: Label `' multiply defined.
+
+
+LaTeX Warning: Label `' multiply defined.
+
+
+LaTeX Warning: Label `' multiply defined.
+
 )
 \openout1 = `GammaByPatches.aux'.
 
@@ -400,100 +427,95 @@ File: umsb.fd 2013/01/14 v3.01 AMS symbols B
 
  [1
 
-{/usr/local/texlive/2013/texmf-var/fonts/map/pdftex/updmap/pdftex.map}]
-</Users/Andy/Cruises_Research/ChiPod/Cham_Eq14_Compare/mfiles/Patches/figures/g
-am_cham_hist.png, id=51, 562.2606pt x 421.575pt>
-File: /Users/Andy/Cruises_Research/ChiPod/Cham_Eq14_Compare/mfiles/Patches/figu
-res/gam_cham_hist.png Graphic file (type png)
+{/usr/local/texlive/2013/texmf-var/fonts/map/pdftex/updmap/pdftex.map}] <gam_ch
+am_hist.png, id=86, 562.2606pt x 421.575pt>
+File: gam_cham_hist.png Graphic file (type png)
 
-<use /Users/Andy/Cruises_Research/ChiPod/Cham_Eq14_Compare/mfiles/Patches/figur
-es/gam_cham_hist.png>
-Package pdftex.def Info: /Users/Andy/Cruises_Research/ChiPod/Cham_Eq14_Compare/
-mfiles/Patches/figures/gam_cham_hist.png used on input line 46.
+<use gam_cham_hist.png>
+Package pdftex.def Info: gam_cham_hist.png used on input line 49.
 (pdftex.def)             Requested size: 449.8091pt x 337.26045pt.
 
-Overfull \hbox (19.80447pt too wide) in paragraph at lines 46--47
+Overfull \hbox (19.80447pt too wide) in paragraph at lines 49--50
 [][] 
  []
 
-[2 </Users/Andy/Cruises_Research/ChiPod/Cham_Eq14_Compare/mfiles/Patches/figure
-s/gam_cham_hist.png (PNG copy)>]
+[2 <./gam_cham_hist.png (PNG copy)>]
 </Users/Andy/Cruises_Research/ChiPod/Cham_Eq14_Compare/mfiles/Patches/figures/2
-X2_2dhist_Gamma.png, id=63, 505.89pt x 614.295pt>
+X2_2dhist_Gamma.png, id=98, 505.89pt x 614.295pt>
 File: /Users/Andy/Cruises_Research/ChiPod/Cham_Eq14_Compare/mfiles/Patches/figu
 res/2X2_2dhist_Gamma.png Graphic file (type png)
 
 <use /Users/Andy/Cruises_Research/ChiPod/Cham_Eq14_Compare/mfiles/Patches/figur
 es/2X2_2dhist_Gamma.png>
 Package pdftex.def Info: /Users/Andy/Cruises_Research/ChiPod/Cham_Eq14_Compare/
-mfiles/Patches/figures/2X2_2dhist_Gamma.png used on input line 60.
+mfiles/Patches/figures/2X2_2dhist_Gamma.png used on input line 66.
 (pdftex.def)             Requested size: 404.71254pt x 491.43666pt.
 
 </Users/Andy/Cruises_Research/ChiPod/Cham_Eq14_Compare/mfiles/Patches/figures/G
-amma_binnedBy_N2_chi.png, id=64, 505.89pt x 614.295pt>
+amma_binnedBy_N2_chi.png, id=99, 505.89pt x 614.295pt>
 File: /Users/Andy/Cruises_Research/ChiPod/Cham_Eq14_Compare/mfiles/Patches/figu
 res/Gamma_binnedBy_N2_chi.png Graphic file (type png)
 
 <use /Users/Andy/Cruises_Research/ChiPod/Cham_Eq14_Compare/mfiles/Patches/figur
 es/Gamma_binnedBy_N2_chi.png>
 Package pdftex.def Info: /Users/Andy/Cruises_Research/ChiPod/Cham_Eq14_Compare/
-mfiles/Patches/figures/Gamma_binnedBy_N2_chi.png used on input line 67.
+mfiles/Patches/figures/Gamma_binnedBy_N2_chi.png used on input line 73.
 (pdftex.def)             Requested size: 404.71254pt x 491.43666pt.
  [3
 
 ] [4 </Users/Andy/Cruises_Research/ChiPod/Cham_Eq14_Compare/mfiles/Patches/figu
 res/2X2_2dhist_Gamma.png (PNG copy)>] [5 </Users/Andy/Cruises_Research/ChiPod/C
 ham_Eq14_Compare/mfiles/Patches/figures/Gamma_binnedBy_N2_chi.png (PNG copy)>]
-LaTeX Font Info:    Try loading font information for OMS+cmr on input line 80.
+LaTeX Font Info:    Try loading font information for OMS+cmr on input line 90.
 
 (/usr/local/texlive/2013/texmf-dist/tex/latex/base/omscmr.fd
 File: omscmr.fd 1999/05/25 v2.5h Standard LaTeX font definitions
 )
 LaTeX Font Info:    Font shape `OMS/cmr/m/n' in size <10.95> not available
-(Font)              Font shape `OMS/cmsy/m/n' tried instead on input line 80.
+(Font)              Font shape `OMS/cmsy/m/n' tried instead on input line 90.
 
 </Users/Andy/Cruises_Research/ChiPod/Cham_Eq14_Compare/mfiles/Patches/figures/G
-amByPatch_patchsize_boxplot.png, id=82, 578.16pt x 433.62pt>
+amByPatch_patchsize_boxplot.png, id=117, 578.16pt x 433.62pt>
 File: /Users/Andy/Cruises_Research/ChiPod/Cham_Eq14_Compare/mfiles/Patches/figu
 res/GamByPatch_patchsize_boxplot.png Graphic file (type png)
 
 <use /Users/Andy/Cruises_Research/ChiPod/Cham_Eq14_Compare/mfiles/Patches/figur
 es/GamByPatch_patchsize_boxplot.png>
 Package pdftex.def Info: /Users/Andy/Cruises_Research/ChiPod/Cham_Eq14_Compare/
-mfiles/Patches/figures/GamByPatch_patchsize_boxplot.png used on input line 88.
+mfiles/Patches/figures/GamByPatch_patchsize_boxplot.png used on input line 98.
 (pdftex.def)             Requested size: 462.52863pt x 346.89647pt.
 
-Overfull \hbox (32.524pt too wide) in paragraph at lines 88--89
+Overfull \hbox (32.524pt too wide) in paragraph at lines 98--99
 [][] 
  []
 
 
 </Users/Andy/Cruises_Research/ChiPod/Cham_Eq14_Compare/mfiles/Patches/figures/G
-amByPatch_eps_pcolor_wpatches.png, id=83, 578.16pt x 433.62pt>
+amByPatch_eps_pcolor_wpatches.png, id=118, 578.16pt x 433.62pt>
 File: /Users/Andy/Cruises_Research/ChiPod/Cham_Eq14_Compare/mfiles/Patches/figu
 res/GamByPatch_eps_pcolor_wpatches.png Graphic file (type png)
 
 <use /Users/Andy/Cruises_Research/ChiPod/Cham_Eq14_Compare/mfiles/Patches/figur
 es/GamByPatch_eps_pcolor_wpatches.png>
 Package pdftex.def Info: /Users/Andy/Cruises_Research/ChiPod/Cham_Eq14_Compare/
-mfiles/Patches/figures/GamByPatch_eps_pcolor_wpatches.png used on input line 94
-.
+mfiles/Patches/figures/GamByPatch_eps_pcolor_wpatches.png used on input line 10
+4.
 (pdftex.def)             Requested size: 462.52863pt x 346.89647pt.
 
-Overfull \hbox (32.524pt too wide) in paragraph at lines 94--95
+Overfull \hbox (32.524pt too wide) in paragraph at lines 104--105
 [][] 
  []
 
 
 </Users/Andy/Cruises_Research/ChiPod/Cham_Eq14_Compare/mfiles/Patches/figures/h
-ists_allVspatch.png, id=84, 505.89pt x 614.295pt>
+ists_allVspatch.png, id=119, 505.89pt x 614.295pt>
 File: /Users/Andy/Cruises_Research/ChiPod/Cham_Eq14_Compare/mfiles/Patches/figu
 res/hists_allVspatch.png Graphic file (type png)
 
 <use /Users/Andy/Cruises_Research/ChiPod/Cham_Eq14_Compare/mfiles/Patches/figur
 es/hists_allVspatch.png>
 Package pdftex.def Info: /Users/Andy/Cruises_Research/ChiPod/Cham_Eq14_Compare/
-mfiles/Patches/figures/hists_allVspatch.png used on input line 100.
+mfiles/Patches/figures/hists_allVspatch.png used on input line 110.
 (pdftex.def)             Requested size: 404.71254pt x 491.43666pt.
  [6
 
@@ -504,25 +526,25 @@ s/GamByPatch_eps_pcolor_wpatches.png (PNG copy)>] [9 </Users/Andy/Cruises_Resea
 rch/ChiPod/Cham_Eq14_Compare/mfiles/Patches/figures/hists_allVspatch.png (PNG c
 opy)>]
 </Users/Andy/Cruises_Research/ChiPod/Cham_Eq14_Compare/mfiles/Patches/figures/h
-ists_gamma_allVspatch.png, id=108, 505.89pt x 614.295pt>
+ists_gamma_allVspatch.png, id=143, 505.89pt x 614.295pt>
 File: /Users/Andy/Cruises_Research/ChiPod/Cham_Eq14_Compare/mfiles/Patches/figu
 res/hists_gamma_allVspatch.png Graphic file (type png)
 
 <use /Users/Andy/Cruises_Research/ChiPod/Cham_Eq14_Compare/mfiles/Patches/figur
 es/hists_gamma_allVspatch.png>
 Package pdftex.def Info: /Users/Andy/Cruises_Research/ChiPod/Cham_Eq14_Compare/
-mfiles/Patches/figures/hists_gamma_allVspatch.png used on input line 115.
+mfiles/Patches/figures/hists_gamma_allVspatch.png used on input line 126.
 (pdftex.def)             Requested size: 404.71254pt x 491.43666pt.
 
 </Users/Andy/Cruises_Research/ChiPod/Cham_Eq14_Compare/mfiles/Patches/figures/g
-amma_Vs_patchsize.png, id=109, 505.89pt x 307.3884pt>
+amma_Vs_patchsize.png, id=144, 505.89pt x 307.3884pt>
 File: /Users/Andy/Cruises_Research/ChiPod/Cham_Eq14_Compare/mfiles/Patches/figu
 res/gamma_Vs_patchsize.png Graphic file (type png)
 
 <use /Users/Andy/Cruises_Research/ChiPod/Cham_Eq14_Compare/mfiles/Patches/figur
 es/gamma_Vs_patchsize.png>
 Package pdftex.def Info: /Users/Andy/Cruises_Research/ChiPod/Cham_Eq14_Compare/
-mfiles/Patches/figures/gamma_Vs_patchsize.png used on input line 121.
+mfiles/Patches/figures/gamma_Vs_patchsize.png used on input line 132.
 (pdftex.def)             Requested size: 404.71254pt x 245.91104pt.
  [10
 
@@ -530,161 +552,300 @@ mfiles/Patches/figures/gamma_Vs_patchsize.png used on input line 121.
 ures/hists_gamma_allVspatch.png (PNG copy)>]
 [12 </Users/Andy/Cruises_Research/ChiPod/Cham_Eq14_Compare/mfiles/Patches/figur
 es/gamma_Vs_patchsize.png (PNG copy)>]
+</Users/Andy/Cruises_Research/ChiPod/Cham_Eq14_Compare/mfiles/Patches/figures/t
+iwe_patches_bill_hist.png, id=160, 505.89pt x 614.295pt>
+File: /Users/Andy/Cruises_Research/ChiPod/Cham_Eq14_Compare/mfiles/Patches/figu
+res/tiwe_patches_bill_hist.png Graphic file (type png)
+
+<use /Users/Andy/Cruises_Research/ChiPod/Cham_Eq14_Compare/mfiles/Patches/figur
+es/tiwe_patches_bill_hist.png>
+Package pdftex.def Info: /Users/Andy/Cruises_Research/ChiPod/Cham_Eq14_Compare/
+mfiles/Patches/figures/tiwe_patches_bill_hist.png used on input line 148.
+(pdftex.def)             Requested size: 404.71254pt x 491.43666pt.
+
+</Users/Andy/Cruises_Research/ChiPod/Cham_Eq14_Compare/mfiles/Patches/figures/t
+iwe_patches_bill_hist_gam.png, id=161, 505.89pt x 307.3884pt>
+File: /Users/Andy/Cruises_Research/ChiPod/Cham_Eq14_Compare/mfiles/Patches/figu
+res/tiwe_patches_bill_hist_gam.png Graphic file (type png)
+
+<use /Users/Andy/Cruises_Research/ChiPod/Cham_Eq14_Compare/mfiles/Patches/figur
+es/tiwe_patches_bill_hist_gam.png>
+Package pdftex.def Info: /Users/Andy/Cruises_Research/ChiPod/Cham_Eq14_Compare/
+mfiles/Patches/figures/tiwe_patches_bill_hist_gam.png used on input line 154.
+(pdftex.def)             Requested size: 404.71254pt x 245.91104pt.
+ [13
+
+] [14 </Users/Andy/Cruises_Research/ChiPod/Cham_Eq14_Compare/mfiles/Patches/fig
+ures/tiwe_patches_bill_hist.png (PNG copy)>] [15 </Users/Andy/Cruises_Research/
+ChiPod/Cham_Eq14_Compare/mfiles/Patches/figures/tiwe_patches_bill_hist_gam.png 
+(PNG copy)>]
+Underfull \hbox (badness 10000) in paragraph at lines 166--167
+
+ []
+
+
+Overfull \hbox (56.62401pt too wide) in paragraph at lines 168--169
+[]\OT1/cmr/m/n/10.95 See []\OT1/cmtt/m/n/10.95 LookAtFlux91Data_Jim.m\OT1/cmr/m
+/n/10.95 , []\OT1/cmtt/m/n/10.95 LookAtFlux91Data_Bill.m\OT1/cmr/m/n/10.95 , []
+\OT1/cmtt/m/n/10.95 Compare_tiwe_patches_jim_bill.m\OT1/cmr/m/n/10.95 . 
+ []
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 168--169
+
+ []
+
+
+</Users/Andy/Cruises_Research/ChiPod/Cham_Eq14_Compare/mfiles/Patches/figures/f
+lx91_patches_jim_hist.png, id=177, 505.89pt x 614.295pt>
+File: /Users/Andy/Cruises_Research/ChiPod/Cham_Eq14_Compare/mfiles/Patches/figu
+res/flx91_patches_jim_hist.png Graphic file (type png)
+
+<use /Users/Andy/Cruises_Research/ChiPod/Cham_Eq14_Compare/mfiles/Patches/figur
+es/flx91_patches_jim_hist.png>
+Package pdftex.def Info: /Users/Andy/Cruises_Research/ChiPod/Cham_Eq14_Compare/
+mfiles/Patches/figures/flx91_patches_jim_hist.png used on input line 182.
+(pdftex.def)             Requested size: 404.71254pt x 491.43666pt.
+
+</Users/Andy/Cruises_Research/ChiPod/Cham_Eq14_Compare/mfiles/Patches/figures/f
+lx91_patches_jim_hist_gam.png, id=178, 505.89pt x 307.3884pt>
+File: /Users/Andy/Cruises_Research/ChiPod/Cham_Eq14_Compare/mfiles/Patches/figu
+res/flx91_patches_jim_hist_gam.png Graphic file (type png)
+
+<use /Users/Andy/Cruises_Research/ChiPod/Cham_Eq14_Compare/mfiles/Patches/figur
+es/flx91_patches_jim_hist_gam.png>
+Package pdftex.def Info: /Users/Andy/Cruises_Research/ChiPod/Cham_Eq14_Compare/
+mfiles/Patches/figures/flx91_patches_jim_hist_gam.png used on input line 188.
+(pdftex.def)             Requested size: 404.71254pt x 245.91104pt.
+
+</Users/Andy/Cruises_Research/ChiPod/Cham_Eq14_Compare/mfiles/Patches/figures/f
+lx91_patches_Bill_hist.png, id=179, 505.89pt x 614.295pt>
+File: /Users/Andy/Cruises_Research/ChiPod/Cham_Eq14_Compare/mfiles/Patches/figu
+res/flx91_patches_Bill_hist.png Graphic file (type png)
+
+<use /Users/Andy/Cruises_Research/ChiPod/Cham_Eq14_Compare/mfiles/Patches/figur
+es/flx91_patches_Bill_hist.png>
+Package pdftex.def Info: /Users/Andy/Cruises_Research/ChiPod/Cham_Eq14_Compare/
+mfiles/Patches/figures/flx91_patches_Bill_hist.png used on input line 197.
+(pdftex.def)             Requested size: 404.71254pt x 491.43666pt.
+
+</Users/Andy/Cruises_Research/ChiPod/Cham_Eq14_Compare/mfiles/Patches/figures/f
+lx91_patches_Bill_hist_gam.png, id=180, 505.89pt x 307.3884pt>
+File: /Users/Andy/Cruises_Research/ChiPod/Cham_Eq14_Compare/mfiles/Patches/figu
+res/flx91_patches_Bill_hist_gam.png Graphic file (type png)
+
+<use /Users/Andy/Cruises_Research/ChiPod/Cham_Eq14_Compare/mfiles/Patches/figur
+es/flx91_patches_Bill_hist_gam.png>
+Package pdftex.def Info: /Users/Andy/Cruises_Research/ChiPod/Cham_Eq14_Compare/
+mfiles/Patches/figures/flx91_patches_Bill_hist_gam.png used on input line 203.
+(pdftex.def)             Requested size: 404.71254pt x 245.91104pt.
+
+</Users/Andy/Cruises_Research/ChiPod/Cham_Eq14_Compare/mfiles/Patches/figures/f
+lx91_hist_compare_bill_jim.png, id=181, 505.89pt x 614.295pt>
+File: /Users/Andy/Cruises_Research/ChiPod/Cham_Eq14_Compare/mfiles/Patches/figu
+res/flx91_hist_compare_bill_jim.png Graphic file (type png)
+
+<use /Users/Andy/Cruises_Research/ChiPod/Cham_Eq14_Compare/mfiles/Patches/figur
+es/flx91_hist_compare_bill_jim.png>
+Package pdftex.def Info: /Users/Andy/Cruises_Research/ChiPod/Cham_Eq14_Compare/
+mfiles/Patches/figures/flx91_hist_compare_bill_jim.png used on input line 214.
+(pdftex.def)             Requested size: 404.71254pt x 491.43666pt.
+
+</Users/Andy/Cruises_Research/ChiPod/Cham_Eq14_Compare/mfiles/Patches/figures/f
+lx91_gam_hist_compare_bill_jim.png, id=182, 562.2606pt x 421.575pt>
+File: /Users/Andy/Cruises_Research/ChiPod/Cham_Eq14_Compare/mfiles/Patches/figu
+res/flx91_gam_hist_compare_bill_jim.png Graphic file (type png)
+
+<use /Users/Andy/Cruises_Research/ChiPod/Cham_Eq14_Compare/mfiles/Patches/figur
+es/flx91_gam_hist_compare_bill_jim.png>
+Package pdftex.def Info: /Users/Andy/Cruises_Research/ChiPod/Cham_Eq14_Compare/
+mfiles/Patches/figures/flx91_gam_hist_compare_bill_jim.png used on input line 2
+22.
+(pdftex.def)             Requested size: 449.8091pt x 337.26045pt.
+
+Overfull \hbox (19.80447pt too wide) in paragraph at lines 222--223
+[][] 
+ []
+
+[16
+
+] [17 </Users/Andy/Cruises_Research/ChiPod/Cham_Eq14_Compare/mfiles/Patches/fig
+ures/flx91_patches_jim_hist.png (PNG copy)>] [18 </Users/Andy/Cruises_Research/
+ChiPod/Cham_Eq14_Compare/mfiles/Patches/figures/flx91_patches_jim_hist_gam.png 
+(PNG copy)>] [19 </Users/Andy/Cruises_Research/ChiPod/Cham_Eq14_Compare/mfiles/
+Patches/figures/flx91_patches_Bill_hist.png (PNG copy)>] [20 </Users/Andy/Cruis
+es_Research/ChiPod/Cham_Eq14_Compare/mfiles/Patches/figures/flx91_patches_Bill_
+hist_gam.png (PNG copy)>] [21 </Users/Andy/Cruises_Research/ChiPod/Cham_Eq14_Co
+mpare/mfiles/Patches/figures/flx91_hist_compare_bill_jim.png (PNG copy)>]
+[22 </Users/Andy/Cruises_Research/ChiPod/Cham_Eq14_Compare/mfiles/Patches/figur
+es/flx91_gam_hist_compare_bill_jim.png (PNG copy)>]
 Missing character: There is no Õ in font cmr10!
 
 </Users/Andy/Cruises_Research/ChiPod/Cham_Eq14_Compare/mfiles/Patches/figures/t
-iwe_comb_n2_dtdz_chi_eps.png, id=125, 505.89pt x 614.295pt>
+iwe_comb_n2_dtdz_chi_eps.png, id=219, 505.89pt x 614.295pt>
 File: /Users/Andy/Cruises_Research/ChiPod/Cham_Eq14_Compare/mfiles/Patches/figu
 res/tiwe_comb_n2_dtdz_chi_eps.png Graphic file (type png)
 
 <use /Users/Andy/Cruises_Research/ChiPod/Cham_Eq14_Compare/mfiles/Patches/figur
 es/tiwe_comb_n2_dtdz_chi_eps.png>
 Package pdftex.def Info: /Users/Andy/Cruises_Research/ChiPod/Cham_Eq14_Compare/
-mfiles/Patches/figures/tiwe_comb_n2_dtdz_chi_eps.png used on input line 139.
+mfiles/Patches/figures/tiwe_comb_n2_dtdz_chi_eps.png used on input line 244.
 (pdftex.def)             Requested size: 404.71254pt x 491.43666pt.
- [13
+ [23
 
-] [14 </Users/Andy/Cruises_Research/ChiPod/Cham_Eq14_Compare/mfiles/Patches/fig
+] [24 </Users/Andy/Cruises_Research/ChiPod/Cham_Eq14_Compare/mfiles/Patches/fig
 ures/tiwe_comb_n2_dtdz_chi_eps.png (PNG copy)>]
 </Users/Andy/Cruises_Research/ChiPod/Cham_Eq14_Compare/mfiles/Patches/figures/t
-iwe_eq14_hist_compare.png, id=138, 505.89pt x 614.295pt>
+iwe_eq14_hist_compare.png, id=231, 505.89pt x 614.295pt>
 File: /Users/Andy/Cruises_Research/ChiPod/Cham_Eq14_Compare/mfiles/Patches/figu
 res/tiwe_eq14_hist_compare.png Graphic file (type png)
 
 <use /Users/Andy/Cruises_Research/ChiPod/Cham_Eq14_Compare/mfiles/Patches/figur
 es/tiwe_eq14_hist_compare.png>
 Package pdftex.def Info: /Users/Andy/Cruises_Research/ChiPod/Cham_Eq14_Compare/
-mfiles/Patches/figures/tiwe_eq14_hist_compare.png used on input line 149.
+mfiles/Patches/figures/tiwe_eq14_hist_compare.png used on input line 254.
 (pdftex.def)             Requested size: 404.71254pt x 491.43666pt.
 
 </Users/Andy/Cruises_Research/ChiPod/Cham_Eq14_Compare/mfiles/Patches/figures/t
-iwe_eq14_hist_compare_fixdtdz.png, id=139, 505.89pt x 614.295pt>
+iwe_eq14_hist_compare_fixdtdz.png, id=232, 505.89pt x 614.295pt>
 File: /Users/Andy/Cruises_Research/ChiPod/Cham_Eq14_Compare/mfiles/Patches/figu
 res/tiwe_eq14_hist_compare_fixdtdz.png Graphic file (type png)
 
 <use /Users/Andy/Cruises_Research/ChiPod/Cham_Eq14_Compare/mfiles/Patches/figur
 es/tiwe_eq14_hist_compare_fixdtdz.png>
 Package pdftex.def Info: /Users/Andy/Cruises_Research/ChiPod/Cham_Eq14_Compare/
-mfiles/Patches/figures/tiwe_eq14_hist_compare_fixdtdz.png used on input line 15
-5.
+mfiles/Patches/figures/tiwe_eq14_hist_compare_fixdtdz.png used on input line 26
+0.
 (pdftex.def)             Requested size: 404.71254pt x 491.43666pt.
- [15
+ [25
 
-] [16 </Users/Andy/Cruises_Research/ChiPod/Cham_Eq14_Compare/mfiles/Patches/fig
-ures/tiwe_eq14_hist_compare.png (PNG copy)>] [17 </Users/Andy/Cruises_Research/
+] [26 </Users/Andy/Cruises_Research/ChiPod/Cham_Eq14_Compare/mfiles/Patches/fig
+ures/tiwe_eq14_hist_compare.png (PNG copy)>] [27 </Users/Andy/Cruises_Research/
 ChiPod/Cham_Eq14_Compare/mfiles/Patches/figures/tiwe_eq14_hist_compare_fixdtdz.
 png (PNG copy)>]
 </Users/Andy/Cruises_Research/ChiPod/Cham_Eq14_Compare/mfiles/Patches/figures/t
-iwe_eq14_gamma_compare.png, id=156, 505.89pt x 368.577pt>
+iwe_eq14_gamma_compare.png, id=249, 505.89pt x 368.577pt>
 File: /Users/Andy/Cruises_Research/ChiPod/Cham_Eq14_Compare/mfiles/Patches/figu
 res/tiwe_eq14_gamma_compare.png Graphic file (type png)
 
 <use /Users/Andy/Cruises_Research/ChiPod/Cham_Eq14_Compare/mfiles/Patches/figur
 es/tiwe_eq14_gamma_compare.png>
 Package pdftex.def Info: /Users/Andy/Cruises_Research/ChiPod/Cham_Eq14_Compare/
-mfiles/Patches/figures/tiwe_eq14_gamma_compare.png used on input line 167.
+mfiles/Patches/figures/tiwe_eq14_gamma_compare.png used on input line 272.
 (pdftex.def)             Requested size: 404.71254pt x 294.86198pt.
- [18
+ [28
 
  </Users/Andy/Cruises_Research/ChiPod/Cham_Eq14_Compare/mfiles/Patches/figures/
 tiwe_eq14_gamma_compare.png (PNG copy)>]
 </Users/Andy/Cruises_Research/ChiPod/Cham_Eq14_Compare/mfiles/Patches/figures/t
-iwe_patchsize_hist.png, id=162, 562.2606pt x 421.575pt>
+iwe_patchsize_hist.png, id=255, 562.2606pt x 421.575pt>
 File: /Users/Andy/Cruises_Research/ChiPod/Cham_Eq14_Compare/mfiles/Patches/figu
 res/tiwe_patchsize_hist.png Graphic file (type png)
 
 <use /Users/Andy/Cruises_Research/ChiPod/Cham_Eq14_Compare/mfiles/Patches/figur
 es/tiwe_patchsize_hist.png>
 Package pdftex.def Info: /Users/Andy/Cruises_Research/ChiPod/Cham_Eq14_Compare/
-mfiles/Patches/figures/tiwe_patchsize_hist.png used on input line 179.
+mfiles/Patches/figures/tiwe_patchsize_hist.png used on input line 284.
 (pdftex.def)             Requested size: 449.8091pt x 337.26045pt.
 
-Overfull \hbox (19.80447pt too wide) in paragraph at lines 179--180
+Overfull \hbox (19.80447pt too wide) in paragraph at lines 284--285
 [][] 
  []
 
 
 </Users/Andy/Cruises_Research/ChiPod/Cham_Eq14_Compare/mfiles/Patches/figures/t
-iwe_pcolor_wpatches.png, id=163, 562.2606pt x 421.575pt>
+iwe_pcolor_wpatches.png, id=256, 562.2606pt x 421.575pt>
 File: /Users/Andy/Cruises_Research/ChiPod/Cham_Eq14_Compare/mfiles/Patches/figu
 res/tiwe_pcolor_wpatches.png Graphic file (type png)
 
 <use /Users/Andy/Cruises_Research/ChiPod/Cham_Eq14_Compare/mfiles/Patches/figur
 es/tiwe_pcolor_wpatches.png>
 Package pdftex.def Info: /Users/Andy/Cruises_Research/ChiPod/Cham_Eq14_Compare/
-mfiles/Patches/figures/tiwe_pcolor_wpatches.png used on input line 186.
+mfiles/Patches/figures/tiwe_pcolor_wpatches.png used on input line 291.
 (pdftex.def)             Requested size: 449.8091pt x 337.26045pt.
 
-Overfull \hbox (19.80447pt too wide) in paragraph at lines 186--187
+Overfull \hbox (19.80447pt too wide) in paragraph at lines 291--292
 [][] 
  []
 
-[19
+[29
 
  </Users/Andy/Cruises_Research/ChiPod/Cham_Eq14_Compare/mfiles/Patches/figures/
-tiwe_patchsize_hist.png (PNG copy)>] [20 </Users/Andy/Cruises_Research/ChiPod/C
+tiwe_patchsize_hist.png (PNG copy)>] [30 </Users/Andy/Cruises_Research/ChiPod/C
 ham_Eq14_Compare/mfiles/Patches/figures/tiwe_pcolor_wpatches.png (PNG copy)>]
 </Users/Andy/Cruises_Research/ChiPod/Cham_Eq14_Compare/mfiles/Patches/figures/t
-iwe_patchsize_mid_hist.png, id=175, 562.2606pt x 421.575pt>
+iwe_patchsize_mid_hist.png, id=267, 562.2606pt x 421.575pt>
 File: /Users/Andy/Cruises_Research/ChiPod/Cham_Eq14_Compare/mfiles/Patches/figu
 res/tiwe_patchsize_mid_hist.png Graphic file (type png)
 
 <use /Users/Andy/Cruises_Research/ChiPod/Cham_Eq14_Compare/mfiles/Patches/figur
 es/tiwe_patchsize_mid_hist.png>
 Package pdftex.def Info: /Users/Andy/Cruises_Research/ChiPod/Cham_Eq14_Compare/
-mfiles/Patches/figures/tiwe_patchsize_mid_hist.png used on input line 197.
+mfiles/Patches/figures/tiwe_patchsize_mid_hist.png used on input line 302.
 (pdftex.def)             Requested size: 449.8091pt x 337.26045pt.
 
-Overfull \hbox (19.80447pt too wide) in paragraph at lines 197--198
+Overfull \hbox (19.80447pt too wide) in paragraph at lines 302--303
 [][] 
  []
 
 
 </Users/Andy/Cruises_Research/ChiPod/Cham_Eq14_Compare/mfiles/Patches/figures/t
-iwe_pcolor_wpatches_mid.png, id=176, 562.2606pt x 421.575pt>
+iwe_pcolor_wpatches_mid.png, id=268, 562.2606pt x 421.575pt>
 File: /Users/Andy/Cruises_Research/ChiPod/Cham_Eq14_Compare/mfiles/Patches/figu
 res/tiwe_pcolor_wpatches_mid.png Graphic file (type png)
 
 <use /Users/Andy/Cruises_Research/ChiPod/Cham_Eq14_Compare/mfiles/Patches/figur
 es/tiwe_pcolor_wpatches_mid.png>
 Package pdftex.def Info: /Users/Andy/Cruises_Research/ChiPod/Cham_Eq14_Compare/
-mfiles/Patches/figures/tiwe_pcolor_wpatches_mid.png used on input line 204.
+mfiles/Patches/figures/tiwe_pcolor_wpatches_mid.png used on input line 309.
 (pdftex.def)             Requested size: 449.8091pt x 337.26045pt.
 
-Overfull \hbox (19.80447pt too wide) in paragraph at lines 204--205
+Overfull \hbox (19.80447pt too wide) in paragraph at lines 309--310
 [][] 
  []
 
-Package atveryend Info: Empty hook `BeforeClearDocument' on input line 215.
-[21
+[31
 
  </Users/Andy/Cruises_Research/ChiPod/Cham_Eq14_Compare/mfiles/Patches/figures/
-tiwe_patchsize_mid_hist.png (PNG copy)>] [22 </Users/Andy/Cruises_Research/ChiP
+tiwe_patchsize_mid_hist.png (PNG copy)>] [32 </Users/Andy/Cruises_Research/ChiP
 od/Cham_Eq14_Compare/mfiles/Patches/figures/tiwe_pcolor_wpatches_mid.png (PNG c
 opy)>]
-Package atveryend Info: Empty hook `AfterLastShipout' on input line 215.
- (./GammaByPatches.aux)
-Package atveryend Info: Executing hook `AtVeryEndDocument' on input line 215.
-Package atveryend Info: Executing hook `AtEndAfterFileList' on input line 215.
+</Users/Andy/Cruises_Research/ChiPod/Cham_Eq14_Compare/mfiles/Patches/figures/t
+iwe_gam_billvsAP.png, id=280, 505.89pt x 307.3884pt>
+File: /Users/Andy/Cruises_Research/ChiPod/Cham_Eq14_Compare/mfiles/Patches/figu
+res/tiwe_gam_billvsAP.png Graphic file (type png)
 
+<use /Users/Andy/Cruises_Research/ChiPod/Cham_Eq14_Compare/mfiles/Patches/figur
+es/tiwe_gam_billvsAP.png>
+Package pdftex.def Info: /Users/Andy/Cruises_Research/ChiPod/Cham_Eq14_Compare/
+mfiles/Patches/figures/tiwe_gam_billvsAP.png used on input line 321.
+(pdftex.def)             Requested size: 404.71254pt x 245.91104pt.
+ [33
 
-Package rerunfilecheck Warning: File `GammaByPatches.out' has changed.
-(rerunfilecheck)                Rerun to get outlines right
-(rerunfilecheck)                or use package `bookmark'.
+ </Users/Andy/Cruises_Research/ChiPod/Cham_Eq14_Compare/mfiles/Patches/figures/
+tiwe_gam_billvsAP.png (PNG copy)>]
+Package atveryend Info: Empty hook `BeforeClearDocument' on input line 337.
+ [34
 
-Package rerunfilecheck Info: Checksums for `GammaByPatches.out':
-(rerunfilecheck)             Before: DBB1F48F92263B3931B330D12879D02C;380
-(rerunfilecheck)             After:  115FFE028F07B88A063B3DAC46F07D3B;445.
+]
+Package atveryend Info: Empty hook `AfterLastShipout' on input line 337.
+
+(./GammaByPatches.aux)
+Package atveryend Info: Executing hook `AtVeryEndDocument' on input line 337.
+Package atveryend Info: Executing hook `AtEndAfterFileList' on input line 337.
+Package rerunfilecheck Info: File `GammaByPatches.out' has not changed.
+(rerunfilecheck)             Checksum: 73EB473BF181F4F12C01D303765AD5FA;797.
+
 
 LaTeX Warning: There were multiply-defined labels.
 
-Package atveryend Info: Empty hook `AtVeryVeryEnd' on input line 215.
+Package atveryend Info: Empty hook `AtVeryVeryEnd' on input line 337.
  ) 
 Here is how much of TeX's memory you used:
- 6564 strings out of 493315
- 101454 string characters out of 6137904
- 184196 words of memory out of 5000000
- 9869 multiletter control sequences out of 15000+600000
+ 6643 strings out of 493315
+ 105705 string characters out of 6137904
+ 185237 words of memory out of 5000000
+ 9912 multiletter control sequences out of 15000+600000
  11520 words of font info for 44 fonts, out of 8000000 for 9000
  957 hyphenation exceptions out of 8191
  42i,6n,28p,439b,330s stack positions out of 5000i,500n,10000p,200000b,80000s
@@ -697,10 +858,10 @@ sr/local/texlive/2013/texmf-dist/fonts/type1/public/amsfonts/cm/cmr12.pfb></usr
 ocal/texlive/2013/texmf-dist/fonts/type1/public/amsfonts/cm/cmr8.pfb></usr/loca
 l/texlive/2013/texmf-dist/fonts/type1/public/amsfonts/cm/cmsy10.pfb></usr/local
 /texlive/2013/texmf-dist/fonts/type1/public/amsfonts/cm/cmtt10.pfb>
-Output written on GammaByPatches.pdf (22 pages, 4000892 bytes).
+Output written on GammaByPatches.pdf (34 pages, 4357964 bytes).
 PDF statistics:
- 232 PDF objects out of 1000 (max. 8388607)
- 181 compressed objects within 2 object streams
- 49 named destinations out of 1000 (max. 500000)
- 137 words of extra memory for PDF output out of 10000 (max. 10000000)
+ 340 PDF objects out of 1000 (max. 8388607)
+ 267 compressed objects within 3 object streams
+ 76 named destinations out of 1000 (max. 500000)
+ 238 words of extra memory for PDF output out of 10000 (max. 10000000)
 

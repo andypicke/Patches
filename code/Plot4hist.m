@@ -23,18 +23,21 @@ h1=histogram(real(log10(n2(:))),'edgecolor','none','Normalization',Nm);
 xlabel('log_{10}N^2')
 grid on
 freqline(nanmedian(h1.Data),'b')
+ylabel(Nm)
 
 subplot(222)
 h1=histogram(real(log10(dtdz(:))),'edgecolor','none','Normalization',Nm);
 xlabel('log_{10}dT/dz')
 grid on
 freqline(nanmedian(h1.Data),'b')
+ylabel(Nm)
 
 subplot(223)
 h1=histogram(log10(chi(:)),'edgecolor','none','Normalization',Nm);
 xlabel('log_{10}\chi')
 grid on
 freqline(nanmedian(h1.Data),'b')
+ylabel(Nm)
 
 subplot(224)
 h1=histogram(log10(eps(:)),'edgecolor','none','Normalization',Nm);
@@ -42,5 +45,6 @@ hold on
 xlabel('log_{10}\epsilon')
 freqline(nanmedian(h1.Data),'b')
 grid on
+ylabel(Nm)
 
 %%

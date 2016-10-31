@@ -2,7 +2,13 @@
 \contentsline {section}{\numberline {2} Looking at stratification etc.}{3}{section.2}
 \contentsline {section}{\numberline {3}Identifying Patches}{6}{section.3}
 \contentsline {section}{\numberline {4}Computing gamma by patch}{10}{section.4}
-\contentsline {section}{\numberline {5}TIWE Comparisons}{13}{section.5}
-\contentsline {subsection}{\numberline {5.1}Gamma}{18}{subsection.5.1}
-\contentsline {subsection}{\numberline {5.2}Patches}{19}{subsection.5.2}
-\contentsline {subsection}{\numberline {5.3}Gamma in patches}{21}{subsection.5.3}
+\contentsline {section}{\numberline {5}TIWE Patches from Bill}{13}{section.5}
+\contentsline {section}{\numberline {6}FLX91 Patches}{16}{section.6}
+\contentsline {subsection}{\numberline {6.1}Jim}{16}{subsection.6.1}
+\contentsline {subsection}{\numberline {6.2}Bill}{16}{subsection.6.2}
+\contentsline {subsection}{\numberline {6.3}Comparison}{16}{subsection.6.3}
+\contentsline {section}{\numberline {7}TIWE Comparisons}{23}{section.7}
+\contentsline {subsection}{\numberline {7.1}Gamma}{28}{subsection.7.1}
+\contentsline {subsection}{\numberline {7.2}Patches}{29}{subsection.7.2}
+\contentsline {subsection}{\numberline {7.3}Gamma in patches}{33}{subsection.7.3}
+\contentsline {section}{\numberline {8}Identifying Patches from raw chameleon data}{34}{section.8}

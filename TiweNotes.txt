@@ -22,3 +22,5 @@ Identify patches in tiwe:
 
 
 gamma in patches only
+
+** compare Jim’s patches to Bill’s patches **

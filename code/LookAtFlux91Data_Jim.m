@@ -23,12 +23,27 @@ dtdz=flx91.dtdz;
 chi=flx91.chi;
 eps=flx91.eps;
 
-
 gam =  n2 .* chi ./2 ./ eps ./ (dtdz.^2);
 
-figure(1);clf
+%%
+
+h=Plot4hist(n2,dtdz,chi,eps)
+
+figdir='/Users/Andy/Cruises_Research/ChiPod/Cham_Eq14_Compare/mfiles/Patches/figures'
+print( fullfile( figdir,'flx91_patches_jim_hist'), '-dpng')
+
+%%
+
+figure(2);clf
+agutwocolumn(0.5)
+wysiwyg
+
 histogram(gam(:),30)
 freqline(nanmedian(gam))
 title(['median=' num2str(roundx(nanmedian(gam),2))])
+grid on
+
+figdir='/Users/Andy/Cruises_Research/ChiPod/Cham_Eq14_Compare/mfiles/Patches/figures'
+print( fullfile( figdir,'flx91_patches_jim_hist_gam'), '-dpng')
 
 %%

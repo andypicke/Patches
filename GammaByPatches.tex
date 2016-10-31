@@ -29,7 +29,10 @@
 \newpage
 
 
-%~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+
+%~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+%~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 \section{Intro}
 
 * These notes follow code \verb+Compute_gamma_by_patches.m+
@@ -49,8 +52,11 @@ Figure \ref{gam_cham} shows the distribution of estimated gammas using all the c
 \end{figure}
 
 
+
+
 \clearpage
-%~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+%~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+%~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 \section{ Looking at stratification etc.}
 
 Looking in more detail at relationships between straitifcation, $\chi$, and $\Gamma$ as suggested by Emily. See \verb+MakeEmilysPlot.m+. Figure \ref{2x2hist} shows 2-D histograms of gamma vs each variable. Figure \ref{gambychin2} shows the mean and median values of gamma for bins of chi vs N2.
@@ -70,8 +76,12 @@ Looking in more detail at relationships between straitifcation, $\chi$, and $\Ga
 \end{figure}
 
 
+
+
+
 \clearpage
-%~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+%~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+%~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 \section{Identifying Patches}
 
 I first identify patches (overturns) using potnential density computed from 1m binned temperature and salinity from Chameleon profiles. This is dones w/ \verb+IdentifyPatches.m+.
@@ -104,7 +114,8 @@ I first identify patches (overturns) using potnential density computed from 1m b
 
 
 \clearpage
-%~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+%~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+%~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 \section{Computing gamma by patch}
 
 The next step is to compute $\Gamma$ over each patch. I will use $N^2$ and $dT/dz$ averaged over the patch (since most patches are very small, this probably won't differ too much?). For $\chi$ and $\epsilon$, I should compute these from spectra over the entire patch. This will involve hacking into the chameleon processing codes a bit... Before I do this, I will try just using the 1m binned values within each patch.
@@ -125,8 +136,102 @@ So far this doesn't seem to be giving me anything close to $\Gamma=0.2$ (figure 
 
 
 
+
 \clearpage
-%~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+%~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+%~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+\section{TIWE Patches from Bill}
+
+See \verb+LookAt_TIWE_Data_Bill.m+. Bill sent data from TIWE patches (patches computed by Doug Caldwell?), I saved them in \verb+/ChiPod/TIWE/events_TIWE.mat/+.
+
+\begin{figure}[htbp]
+\includegraphics[scale=0.8]{tiwe_patches_bill_hist.png}
+\caption{Histograms of data from Bill's tiwe patches.}
+\label{}
+\end{figure}
+
+\begin{figure}[htbp]
+\includegraphics[scale=0.8]{tiwe_patches_bill_hist_gam.png}
+\caption{Histograms of gamma computed w/ data from Bill's tiwe patches.}
+\label{}
+\end{figure}
+
+
+
+\clearpage
+%~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+%~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+\section{FLX91 Patches}
+
+Jim and Bill both sent their patch data from flx91 also. I saved these as \newline \verb+ChiPod/Flux91/flx91_patch_out_nov94.mat+ and  \newline \verb+ChiPod/Flux91/events_FLX91.mat+. \newline
+
+See \verb+LookAtFlux91Data_Jim.m+, \verb+LookAtFlux91Data_Bill.m+, \verb+Compare_tiwe_patches_jim_bill.m+. \newline
+
+Summary:
+\begin{itemize}
+\item Distributions of n2, dtdz, chi, eps look a little different. Jim's data seem to contain larger values of all variables.
+\item But distributions of gamma look similar. Both have medians around 0.3 .
+\item The data is very old and codes used to compute patches not available, so it is difficult for me to reproduce the analysis or apply my own analysis to the raw data and compare.
+\end{itemize}
+
+
+%~~~~~~~~~~
+\subsection{Jim}
+
+\begin{figure}[htbp]
+\includegraphics[scale=0.8]{flx91_patches_jim_hist.png}
+\caption{Histograms of data from Jim's flx91 patches. Vertical lines show median.}
+\label{}
+\end{figure}
+
+\begin{figure}[htbp]
+\includegraphics[scale=0.8]{flx91_patches_jim_hist_gam.png}
+\caption{Histograms of gamma computed w/ data from Jim's flx91 patches.}
+\label{}
+\end{figure}
+
+%~~~~~~~~~~
+\subsection{Bill}
+
+\begin{figure}[htbp]
+\includegraphics[scale=0.8]{flx91_patches_Bill_hist.png}
+\caption{Histograms of data from Bill's flx91 patches. Vertical lines show median.}
+\label{}
+\end{figure}
+
+\begin{figure}[htbp]
+\includegraphics[scale=0.8]{flx91_patches_Bill_hist_gam.png}
+\caption{Histograms of gamma computed w/ data from Bill's flx91 patches.}
+\label{}
+\end{figure}
+
+
+%~~~~~~~~~~
+\subsection{Comparison}
+
+
+\begin{figure}[htbp]
+\includegraphics[scale=0.8]{flx91_hist_compare_bill_jim.png}
+\caption{Histograms computed w/ data from Bill and Jim's flx91 patches.}
+\label{}
+\end{figure}
+
+
+
+\begin{figure}[htbp]
+\includegraphics[scale=0.8]{flx91_gam_hist_compare_bill_jim.png}
+\caption{Histograms of gamma computed w/ data from Bill and Jim's flx91 patches.}
+\label{}
+\end{figure}
+
+
+
+
+
+
+\clearpage
+%~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+%~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 \section{TIWE Comparisons}
 
 Jonathan shared the entire TIWE folder (from Ganges I think?) with me on Dropbox. There are a lot of different folders/versions. 
@@ -165,7 +270,7 @@ What does gamma look like for the tiwe data? Figure \ref{tiwe_eq14_gamma_hist}. 
 
 \begin{figure}[htbp]
 \includegraphics[scale=0.8]{tiwe_eq14_gamma_compare.png}
-\caption{Histograms of gamma computed fromcombined TIWE data and EQ14 data.}
+\caption{Histograms of gamma computed from combined TIWE data and EQ14 data (all data, not just patches).}
 \label{tiwe_eq14_gamma_hist}
 \end{figure}
 
@@ -206,10 +311,36 @@ Most of the really big patches are down below 150m where dtDz is weird. I'll exc
 \label{}
 \end{figure}
 
+\clearpage
 
 \subsection{Gamma in patches}
 
 Ok, first what does gamma look like if just use data within or near these patches?
+
+\begin{figure}[htbp]
+\includegraphics[scale=0.8]{tiwe_gam_billvsAP.png}
+\caption{Gamma computed from tiwe patch data. My patches are from the 1m-binned profile data.}
+\label{}
+\end{figure}
+
+
+
+
+\clearpage
+%~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+\section{Identifying Patches from raw chameleon data}
+
+I tried computing patches and gamma from the 1m averaged profiles, and still got a different gamma from Bill for tiwe. So next i'll try computing patches from the raw profiles instead of the averaged data. Eventually I should also compute n2,dtdz,chi, and eps from the raw data over each patch; before now i've just grabbed the 1m average data points within each patch.
+
+
+First i'll experiment computing patches from the raw eq14 profiles and see how different they are from the patches I already computed with the 1m avg data.
+
+See \verb+FindPatches_EQ14_Raw.m+.
+
+
+
+
+
 
 
 \end{document}  

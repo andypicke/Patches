@@ -20,7 +20,6 @@ addpath /Users/Andy/Cruises_Research/GenMatlabFunctions/
 
 load('/Users/Andy/Cruises_Research/ChiPod/TIWE/events_TIWE.mat')
 
-
 % get variables
 n2=A.N2;
 dtdz=A.tgrad;
@@ -30,45 +29,57 @@ eps=A.eps;
 % compute gamma from this data
 gam =  n2 .* chi ./2 ./ eps ./ (dtdz.^2);
 
-
-% plot distrbutions of variables
+%% plot distrbutions of variables
 figure(1);clf
 agutwocolumn(1)
 wysiwyg
 
 subplot(221)
 histogram(log10(n2(:)))
-xlabel('log_{10}N^2')
+xlabel('log_{10}N^2','fontsize',16)
+ylabel('count','fontsize',16)
 grid on
 
 subplot(222)
 histogram(real(log10(dtdz(:))))
-xlabel('log_{10}dT/dz')
+xlabel('log_{10}dT/dz','fontsize',16)
+ylabel('count','fontsize',16)
 grid on
 
 subplot(223)
 histogram(log10(chi(:)))
-xlabel('log_{10}\chi')
+xlabel('log_{10}\chi','fontsize',16)
+ylabel('count','fontsize',16)
 grid on
 
 subplot(224)
 histogram(log10(eps(:)))
-xlabel('log_{10}\epsilon')
+xlabel('log_{10}\epsilon','fontsize',16)
+ylabel('count','fontsize',16)
 grid on
 
+figdir='/Users/Andy/Cruises_Research/ChiPod/Cham_Eq14_Compare/mfiles/Patches/figures'
+print( fullfile( figdir,'tiwe_patches_bill_hist'), '-dpng')
 
+%% Plot histogram of gamma computed from these values
 
-% Plot histogram of gamma computed from these values
+ig=find(gam<10);
 
 figure(1);clf
-histogram(gam(:),30);
+agutwocolumn(0.5)
+wysiwyg
+
+histogram(gam(ig),30);
 freqline(nanmedian(gam));
 title(['median=' num2str(roundx(nanmedian(gam),2))])
 xlabel('\Gamma')
+grid on
+
+figdir='/Users/Andy/Cruises_Research/ChiPod/Cham_Eq14_Compare/mfiles/Patches/figures'
+print( fullfile( figdir,'tiwe_patches_bill_hist_gam'), '-dpng')
 
 
-
-% Scatter Plot of gamma vs each variable
+%% Scatter Plot of gamma vs each variable
 figure(1);clf
 agutwocolumn(1)
 wysiwyg
