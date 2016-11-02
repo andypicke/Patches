@@ -18,6 +18,8 @@
 %
 %-----------------
 % 10/27/16 - A.Pickering - andypicke@gmail.com
+% 11/01/16 - AP - Use specific cast #s so we can match up with other data
+% later more easily
 %~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 %%
 
@@ -29,27 +31,31 @@ addpath(fullfile(mixpath,'seawater'))
 
 % Make a list of all the chameleon casts we have (made w/ ProcessEq14Cham_AP.m)
 datdir='/Users/Andy/Cruises_Research/ChiPod/Cham_Eq14_Compare/Data/Cham_proc_AP/cal'
-Flist=dir(fullfile(datdir,'*EQ14*.mat'))
+%Flist=dir(fullfile(datdir,'*EQ14*.mat'))
 
 % options
 save_data=1
-patch_size_min=0.15   % min patch size
-join_patches=0     % join nearby patches
+patch_size_min=1  % min patch size
+join_patches=1     % join nearby patches
 patch_sep_min=0.15 %
 
 patch_data=[];
 % loop through each cast
 warning off
 hb=waitbar(0,'working on profiles');
-for icast=1:length(Flist)
-    waitbar(icast/length(Flist),hb)
+for cnum=1:3100%length(Flist)
+    waitbar(cnum/3100,hb)
+    
+    try
+        
 %    disp(icast)
     close all
     clear cal head
-    clear tpspec kspec kkspec fspec kks ks
-    
+    clear tpspec kspec kkspec fspec kks ks    
+   
     % Load the data for this cast
-    load(fullfile(datdir,Flist(icast).name))
+    %load(fullfile(datdir,Flist(icast).name))
+    load(fullfile(datdir,['eq14_' sprintf('%04d',cnum) '.mat']))
     
     clear cal
     cal=cal2;
@@ -74,13 +80,15 @@ for icast=1:length(Flist)
     for i=1:length(pstarts)
         
         if ( pstops(i) - pstarts(i) ) > patch_size_min % reject patches thinner than 15cm
-            patch_data=[patch_data ; icast pstarts(i) pstops(i)  ( pstops(i) - pstarts(i) ) ];
+            patch_data=[patch_data ; cnum pstarts(i) pstops(i)  ( pstops(i) - pstarts(i) ) ];
         else
         end
         
     end
+   
+    end % try
     
-end
+end % cnum
 
 delete(hb)
 warning on
@@ -114,7 +122,6 @@ if join_patches==1
             % add patch size column
             patch_small=[patch_small patch_small(:,3)-patch_small(:,2)];
             
-            %
             new_patch_data=[new_patch_data ; patch_small];
         else
             new_patch_data=[new_patch_data ; patch_data(ig,:)];
@@ -132,7 +139,9 @@ savedir='/Users/Andy/Cruises_Research/ChiPod/Cham_Eq14_Compare/mfiles/Patches/'
 fname=['EQ14_raw_patches_minOT_' num2str(patch_size_min) '_join_' num2str(join_patches) '_sep_' num2str(100*patch_sep_min) '.mat']
 save( fullfile( savedir,fname), 'new_patch_data')
 end
+
 %%
+
 
 figure(1);clf
 h1=histogram(new_patch_data(:,4));
@@ -140,6 +149,60 @@ freqline(nanmedian(h1.Data))
 xlim([0 20])
 grid on
 xlabel('patch size')
+
+%% Compare different params
+
+clear ; close all
+
+patch_size_min=1  % min patch size
+join_patches=0     % join nearby patches
+patch_sep_min=0.15 %
+savedir='/Users/Andy/Cruises_Research/ChiPod/Cham_Eq14_Compare/mfiles/Patches/'
+fname=['EQ14_raw_patches_minOT_' num2str(patch_size_min) '_join_' num2str(join_patches) '_sep_' num2str(100*patch_sep_min) '.mat']
+load(fullfile(savedir,fname))
+
+patch1=new_patch_data; clear new_patch_data
+
+patch_size_min=1  % min patch size
+join_patches=1     % join nearby patches
+patch_sep_min=0.15 %
+fname=['EQ14_raw_patches_minOT_' num2str(patch_size_min) '_join_' num2str(join_patches) '_sep_' num2str(100*patch_sep_min) '.mat']
+load(fullfile(savedir,fname))
+patch2=new_patch_data; clear new_patch_data
+
+%%
+
+figure(1);clf
+h1=histogram(patch1(:,4),'Normalization','pdf');
+hold on
+histogram(patch2(:,4),h1.BinEdges,'Normalization','pdf')
+xlim([0 25])
+grid on
+
+%% Compare to overturns from 1m avg data
+
+clear ; close all
+
+patch_size_min=1  % min patch size
+join_patches=0     % join nearby patches
+patch_sep_min=0.15 %
+savedir='/Users/Andy/Cruises_Research/ChiPod/Cham_Eq14_Compare/mfiles/Patches/'
+fname=['EQ14_raw_patches_minOT_' num2str(patch_size_min) '_join_' num2str(join_patches) '_sep_' num2str(100*patch_sep_min) '.mat']
+load(fullfile(savedir,fname))
+
+patch1=new_patch_data; clear new_patch_data
+
+load('/Users/Andy/Cruises_Research/ChiPod/Cham_Eq14_Compare/mfiles/Patches/eq14_1m_patches.mat')
+patch2=patches_all;clear patches_60_180 patches_all
+
+figure(1);clf
+h1=histogram(patch1(:,4),'Normalization','pdf');
+hold on
+h2=histogram(patch2(:,4),h1.BinEdges,'Normalization','pdf');
+xlim([0 25])
+freqline(nanmedian(h1.Data),'b')
+freqline(nanmedian(h2.Data),'r')
+grid on
 
 %%
 
