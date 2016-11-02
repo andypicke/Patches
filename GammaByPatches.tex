@@ -337,6 +337,13 @@ First i'll experiment computing patches from the raw eq14 profiles and see how d
 
 See \verb+FindPatches_EQ14_Raw.m+.
 
+My approach to doing this:
+\begin{itemize}
+\item Find patches \verb+FindPatches_EQ14_Raw.m+ ; this gives us the start and stop pressures for each patch in each profile
+\item Next I want to compute N2,dT/dz,chi,eps over just these patches, instead of the usual evenly-spaced 1m bins (this is done in \verb+average_data_gen1.m+, which is called by a script like \verb+run_eq14.m+).
+\item I am making a modifed version of \verb+average_data_gen1.m+ that takes the start/stop pressure of each bin as input instead of just making evenly spaced bins. My version is called \verb+average_data_PATCH_AP.m+
+\item So I will run a modified version of \verb+run_eq14.m+ that loads the raw data, then calls \verb+average_data_PATCH_AP.m+, which will return an `avg' structure with data computed for each patch.
+\end{itemize}
 
 
 
