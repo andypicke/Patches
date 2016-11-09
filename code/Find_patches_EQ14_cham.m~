@@ -61,9 +61,7 @@ clear ; close all
 
 dat_sum=[];
 
-patch_size_min=1
-
-% 
+% load an EQ14 chameleon profile
 dir_base='/Users/Andy/Cruises_Research/ChiPod/Cham_Eq14_Compare/Data/chameleon/processed/Cstar=0_032/mat/';
 
 plots=0

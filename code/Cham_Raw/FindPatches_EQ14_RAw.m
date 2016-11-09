@@ -29,63 +29,76 @@ clear ; close all
 mixpath='/Users/Andy/Cruises_Research/mixingsoftware/'
 addpath(fullfile(mixpath,'seawater'))
 
-% Make a list of all the chameleon casts we have (made w/ ProcessEq14Cham_AP.m)
-datdir='/Users/Andy/Cruises_Research/ChiPod/Cham_Eq14_Compare/Data/Cham_proc_AP/cal'
-%Flist=dir(fullfile(datdir,'*EQ14*.mat'))
+% for IdentifyPatches.m
+addpath /Users/Andy/Cruises_Research/ChiPod/Cham_Eq14_Compare/mfiles/Patches/code/
 
-% options
+datdir='/Users/Andy/Cruises_Research/ChiPod/Cham_Eq14_Compare/Data/Cham_proc_AP/cal'
+
+% patch options
 save_data=1
-patch_size_min=1  % min patch size
-join_patches=1     % join nearby patches
-patch_sep_min=0.15 %
+patch_size_min=0.5  % min patch size
+join_patches=0    % join nearby patches
+patch_sep_min=0.5 %
 
 patch_data=[];
 % loop through each cast
 warning off
 hb=waitbar(0,'working on profiles');
-for cnum=1:3100%length(Flist)
+
+for cnum=4:3100%length(Flist)
+    
     waitbar(cnum/3100,hb)
     
     try
         
-%    disp(icast)
-    close all
-    clear cal head
-    clear tpspec kspec kkspec fspec kks ks    
-   
-    % Load the data for this cast
-    %load(fullfile(datdir,Flist(icast).name))
-    load(fullfile(datdir,['eq14_' sprintf('%04d',cnum) '.mat']))
-    
-    clear cal
-    cal=cal2;
-    
-    clear s t p lat
-    s=cal.SAL;
-    t=cal.T1;
-    p=cal.P;
-    
-    clear idot lat1 lat2
-    idot=strfind(head.lat.start,'.');
-    lat1=str2num(head.lat.start(1:idot-3));
-    lat2=str2num(head.lat.start(idot-2:end))/60;
-    lat=nanmean([lat1 lat2]);
-    
-    % find overturns
-    clear pstarts pstops
-    [pstarts pstops]=IdentifyPatches(s,t,p,lat);
-    
-    % should also join patches separated by less than 15cm?
-    
-    for i=1:length(pstarts)
+        close all
+        clear cal head
+        clear tpspec kspec kkspec fspec kks ks
         
-        if ( pstops(i) - pstarts(i) ) > patch_size_min % reject patches thinner than 15cm
-            patch_data=[patch_data ; cnum pstarts(i) pstops(i)  ( pstops(i) - pstarts(i) ) ];
-        else
+        % Load the data for this cast
+        load(fullfile(datdir,['eq14_' sprintf('%04d',cnum) '.mat']))
+        
+        clear cal
+        cal=cal2;
+        
+        clear s t p lat
+        s=cal.SAL(1:end-1); % (end-1) b/c last 2 values are same;
+        t=cal.T1(1:end-1);
+        p=cal.P(1:end-1);
+        
+        clear idot lat1 lat2
+        idot=strfind(head.lat.start,'.');
+        lat1=str2num(head.lat.start(1:idot-3));
+        lat2=str2num(head.lat.start(idot-2:end))/60;
+        lat=nanmean([lat1 lat2]);
+        
+        % find overturns
+        %        clear pstarts pstops
+        %       [pstarts pstops]=IdentifyPatches(s,t,p,lat);
+        
+        Params.lat=lat;
+        Params.plotit=0;
+        Params.sigma=1e-4;
+        Params.runlmin=0;
+        Params.minotsize=patch_size_min;
+        Params.usetemp=1;
+        addpath /Users/Andy/Standard-Mixing-Routines/ThorpeScales/
+        clear OT
+        OT=compute_overturns_discrete_AP(p,t,s,Params);
+        
+        pstarts=OT.pstarts_each;
+        pstops=OT.pstops_each;
+        
+        
+        for i=1:length(pstarts)
+            
+            if ( pstops(i) - pstarts(i) ) > patch_size_min % reject patches thinner than 15cm
+                patch_data=[patch_data ; cnum pstarts(i) pstops(i)  ( pstops(i) - pstarts(i) ) ];
+            else
+            end
+            
         end
         
-    end
-   
     end % try
     
 end % cnum
@@ -128,16 +141,16 @@ if join_patches==1
         end % have more than 1 patch
         
     end %ip (which profile
- 
+    
 else % don't join patches
     new_patch_data=patch_data;
 end % if join_patches==1
 
 % save data
 if save_data==1
-savedir='/Users/Andy/Cruises_Research/ChiPod/Cham_Eq14_Compare/mfiles/Patches/'
-fname=['EQ14_raw_patches_minOT_' num2str(patch_size_min) '_join_' num2str(join_patches) '_sep_' num2str(100*patch_sep_min) '.mat']
-save( fullfile( savedir,fname), 'new_patch_data')
+    savedir='/Users/Andy/Cruises_Research/ChiPod/Cham_Eq14_Compare/mfiles/Patches/'
+    fname=['EQ14_raw_patches_minOT_' num2str(patch_size_min) '_join_' num2str(join_patches) '_sep_' num2str(100*patch_sep_min) '.mat']
+    save( fullfile( savedir,fname), 'new_patch_data')
 end
 
 %%
@@ -150,22 +163,28 @@ xlim([0 20])
 grid on
 xlabel('patch size')
 
+
+%% Examine for a single profile (plot w/ t,sgth)
+
+ipr=100
+
+
 %% Compare different params
 
 clear ; close all
 
-patch_size_min=1  % min patch size
-join_patches=0     % join nearby patches
-patch_sep_min=0.15 %
+patch_size_min=0.5  % min patch size
+join_patches=1     % join nearby patches
+patch_sep_min=0.5 %
 savedir='/Users/Andy/Cruises_Research/ChiPod/Cham_Eq14_Compare/mfiles/Patches/'
 fname=['EQ14_raw_patches_minOT_' num2str(patch_size_min) '_join_' num2str(join_patches) '_sep_' num2str(100*patch_sep_min) '.mat']
 load(fullfile(savedir,fname))
 
 patch1=new_patch_data; clear new_patch_data
 
-patch_size_min=1  % min patch size
-join_patches=1     % join nearby patches
-patch_sep_min=0.15 %
+patch_size_min=0.15  % min patch size
+join_patches=0  % join nearby patches
+patch_sep_min=0.5 %
 fname=['EQ14_raw_patches_minOT_' num2str(patch_size_min) '_join_' num2str(join_patches) '_sep_' num2str(100*patch_sep_min) '.mat']
 load(fullfile(savedir,fname))
 patch2=new_patch_data; clear new_patch_data
@@ -185,7 +204,7 @@ clear ; close all
 
 patch_size_min=1  % min patch size
 join_patches=0     % join nearby patches
-patch_sep_min=0.15 %
+patch_sep_min=0.5 %
 savedir='/Users/Andy/Cruises_Research/ChiPod/Cham_Eq14_Compare/mfiles/Patches/'
 fname=['EQ14_raw_patches_minOT_' num2str(patch_size_min) '_join_' num2str(join_patches) '_sep_' num2str(100*patch_sep_min) '.mat']
 load(fullfile(savedir,fname))
@@ -210,21 +229,28 @@ figure(2);clf
 h1=histogram(new_patch_data(:,4));
 freqline(nanmedian(h1.Data))
 xlim([0 10])
+xlabel('patch size')
 
 %% plot patch locations over pcolor and compare to patches from 1m binned data
 
+clear ; close all
+
+load('/Users/Andy/Cruises_Research/ChiPod/Cham_Eq14_Compare/mfiles/Patches/EQ14_raw_patches_minOT_1_join_0_sep_50.mat')
+
+load('/Users/Andy/Cruises_Research/ChiPod/Cham_Eq14_Compare/Data/chameleon/processed/Cstar=0_032/sum/eq14_sum_clean.mat')
+
+patch1=new_patch_data;
+
 figure(1);clf
-plot(new_patch_data(:,1),new_patch_data(:,2),'go')
+ezpc(cham.castnumber,cham.P,log10(cham.EPSILON))
 hold on
-plot(new_patch_data(:,1),new_patch_data(:,3),'ro')
+plot(patch1(:,1),patch1(:,2),'g.')
+hold on
+plot(patch1(:,1),patch1(:,3),'r.')
 axis ij
+caxis([-11 -5])
 
 %%
-figure(1);clf
-plot(patch_data(:,1),patch_data(:,2),'go')
-hold on
-plot(patch_data(:,1),patch_data(:,3),'ro')
-axis ij
 
 %%
 
