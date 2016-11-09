@@ -36,7 +36,7 @@ datdir='/Users/Andy/Cruises_Research/ChiPod/Cham_Eq14_Compare/Data/Cham_proc_AP/
 
 % patch options
 save_data=1
-patch_size_min=0.5  % min patch size
+patch_size_min=2  % min patch size
 join_patches=0    % join nearby patches
 patch_sep_min=0.5 %
 
@@ -93,7 +93,7 @@ for cnum=4:3100%length(Flist)
         for i=1:length(pstarts)
             
             if ( pstops(i) - pstarts(i) ) > patch_size_min % reject patches thinner than 15cm
-                patch_data=[patch_data ; cnum pstarts(i) pstops(i)  ( pstops(i) - pstarts(i) ) ];
+                patch_data=[patch_data ; cnum pstarts(i) pstops(i)  ( pstops(i) - pstarts(i) ) OT.Otnsq_each(i)];
             else
             end
             
