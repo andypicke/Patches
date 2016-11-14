@@ -345,7 +345,7 @@ end
 rhoav=nanmean(avg.SIGMA)+1000;
 for n=1:nmax
     
-    clear inds
+    clear inds T S P dT dP sgth dSigma
 %    inds=min_ind(n):max_ind(n);
     T=cal.T1(min_ind(n)*head.irep.T1 : max_ind(n)*head.irep.T1);
     S=cal.SAL(min_ind(n)*head.irep.SAL : max_ind(n)*head.irep.SAL);
@@ -355,7 +355,7 @@ for n=1:nmax
     avg.dTdz(n)=dT/dP;
     sgth=sw_pden(S,T,P,0);
     dSigma=nanmax(sgth)-nanmin(sgth);
-    avg.N2(n)=9.81/rhoav *dSigma;
+    avg.N2(n)=9.81/rhoav * dSigma;
 end
 
 %%

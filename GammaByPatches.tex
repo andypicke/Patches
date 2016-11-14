@@ -325,29 +325,51 @@ Ok, first what does gamma look like if just use data within or near these patche
 
 
 
-
 \clearpage
 %~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 \section{Identifying Patches from raw chameleon data}
 
-I tried computing patches and gamma from the 1m averaged profiles, and still got a different gamma from Bill for tiwe. So next i'll try computing patches from the raw profiles instead of the averaged data. Eventually I should also compute n2,dtdz,chi, and eps from the raw data over each patch; before now i've just grabbed the 1m average data points within each patch.
-
-
-First i'll experiment computing patches from the raw eq14 profiles and see how different they are from the patches I already computed with the 1m avg data.
-
-See \verb+FindPatches_EQ14_Raw.m+.
-
 My approach to doing this:
 \begin{itemize}
-\item Find patches \verb+FindPatches_EQ14_Raw.m+ ; this gives us the start and stop pressures for each patch in each profile
+\item Find patches \verb+FindPatches_EQ14_Raw.m+ ; this gives us the start and stop pressures for each patch in each profile, identified from the raw chameleon profiles of temp. 
 \item Next I want to compute N2,dT/dz,chi,eps over just these patches, instead of the usual evenly-spaced 1m bins (this is done in \verb+average_data_gen1.m+, which is called by a script like \verb+run_eq14.m+).
-\item I am making a modifed version of \verb+average_data_gen1.m+ that takes the start/stop pressure of each bin as input instead of just making evenly spaced bins. My version is called \verb+average_data_PATCH_AP.m+
-\item So I will run a modified version of \verb+run_eq14.m+ that loads the raw data, then calls \verb+average_data_PATCH_AP.m+, which will return an `avg' structure with data computed for each patch.
+\item I am making a modifed version of \verb+average_data_gen1.m+ that takes the start/stop pressure of each bin as input instead of just making evenly spaced bins. My version is called \verb+average_data_PATCH_AP.m+. I also modified it to compute N2 and dT/dz over each patch, instead of for 1m binned data as it did before. I'm just using 'bulk' gradients ie $dT/dz=max(T)-min(T)/dz$ for each patch. 
+\item So I will run a modified version of \verb+run_eq14.m+ called \verb++ that loads the raw data, then calls \verb+average_data_PATCH_AP.m+, which will return an `avg' structure with data computed for each patch.
 \end{itemize}
 
 
 
+%~~~~~~~~~~~~~~~~~~~~~~~
+\subsection{Issues}
+
+\begin{itemize}
+\item Many choices/parameters in choosing patches: Minimum OT size, noise criteria, density vs temp, do we join nearby patches?
+\item How to compute N2 and dTdz. The OT code averages N2 from the profile over the overturn region. In \verb+average_data_PATCH_AP.m+ I compute a 'bulk' N2 just using the maiximum drho/dz over the overturn.
+\end{itemize}
 
 
 
+%~~~~~~~~~~~~~~~~~~~~~~~
+\subsection{Results}
+
+\begin{itemize}
+\item I computed overturns using three different minimum overturn sizes: 0.5m, 1m, and 2m.
+\item I compile all the resulting data and plot in \verb+Plot_Gamma_patches_eq14_raw.m+
+\item The results depend on which $N^2$ I use. Using the $N^2$ from the OT code gives a gamma of about 0.1. Using the `bulk' $N^2$ gives a gamma of 0.3-0.4 .  Both of these are much larger than the gamma I get using the averaged chameleon data for all points (0.01). 
+\end{itemize}
+
+\begin{figure}[htbp]
+\includegraphics[scale=0.8]{eq14_gamma_patches_raw_minOT_5.png}
+\caption{Gamma computed over patches from raw eq14 Chameleon data.}
+\label{}
+\end{figure}
+
+
+
+
+
+
+
+%~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 \end{document}  
+%~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~

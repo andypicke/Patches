@@ -53,9 +53,9 @@ clear all
 %
 
 % load patch data (from FindPatches_EQ14_Raw.m)
-patch_size_min=1  % min patch size
-join_patches=1     % join nearby patches
-patch_sep_min=0.15 %
+patch_size_min=2  % min patch size
+join_patches=0     % join nearby patches
+patch_sep_min=0.5 %
 savedir='/Users/Andy/Cruises_Research/ChiPod/Cham_Eq14_Compare/mfiles/Patches/'
 fname=['EQ14_raw_patches_minOT_' num2str(patch_size_min) '_join_' num2str(join_patches) '_sep_' num2str(100*patch_sep_min) '.mat']
 load(fullfile(savedir,fname))
@@ -83,8 +83,8 @@ path_raw='/Users/Andy/Cruises_Research/ChiPod/Cham_Eq14_Compare/Data/chameleon/r
 warning off
 %path_save = [path_cham 'processed/mat' filesep];
 %path_save = [path_cham 'processed_AP_' num2str(fmax) 'hz/mat' filesep];
-path_save = '/Users/Andy/Cruises_Research/ChiPod/Cham_Eq14_Compare/mfiles/Patches/ChamRawProc/';
-mkdir(path_save)
+path_save = ['/Users/Andy/Cruises_Research/ChiPod/Cham_Eq14_Compare/mfiles/Patches/ChamRawProc/minOT_' num2str(10*patch_size_min) '/'];
+ChkMkDir(path_save)
 %path_sum = [path_cham 'processed/sum' filesep];
 %path_sum = [path_cham 'processed_AP_' num2str(fmax) 'hz/sum' filesep];
 %mkdir(path_sum);
@@ -171,12 +171,23 @@ for cast = [4:12 14:46 48:87 374:519 550:597 599:904 906:909 911:1070 ...
             % and specify in inputs ***
             nfft=128;
             
-            clear igp pstarts pstops
+            clear igp pstarts pstops this_patch
             igp=find(new_patch_data(:,1)==cast);
+            this_patch=new_patch_data(igp,:);
             pstarts=new_patch_data(igp,2);
             pstops=new_patch_data(igp,3);
             %pstarts=20:10:200;pstops=22:10:202; % for testing
-            avg=average_data_PATCH_AP(q.series,nfft,pstarts,pstops)
+            avg=average_data_PATCH_AP(q.series,nfft,pstarts,pstops);
+            
+            %~~~ also add N2 from the overturns code for each patch, to
+            %compare with the N2 I calc in average_data_PATCH_AP
+            avg.n2_OT=nan*ones(length(avg.P),1);
+            for ip=1:length(avg.P)
+               clear ig
+               ig=find(avg.P(ip)>pstarts & avg.P(ip)<pstops) ;
+               avg.n2_OT(ip) = this_patch(ig,5);
+            end
+            
             
             %%%%%%%% calculate N2, dSAL/dz, dSAL/dz_rhoorder, dT/dz, dT/dz_rhoorder %%%%%%%%
             % done by using polyfit over 1m sections of density (or reordered
@@ -274,7 +285,7 @@ for cast = [4:12 14:46 48:87 374:519 550:597 599:904 906:909 911:1070 ...
                 ['saved on ' datestr(now) ' by run_' q.script.prefix '.m']);
             
             
-            save([path_save fn],'avg','head')
+            save(fullfile(path_save,fn),'avg','head')
             
             
             % if the data is not good, (i.e. if bad == 1), do not save anything

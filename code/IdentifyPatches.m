@@ -34,8 +34,8 @@ plots=0;
 % compute potential density and temperature
 pden = sw_pden(s(:),t(:),p(:),refd);
 ptmp = sw_ptmp(s(:),t(:),p(:),refd);
+
 %
-%%
 if plots==1
     figure(1);clf
     subplot(121)
@@ -59,12 +59,12 @@ clear xx isort n2 p0 ig
 
 % compute N^2 with sorted (stable) density profile
 [n2,q,p_ave] = sw_bfrq(s(isort),t(isort),p,lat);
-%%
+
 p0=p(:);  % full depth
 
 % find good (not NaN density values)
 ig=find(~isnan(pden));
-%%
+
 %    if numel(ig)>1 % only do if we have good data
 
 % make vectors with only good values
@@ -96,7 +96,7 @@ if dz(1)<0
 end;
 stops = find(csdz(1:end-1)>=thresh & csdz(2:end)<thresh)+1;
 
-%%
+%
 if plots==1
     figure(1);clf
     
