@@ -6,6 +6,10 @@
 % Compare chameleon data computed just for patches to the normal 1m averaged
 % data to see if they mostly agree.
 %
+% Plots profiles of N2,dT/dz,chi, and eps, with data points from patches
+% overplotted. 
+%
+%
 % Patch data are computed in run_eq14_for_PATCHES
 %
 %--------------
@@ -72,8 +76,7 @@ for cnum=1:50:3100
         ylabel('P [db]')
         axis tight
         xlabel('log_{10}\epsilon','fontsize',16)
-        
-        
+                
     end
     
     pause(0.5)
