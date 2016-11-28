@@ -14,7 +14,7 @@
 % ProcessEq14Cham_AP.m, which was modified from Sally's code so I could
 % make files to apply chipod method to. See also ComputeChi_Chameleon_Eq14.m
 %
-%
+% Will do using temp and dens, and w/ a variety of min OT sizes
 %
 %-----------------
 % 10/27/16 - A.Pickering - andypicke@gmail.com
@@ -36,18 +36,21 @@ datdir='/Users/Andy/Cruises_Research/ChiPod/Cham_Eq14_Compare/Data/Cham_proc_AP/
 
 % patch options
 save_data=1
-patch_size_min=2  % min patch size
-join_patches=0    % join nearby patches
-patch_sep_min=0.5 %
+patch_size_min=1  % min patch size
+usetemp=1 % 1=use pot. temp, 0= use density
 
 patch_data=[];
 % loop through each cast
 warning off
 hb=waitbar(0,'working on profiles');
 
-for cnum=4:3100%length(Flist)
+% only do profiles that are done in chameleon processing
+cnums_to_do=[4:12 14:46 48:87 374:519 550:597 599:904 906:909 911:1070 ...
+        1075:1128 1130:1737 1739:2550 2552:2996 2998:3092];
+%for cnum=1:3100%
+for cnum= cnums_to_do;  
     
-    waitbar(cnum/3100,hb)
+    waitbar(cnum/length(cnums_to_do),hb)
     
     try
         
@@ -76,12 +79,13 @@ for cnum=4:3100%length(Flist)
         %        clear pstarts pstops
         %       [pstarts pstops]=IdentifyPatches(s,t,p,lat);
         
+        clear Params
         Params.lat=lat;
         Params.plotit=0;
         Params.sigma=1e-4;
         Params.runlmin=0;
         Params.minotsize=patch_size_min;
-        Params.usetemp=1;
+        Params.usetemp=usetemp;
         addpath /Users/Andy/Standard-Mixing-Routines/ThorpeScales/
         clear OT
         OT=compute_overturns_discrete_AP(p,t,s,Params);
@@ -89,14 +93,8 @@ for cnum=4:3100%length(Flist)
         pstarts=OT.pstarts_each;
         pstops=OT.pstops_each;
         
-        
         for i=1:length(pstarts)
-            
-            if ( pstops(i) - pstarts(i) ) > patch_size_min % reject patches thinner than 15cm
-                patch_data=[patch_data ; cnum pstarts(i) pstops(i)  ( pstops(i) - pstarts(i) ) OT.Otnsq_each(i)];
-            else
-            end
-            
+            patch_data=[patch_data ; cnum pstarts(i) pstops(i)  ( pstops(i) - pstarts(i) ) OT.Otnsq_each(i) OT.Lt_each(i) ];
         end
         
     end % try
@@ -151,111 +149,10 @@ warning on
 new_patch_data=patch_data;
 
 if save_data==1
-    savedir='/Users/Andy/Cruises_Research/ChiPod/Cham_Eq14_Compare/mfiles/Patches/'
-    fname=['EQ14_raw_patches_minOT_' num2str(patch_size_min) '_join_' num2str(join_patches) '_sep_' num2str(100*patch_sep_min) '.mat']
+    savedir='/Users/Andy/Cruises_Research/ChiPod/Cham_Eq14_Compare/mfiles/Patches/ChamRawProc/'
+    %    fname=['EQ14_raw_patches_minOT_' num2str(patch_size_min) '_join_' num2str(join_patches) '_sep_' num2str(100*patch_sep_min) '.mat']
+    fname=['EQ14_raw_patches_minOT_' num2str(10*patch_size_min) '_usetemp_' num2str(usetemp) '.mat']
     save( fullfile( savedir,fname), 'new_patch_data')
 end
 
 %%
-
-% %%
-% 
-% 
-% figure(1);clf
-% h1=histogram(new_patch_data(:,4));
-% freqline(nanmedian(h1.Data))
-% xlim([0 20])
-% grid on
-% xlabel('patch size')
-% 
-% 
-% %% Examine for a single profile (plot w/ t,sgth)
-% 
-% ipr=100
-% 
-% 
-% %% Compare different params
-% 
-% clear ; close all
-% 
-% patch_size_min=0.5  % min patch size
-% join_patches=1     % join nearby patches
-% patch_sep_min=0.5 %
-% savedir='/Users/Andy/Cruises_Research/ChiPod/Cham_Eq14_Compare/mfiles/Patches/'
-% fname=['EQ14_raw_patches_minOT_' num2str(patch_size_min) '_join_' num2str(join_patches) '_sep_' num2str(100*patch_sep_min) '.mat']
-% load(fullfile(savedir,fname))
-% 
-% patch1=new_patch_data; clear new_patch_data
-% 
-% patch_size_min=0.15  % min patch size
-% join_patches=0  % join nearby patches
-% patch_sep_min=0.5 %
-% fname=['EQ14_raw_patches_minOT_' num2str(patch_size_min) '_join_' num2str(join_patches) '_sep_' num2str(100*patch_sep_min) '.mat']
-% load(fullfile(savedir,fname))
-% patch2=new_patch_data; clear new_patch_data
-% 
-% %%
-% 
-% figure(1);clf
-% h1=histogram(patch1(:,4),'Normalization','pdf');
-% hold on
-% histogram(patch2(:,4),h1.BinEdges,'Normalization','pdf')
-% xlim([0 25])
-% grid on
-% 
-% %% Compare to overturns from 1m avg data
-% 
-% clear ; close all
-% 
-% patch_size_min=1  % min patch size
-% join_patches=0     % join nearby patches
-% patch_sep_min=0.5 %
-% savedir='/Users/Andy/Cruises_Research/ChiPod/Cham_Eq14_Compare/mfiles/Patches/'
-% fname=['EQ14_raw_patches_minOT_' num2str(patch_size_min) '_join_' num2str(join_patches) '_sep_' num2str(100*patch_sep_min) '.mat']
-% load(fullfile(savedir,fname))
-% 
-% patch1=new_patch_data; clear new_patch_data
-% 
-% load('/Users/Andy/Cruises_Research/ChiPod/Cham_Eq14_Compare/mfiles/Patches/eq14_1m_patches.mat')
-% patch2=patches_all;clear patches_60_180 patches_all
-% 
-% figure(1);clf
-% h1=histogram(patch1(:,4),'Normalization','pdf');
-% hold on
-% h2=histogram(patch2(:,4),h1.BinEdges,'Normalization','pdf');
-% xlim([0 25])
-% freqline(nanmedian(h1.Data),'b')
-% freqline(nanmedian(h2.Data),'r')
-% grid on
-% 
-% %%
-% 
-% figure(2);clf
-% h1=histogram(new_patch_data(:,4));
-% freqline(nanmedian(h1.Data))
-% xlim([0 10])
-% xlabel('patch size')
-% 
-% %% plot patch locations over pcolor and compare to patches from 1m binned data
-% 
-% clear ; close all
-% 
-% load('/Users/Andy/Cruises_Research/ChiPod/Cham_Eq14_Compare/mfiles/Patches/EQ14_raw_patches_minOT_1_join_0_sep_50.mat')
-% 
-% load('/Users/Andy/Cruises_Research/ChiPod/Cham_Eq14_Compare/Data/chameleon/processed/Cstar=0_032/sum/eq14_sum_clean.mat')
-% 
-% patch1=new_patch_data;
-% 
-% figure(1);clf
-% ezpc(cham.castnumber,cham.P,log10(cham.EPSILON))
-% hold on
-% plot(patch1(:,1),patch1(:,2),'g.')
-% hold on
-% plot(patch1(:,1),patch1(:,3),'r.')
-% axis ij
-% caxis([-11 -5])
-% 
-% %%
-% 
-% %%
-% 
