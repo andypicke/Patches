@@ -52,12 +52,13 @@ clear all
 %fmax=7
 %
 
+run_test=0;
+
 % load patch data (from FindPatches_EQ14_Raw.m)
-patch_size_min=2  % min patch size
-join_patches=0     % join nearby patches
-patch_sep_min=0.5 %
-savedir='/Users/Andy/Cruises_Research/ChiPod/Cham_Eq14_Compare/mfiles/Patches/'
-fname=['EQ14_raw_patches_minOT_' num2str(patch_size_min) '_join_' num2str(join_patches) '_sep_' num2str(100*patch_sep_min) '.mat']
+patch_size_min=1  % min patch size
+usetemp=1
+savedir='/Users/Andy/Cruises_Research/ChiPod/Cham_Eq14_Compare/mfiles/Patches/ChamRawProc'
+fname=['EQ14_raw_patches_minOT_' num2str(10*patch_size_min) '_usetemp_' num2str(usetemp) '.mat']
 load(fullfile(savedir,fname))
 clear savedir fname
 
@@ -83,7 +84,13 @@ path_raw='/Users/Andy/Cruises_Research/ChiPod/Cham_Eq14_Compare/Data/chameleon/r
 warning off
 %path_save = [path_cham 'processed/mat' filesep];
 %path_save = [path_cham 'processed_AP_' num2str(fmax) 'hz/mat' filesep];
-path_save = ['/Users/Andy/Cruises_Research/ChiPod/Cham_Eq14_Compare/mfiles/Patches/ChamRawProc/minOT_' num2str(10*patch_size_min) '/'];
+
+if run_test==1
+    path_save = ['/Users/Andy/Cruises_Research/ChiPod/Cham_Eq14_Compare/mfiles/Patches/ChamRawProc/test1m/'];
+else
+%    path_save = ['/Users/Andy/Cruises_Research/ChiPod/Cham_Eq14_Compare/mfiles/Patches/ChamRawProc/minOT_' num2str(10*patch_size_min) '/'];
+    path_save = ['/Users/Andy/Cruises_Research/ChiPod/Cham_Eq14_Compare/mfiles/Patches/ChamRawProc/minOT_' num2str(10*patch_size_min) '_usetemp_' num2str(usetemp) '/'];
+end
 ChkMkDir(path_save)
 %path_sum = [path_cham 'processed/sum' filesep];
 %path_sum = [path_cham 'processed_AP_' num2str(fmax) 'hz/sum' filesep];
@@ -172,22 +179,34 @@ for cast = [4:12 14:46 48:87 374:519 550:597 599:904 906:909 911:1070 ...
             nfft=128;
             
             clear igp pstarts pstops this_patch
-            igp=find(new_patch_data(:,1)==cast);
-            this_patch=new_patch_data(igp,:);
-            pstarts=new_patch_data(igp,2);
-            pstops=new_patch_data(igp,3);
-            %pstarts=20:10:200;pstops=22:10:202; % for testing
+            
+            if run_test==1
+                pstarts=1:200;
+                pstops=2:201;
+            else
+                igp=find(new_patch_data(:,1)==cast);
+                this_patch=new_patch_data(igp,:);
+                pstarts=new_patch_data(igp,2);
+                pstops=new_patch_data(igp,3);
+            end
+            
             avg=average_data_PATCH_AP(q.series,nfft,pstarts,pstops);
+            
+            if length(avg.P)~=length(pstarts)
+                disp('uh oh')
+            end
             
             %~~~ also add N2 from the overturns code for each patch, to
             %compare with the N2 I calc in average_data_PATCH_AP
             avg.n2_OT=nan*ones(length(avg.P),1);
-            for ip=1:length(avg.P)
-               clear ig
-               ig=find(avg.P(ip)>pstarts & avg.P(ip)<pstops) ;
-               avg.n2_OT(ip) = this_patch(ig,5);
+            if run_test~=1
+                for ip=1:length(avg.P)
+                    clear ig
+                    ig=find(avg.P(ip)>pstarts & avg.P(ip)<pstops) ;
+                    avg.n2_OT(ip) = this_patch(ig,5);
+                end
+                
             end
-            
             
             %%%%%%%% calculate N2, dSAL/dz, dSAL/dz_rhoorder, dT/dz, dT/dz_rhoorder %%%%%%%%
             % done by using polyfit over 1m sections of density (or reordered

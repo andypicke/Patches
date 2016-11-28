@@ -179,7 +179,7 @@ for ip=1:length(pstarts)
 %try
 clear iz
 iz=isin(binseries,[pstarts(ip) pstops(ip)]);
-if length(iz)>100
+if length(iz)>1
 min_ind=[min_ind ; iz(1)];
 max_ind=[max_ind ; iz(end)];
 end

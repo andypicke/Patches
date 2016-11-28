@@ -17,8 +17,9 @@
 clear ; close all
 
 min_patch_size=0.5
+usetemp=1
 
-data_dir=fullfile('/Users/Andy/Cruises_Research/ChiPod/Cham_Eq14_Compare/mfiles/Patches/ChamRawProc/',['minOT_' num2str(10*min_patch_size)]) 
+data_dir=fullfile('/Users/Andy/Cruises_Research/ChiPod/Cham_Eq14_Compare/mfiles/Patches/ChamRawProc/',['minOT_' num2str(10*min_patch_size) '_usetemp_' num2str(usetemp)]) 
 
 n2_all=[];
 n2_OT_all=[];
@@ -27,7 +28,9 @@ chi_all=[];
 eps_all=[];
 P_all=[];
 
-hb=waitbar(0);
+patch_data=[];
+
+hb=waitbar(0,'compiling patch data from all profiles');
 for cnum=4:3100
     waitbar(cnum/3100,hb)
     clear avg
