@@ -11,6 +11,8 @@
 %
 % See also LookAtProfilesOT.m
 %
+% ** do dt/dz w/ ptmp also and compare??
+%
 %--------------
 % 11/22/16 - A.Pickering
 %~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
@@ -79,8 +81,6 @@ for ip=1:Npatches
     lat2=str2num(head.lat.start(idot-2:end))/60;
     lat=nanmean([lat1 lat2]);
     
-    % Find overturns
-    
     clear pstarts pstops
     clear iz t_ot s_ot p_ot
     
@@ -90,29 +90,38 @@ for ip=1:Npatches
     p_ot=p(iz);
     
     clear t_sort I
-    [t_sort I]=sort(t_ot,1,'descend');
+    [t_sort , I]=sort(t_ot,1,'descend');
     
+    % compute potential temp
+    clear t_pot t_pot_sort
+    ptmp_ot=sw_ptmp(s_ot,t_ot,p_ot,0);
+    [ptmp_sort , Iptmp]=sort(ptmp_ot,1,'descend');
+            
     clear DT dz dTdz
-    dT=nanmax(t_ot)-nanmin(t_ot);
+    dT=nanmax(ptmp_ot)-nanmin(ptmp_ot);
+%   dT=nanmax(t_ot)-nanmin(t_ot);
     dz=nanmax(p_ot)-nanmin(p_ot);
     dTdz=-dT/dz;
     
-    b=p_ot(end) - (1/dTdz)*t_ot(end);
-    tvec=linspace(nanmin(t_ot),nanmax(t_ot),100);
-    pvec=linspace(nanmin(p_ot),nanmax(p_ot),100);
-    
+%    b=p_ot(end) - (1/dTdz)*t_ot(end);
+    b=p_ot(end) - (1/dTdz)*ptmp_ot(end);
+%    tvec=linspace(nanmin(t_ot),nanmax(t_ot),100);
+   tvec=linspace(nanmin(ptmp_ot),nanmax(ptmp_ot),100);
+    pvec=linspace(nanmin(p_ot),nanmax(p_ot),100);    
     yvec=dTdz*pvec - dTdz*b;
     
     % fit a line
-    P=polyfit(p_ot,t_sort,1);
-    
+%    P=polyfit(p_ot,t_sort,1);
+    P=polyfit(p_ot,ptmp_sort,1);
+        
     % save results
     patches.dtdz1(ip)=dTdz;
     patches.dtdz2(ip)=P(1);
     
     %~~ 'bulk gradient' method from Smyth et al 2001
     % essentially = rms T (btw sorted/unsorted) /  thorpe scale ?
-    t_rms= sqrt( nanmean(( t_ot - t_sort ).^2) );
+%    t_rms= sqrt( nanmean(( t_ot - t_sort ).^2) );
+        t_rms= sqrt( nanmean(( ptmp_ot - ptmp_sort ).^2) );
     patches.dtdz3(ip)= t_rms / patches.Lt(ip) ;
     
     % Now do similar for density / N^2
@@ -122,7 +131,7 @@ for ip=1:Npatches
     sgth_ot=sw_pden(s_ot,t_ot,p_ot,0);
     
     clear sgth_sort I
-    [sgth_sort I]=sort(sgth_ot,1,'ascend');
+    [sgth_sort , I]=sort(sgth_ot,1,'ascend');
     
     % try the range/dz method
     drho=nanmax(sgth_ot)-nanmin(sgth_ot);
@@ -145,13 +154,14 @@ for ip=1:Npatches
     % density controlled by temperature??)
     % I think missing divide by rho_0 also?
     patches.n3(ip)= 9.81 / nanmean(sgth_ot) * t_rms / patches.Lt(ip)    ;
-    
-    
+        
     % compute N^2 w/ sw_bfrq
     clear n2
-    n2=sw_bfrq(s_ot(I),t_ot(I),p_ot(I),1);
-    
+%    n2=sw_bfrq(s_ot(I),t_ot(I),p_ot(I),0.5);
+    n2=sw_bfrq(s_ot(I),t_ot(I),p_ot,0.5);
+ %   n2pr=sw_bfreq(s,t,p,0.5);
     patches.n4(ip)=nanmean(n2);
+%    patches.n5(ip)=nanmean(n2pr(iz))
     
     
 end %ip
@@ -324,7 +334,7 @@ delete(hb)
 
 %% Exclude values where epsilon is below noise floor
 % note this makes significant difference in gamma median
-ib=find(log10(patches.eps)>-8.5);
+ib=find(log10(patches.eps)<-8.5);
 patches.eps(ib)=nan;
 
 %%
@@ -362,10 +372,10 @@ freqline(nanmedian(gam1))
 freqline(nanmedian(gam2))
 freqline(nanmedian(gam3))
 freqline(nanmedian(gam4))
-text(nanmedian(gam1),1500,'\Gamma 1')
-text(nanmedian(gam2),1500,'\Gamma 2')
-text(nanmedian(gam3),1500,'\Gamma 3')
-text(nanmedian(gam4),1500,'\Gamma 4')
+text(nanmedian(gam1),600,'\Gamma 1')
+text(nanmedian(gam2),600,'\Gamma 2')
+text(nanmedian(gam3),600,'\Gamma 3')
+text(nanmedian(gam4),550,'\Gamma 4')
 legend([h1 h2 h3 h4],'\Gamma 1','\Gamma 2','\Gamma 3','\Gamma 4')
 xlim([0 0.5])
 grid on
