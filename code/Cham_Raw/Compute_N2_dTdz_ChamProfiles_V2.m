@@ -162,118 +162,8 @@ delete(hb)
 
 warning on
 
-%% Plot 2D hist/scatter of different dt/dz methods
+%
 
-figure(1);clf
-agutwocolumn(1)
-wysiwyg
-set(gcf,'defaultaxesfontsize',15)
-
-subplot(211)
-%loglog(abs(dtdz1(:)),abs(dtdz2(:)),'.')
-histogram2(log10(abs(patches.dtdz1(:))),log10(abs(patches.dtdz2(:))),50,'displaystyle','tile')
-xlabel('log_{10}[dtdz1]')
-ylabel('log_{10}[dtdz2]')
-%grid on
-grid on
-
-subplot(212)
-%loglog(abs(dtdz1(:)),abs(dtdz2(:)),'.')
-histogram2(log10(abs(patches.dtdz1(:))),log10(abs(patches.dtdz3(:))),50,'displaystyle','tile')
-xlabel('log_{10}[dtdz1]')
-ylabel('log_{10}[dtdz3]')
-%grid on
-grid on
-
-figdir='/Users/Andy/Cruises_Research/ChiPod/Analyses/Patch_n2_dTdz'
-print( fullfile( figdir, ['eq14_cham_patch_dTdzs_scatter'] ), '-dpng' )
-
-%% Make histogram of different dt/dzs
-
-figure(1);clf
-agutwocolumn(0.7)
-wysiwyg
-set(gcf,'defaultaxesfontsize',14)
-
-h1=histogram(log10(abs(patches.dtdz1(:))),'DisplayStyle','stair')%,'edgecolor','none');
-hold on
-h2=histogram(log10(abs(patches.dtdz2(:))),h1.BinEdges,'DisplayStyle','stair')%,'edgecolor','none');
-h3=histogram(log10(abs(patches.dtdz3(:))),h1.BinEdges,'DisplayStyle','stair')%,'edgecolor','none');
-grid on
-xlim([-4 -0.5])
-xlabel('log_{10}[dT/dz]')
-ylabel('count')
-legend([h1 h2 h3],'dtdz1','dtdz2','dtdz3')
-
-figdir='/Users/Andy/Cruises_Research/ChiPod/Analyses/Patch_n2_dTdz'
-print( fullfile( figdir, ['eq14_cham_patch_dTdzs'] ), '-dpng' )
-
-%% Plot 2D histograms of different N2 methods
-
-figure(2);clf
-agutwocolumn(1)
-wysiwyg
-set(gcf,'defaultaxesfontsize',15)
-
-xl=[-5.5 -3]
-yl=[-6.75 -2.5]
-m=3
-n=1
-
-subplot(m,n,1)
-%loglog(n1(:),nb(:),'.')
-histogram2(real(log10(patches.n1(:))),real(log10(patches.nb(:))),50,'displaystyle','tile')
-grid on
-xlim(xl)
-ylim(yl)
-
-xlabel('log_{10}[N^2_1]')
-ylabel('log_{10}[N^2_2]')
-
-subplot(m,n,2)
-%loglog(n1(:),n3(:),'.')
-histogram2(real(log10(patches.n1(:))),real(log10(patches.n3(:))),50,'displaystyle','tile')
-grid on
-xlabel('log_{10}[N^2_1]')
-ylabel('log_{10}[N^2_3]')
-xlim(xl)
-ylim(yl)
-
-subplot(m,n,3)
-%loglog(n1(:),n3(:),'.')
-histogram2(real(log10(patches.n1(:))),real(log10(patches.n4(:))),50,'displaystyle','tile')
-grid on
-xlabel('log_{10}[N^2_1]')
-ylabel('log_{10}[N^2_4]')
-xlim([xl])
-ylim([yl])
-
-print( fullfile( figdir, ['eq14_cham_patch_N2s_scatter'] ), '-dpng' )
-%subplot(313)
-
-%% Plot histogram of different N2s
-
-figure(2);clf
-agutwocolumn(0.7)
-wysiwyg
-set(gcf,'defaultaxesfontsize',14)
-
-h1=histogram(real(log10(patches.n1(:)))) ;
-hold on
-h2=histogram(real(log10(patches.nb(:))),h1.BinEdges) ;
-h3=histogram(real(log10(patches.n3(:))),h1.BinEdges) ;
-h4=histogram(real(log10(patches.n4(:))),h1.BinEdges) ;
-freqline(nanmedian(h1.Data))
-freqline(nanmedian(h2.Data))
-freqline(nanmedian(h3.Data))
-freqline(nanmedian(h4.Data))
-grid on
-xlim([-6 -2.5])
-xlabel('log_{10}[N^2]')
-ylabel('count')
-legend([h1 h2 h3 h4],'1  ','2 ','3 ','4 ','location','best')
-
-print( fullfile( figdir, ['eq14_cham_patch_N2s'] ), '-dpng' )
 
 %% Compute gamma using different N^2 and dT/dz values
 
@@ -392,6 +282,8 @@ patches.gam4=gam4;
 save( fullfile( '/Users/Andy/Cruises_Research/ChiPod/Cham_Eq14_Compare/mfiles/Patches/ChamRawProc',...
     'eq14_cham_patches_diffn2dtdzgamma.mat'), 'patches' )
 
+%
+
 %%
 % I want to compare gamma from binned data to the gamma I compute over
 % patches. So for each patch I want to find the closest binned gamma and
@@ -438,6 +330,119 @@ end
 save(fullfile( '/Users/Andy/Cruises_Research/ChiPod/Cham_Eq14_Compare/mfiles/Patches/ChamRawProc',...
     'eq14_cham_patches_diffn2dtdzgamma.mat'),'patches')
 
+
+%% Plot 2D hist/scatter of different dt/dz methods
+
+figure(1);clf
+agutwocolumn(1)
+wysiwyg
+set(gcf,'defaultaxesfontsize',15)
+
+subplot(211)
+%loglog(abs(dtdz1(:)),abs(dtdz2(:)),'.')
+histogram2(log10(abs(patches.dtdz1(:))),log10(abs(patches.dtdz2(:))),50,'displaystyle','tile')
+xlabel('log_{10}[dtdz1]')
+ylabel('log_{10}[dtdz2]')
+%grid on
+grid on
+
+subplot(212)
+%loglog(abs(dtdz1(:)),abs(dtdz2(:)),'.')
+histogram2(log10(abs(patches.dtdz1(:))),log10(abs(patches.dtdz3(:))),50,'displaystyle','tile')
+xlabel('log_{10}[dtdz1]')
+ylabel('log_{10}[dtdz3]')
+%grid on
+grid on
+
+figdir='/Users/Andy/Cruises_Research/ChiPod/Analyses/Patch_n2_dTdz'
+print( fullfile( figdir, ['eq14_cham_patch_dTdzs_scatter'] ), '-dpng' )
+
+%% Make histogram of different dt/dzs
+
+figure(1);clf
+agutwocolumn(0.7)
+wysiwyg
+set(gcf,'defaultaxesfontsize',14)
+
+h1=histogram(log10(abs(patches.dtdz1(:))),'DisplayStyle','stair')%,'edgecolor','none');
+hold on
+h2=histogram(log10(abs(patches.dtdz2(:))),h1.BinEdges,'DisplayStyle','stair')%,'edgecolor','none');
+h3=histogram(log10(abs(patches.dtdz3(:))),h1.BinEdges,'DisplayStyle','stair')%,'edgecolor','none');
+grid on
+xlim([-4 -0.5])
+xlabel('log_{10}[dT/dz]')
+ylabel('count')
+legend([h1 h2 h3],'dtdz1','dtdz2','dtdz3')
+
+figdir='/Users/Andy/Cruises_Research/ChiPod/Analyses/Patch_n2_dTdz'
+print( fullfile( figdir, ['eq14_cham_patch_dTdzs'] ), '-dpng' )
+
+%% Plot 2D histograms of different N2 methods
+
+figure(2);clf
+agutwocolumn(1)
+wysiwyg
+set(gcf,'defaultaxesfontsize',15)
+
+xl=[-5.5 -3]
+yl=[-6.75 -2.5]
+m=3
+n=1
+
+subplot(m,n,1)
+%loglog(n1(:),nb(:),'.')
+histogram2(real(log10(patches.n1(:))),real(log10(patches.nb(:))),50,'displaystyle','tile')
+grid on
+xlim(xl)
+ylim(yl)
+
+xlabel('log_{10}[N^2_1]')
+ylabel('log_{10}[N^2_2]')
+
+subplot(m,n,2)
+%loglog(n1(:),n3(:),'.')
+histogram2(real(log10(patches.n1(:))),real(log10(patches.n3(:))),50,'displaystyle','tile')
+grid on
+xlabel('log_{10}[N^2_1]')
+ylabel('log_{10}[N^2_3]')
+xlim(xl)
+ylim(yl)
+
+subplot(m,n,3)
+%loglog(n1(:),n3(:),'.')
+histogram2(real(log10(patches.n1(:))),real(log10(patches.n4(:))),50,'displaystyle','tile')
+grid on
+xlabel('log_{10}[N^2_1]')
+ylabel('log_{10}[N^2_4]')
+xlim([xl])
+ylim([yl])
+
+print( fullfile( figdir, ['eq14_cham_patch_N2s_scatter'] ), '-dpng' )
+%subplot(313)
+
+%% Plot histogram of different N2s
+
+figure(2);clf
+agutwocolumn(0.7)
+wysiwyg
+set(gcf,'defaultaxesfontsize',14)
+
+h1=histogram(real(log10(patches.n1(:)))) ;
+hold on
+h2=histogram(real(log10(patches.nb(:))),h1.BinEdges) ;
+h3=histogram(real(log10(patches.n3(:))),h1.BinEdges) ;
+h4=histogram(real(log10(patches.n4(:))),h1.BinEdges) ;
+freqline(nanmedian(h1.Data))
+freqline(nanmedian(h2.Data))
+freqline(nanmedian(h3.Data))
+freqline(nanmedian(h4.Data))
+grid on
+xlim([-6 -2.5])
+xlabel('log_{10}[N^2]')
+ylabel('count')
+legend([h1 h2 h3 h4],'1  ','2 ','3 ','4 ','location','best')
+
+print( fullfile( figdir, ['eq14_cham_patch_N2s'] ), '-dpng' )
 
 %%
 
