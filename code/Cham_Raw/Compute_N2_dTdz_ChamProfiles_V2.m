@@ -372,10 +372,10 @@ freqline(nanmedian(gam1))
 freqline(nanmedian(gam2))
 freqline(nanmedian(gam3))
 freqline(nanmedian(gam4))
-text(nanmedian(gam1),600,'\Gamma 1')
-text(nanmedian(gam2),600,'\Gamma 2')
-text(nanmedian(gam3),600,'\Gamma 3')
-text(nanmedian(gam4),550,'\Gamma 4')
+text(nanmedian(gam1),3500,'\Gamma 1')
+text(nanmedian(gam2),3600,'\Gamma 2')
+text(nanmedian(gam3),3700,'\Gamma 3')
+text(nanmedian(gam4),3800,'\Gamma 4')
 legend([h1 h2 h3 h4],'\Gamma 1','\Gamma 2','\Gamma 3','\Gamma 4')
 xlim([0 0.5])
 grid on
@@ -398,5 +398,177 @@ patches.gam4=gam4;
 
 save( fullfile( '/Users/Andy/Cruises_Research/ChiPod/Cham_Eq14_Compare/mfiles/Patches/ChamRawProc',...
     'eq14_cham_patches_diffn2dtdzgamma.mat'), 'patches' )
+
+%%
+% I want to compare gamma from binned data to the gamma I compute over
+% patches. So for each patch I want to find the closest binned gamma and
+% then compare those.
+
+clear ; close all
+
+% load binned chameleon data
+load('/Users/Andy/Cruises_Research/ChiPod/Cham_Eq14_Compare/Data/chameleon/processed/Cstar=0_032/sum/eq14_sum_clean.mat')
+
+% load the patch data ( from Compute_N2_dTdz_ChamProfiles_V2.m)
+load(fullfile( '/Users/Andy/Cruises_Research/ChiPod/Cham_Eq14_Compare/mfiles/Patches/ChamRawProc',...
+    'eq14_cham_patches_diffn2dtdzgamma.mat'))
+
+addpath /Users/Andy/Cruises_Research/ChiPod/Cham_Eq14_Compare/mfiles/Patches/code/
+
+Npatches=length(patches.cnum)
+patches.gam_bin=nan*ones(size(patches.gam1));
+patches.n2_bin=nan*ones(size(patches.gam1));
+patches.dtdz_bin=nan*ones(size(patches.gam1));
+patches.chi_bin=nan*ones(size(patches.gam1));
+patches.eps_bin=nan*ones(size(patches.gam1));
+
+for ip=1:Npatches
+    clear cnum pbin pmn val I
+    cnum=patches.cnum(ip);
+    Icham=find(cham.castnumber==cnum);
+    pbin=cham.P(:,Icham);
+    pmn=nanmean([patches.p1(ip) patches.p2(ip)]);
+    [val,I]=nanmin( abs(pbin-pmn));
+    
+    patches.n2_bin(ip)=cham.N2(I,Icham);
+    patches.dtdz_bin(ip)=cham.DTDZ_RHOORDER(I,Icham);
+    patches.chi_bin(ip)=cham.CHI(I,Icham);
+    patches.eps_bin(ip)=cham.EPSILON(I,Icham);
+    
+    if log10(cham.EPSILON(I,Icham))>-8.5
+    patches.gam_bin(ip)=ComputeGamma(cham.N2(I,Icham),cham.DTDZ_RHOORDER(I,Icham),cham.CHI(I,Icham),cham.EPSILON(I,Icham));    
+    end
+    
+end
+
+% save again w/ gam_bin added
+save(fullfile( '/Users/Andy/Cruises_Research/ChiPod/Cham_Eq14_Compare/mfiles/Patches/ChamRawProc',...
+    'eq14_cham_patches_diffn2dtdzgamma.mat'),'patches')
+
+
+%%
+
+figure(1);clf
+agutwocolumn(1)
+wysiwyg
+
+ax1=subplot(221);
+h1=histogram(real(log10(patches.nb(:))),'Normalization','pdf','edgecolor','none');
+hold on
+h2=histogram(real(log10(patches.n2_bin(:))),h1.BinEdges,'Normalization','pdf','edgecolor','none');
+xlim([-6.5 -2.5])
+grid on
+xlabel('log_{10}[N^2]')
+legend([h1 h2],'patch','bin','location','best')
+freqline(nanmedian(h1.Data),'b--')
+freqline(nanmedian(h2.Data),'r--')
+
+ax2=subplot(222);
+h1=histogram(real(log10(patches.dtdz2(:))),'Normalization','pdf','edgecolor','none');
+hold on
+h2=histogram(real(log10(patches.dtdz_bin(:))),h1.BinEdges,'Normalization','pdf','edgecolor','none');
+xlim([-5 0])
+grid on
+xlabel('log_{10}[dT/dz]')
+legend([h1 h2],'patch','bin','location','best')
+freqline(nanmedian(h1.Data),'b--')
+freqline(nanmedian(h2.Data),'r--')
+
+ax3=subplot(223);
+h1=histogram(real(log10(patches.chi(:))),'Normalization','pdf','edgecolor','none');
+hold on
+h2=histogram(real(log10(patches.chi_bin(:))),h1.BinEdges,'Normalization','pdf','edgecolor','none');
+xlim([-12 -3])
+grid on
+xlabel('log_{10}[\chi]')
+legend([h1 h2],'patch','bin','location','best')
+freqline(nanmedian(h1.Data),'b--')
+freqline(nanmedian(h2.Data),'r--')
+
+ax4=subplot(224);
+h1=histogram(real(log10(patches.eps(:))),'Normalization','pdf','edgecolor','none');
+hold on
+h2=histogram(real(log10(patches.eps_bin(:))),h1.BinEdges,'Normalization','pdf','edgecolor','none');
+%xlim([-12 -3])
+grid on
+xlabel('log_{10}[\epsilon]')
+legend([h1 h2],'patch','bin','location','best')
+freqline(nanmedian(h1.Data),'b--')
+freqline(nanmedian(h2.Data),'r--')
+
+figdir='/Users/Andy/Cruises_Research/ChiPod/Analyses/Patch_n2_dTdz'
+print( fullfile( figdir, ['eq14_cham_gamma_binVspatch_hists'] ), '-dpng' )
+
+%%
+
+ib=find(patches.gam_bin>1);
+
+figure(1);clf
+%scatter(log10(patches.gam_bin(:)),log10(patches.gam3(:)),'o','filled','MarkerFaceAlpha',0.05)
+scatter(patches.gam_bin(:), patches.gam3(:),'o','filled','MarkerFaceAlpha',0.1) ; xlim([0 0.5]) ; ylim([0 0.5])
+%xlim([-3 1]);ylim([-3 1])
+xlabel('\Gamma bin')
+ylabel('\Gamma patch')
+
+% ig=find(~isnan(patches.gam_bin) & ~isnan(patches.gam2));
+% P=polyfit(patches.gam_bin(ig),patches.gam3(ig),1);
+% hold on
+% plot(0:0.001:1,polyval(P,0:0.001:1),'r','linewidth',2)
+ grid on
+
+figdir='/Users/Andy/Cruises_Research/ChiPod/Analyses/Patch_n2_dTdz'
+print( fullfile( figdir, ['eq14_cham_gamma_binVspatch_scatter'] ), '-dpng' )
+
+
+%%
+
+gam_bin_all=ComputeGamma(cham.N2(:),cham.DTDZ_RHOORDER(:),cham.CHI(:),cham.EPSILON(:));
+
+ig1=find(patches.gam_bin<=1);
+ig2=find(patches.gam2<=1);
+
+figure(2);clf
+h1=histogram((patches.gam_bin(ig1)),'Normalization','pdf');
+hold on
+h2=histogram((patches.gam2(ig2)),'Normalization','pdf');
+%histogram(log10(gam_bin_all(:)),'Normalization','pdf')
+freqline(nanmedian(h1.Data))
+freqline(nanmedian(h2.Data))
+xlim([0 0.5])
+grid on
+xlabel('\Gamma','fontsize',15)
+ylabel('pdf','fontsize',15) 
+legend([h1 h2],'bin','patch')
+nanmedian(patches.gam_bin(:))
+nanmedian(patches.gam3(:))
+
+figdir='/Users/Andy/Cruises_Research/ChiPod/Analyses/Patch_n2_dTdz'
+print( fullfile( figdir, ['eq14_cham_gamma_binVspatch'] ), '-dpng' )
+
+
+%%
+
+figure(2);clf
+h1=histogram(log10(patches.gam_bin(:)),'Normalization','pdf');
+hold on
+h2=histogram(log10(patches.gam2(:)),'Normalization','pdf');
+%histogram(log10(gam_bin_all(:)),'Normalization','pdf')
+freqline(nanmedian(h1.Data),'b--')
+freqline(nanmedian(h2.Data),'r--')
+%freqline(nanmean(h1.Data),'b')
+%freqline(nanmean(h2.Data),'r')
+xlim([-4 2])
+grid on
+xlabel('log_{10}[\Gamma]')
+ylabel('pdf') 
+legend([h1 h2],'bin','patch')
+nanmedian(patches.gam_bin(:))
+nanmedian(patches.gam3(:))
+hf=freqline(log10(0.2),'k--')
+set(hf,'linewidth',2)
+print( fullfile( figdir, ['eq14_cham_LOGgamma_binVspatch'] ), '-dpng' )
+
+%figdir='/Users/Andy/Cruises_Research/ChiPod/Analyses/Patch_n2_dTdz'
+%print( fullfile( figdir, ['eq14_cham_gamma_binVspatch'] ), '-dpng' )
 
 %%

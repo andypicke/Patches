@@ -22,11 +22,11 @@ clear ; close all
 patch_size_min=1
 usetemp=1
 
-for cnum=500%1:50:3100
+for cnum=600%1:50:3100
     
     try
-        %        load(['/Users/Andy/Cruises_Research/ChiPod/Cham_Eq14_Compare/mfiles/Patches/ChamRawProc/minOT_' num2str(10*minOTsize) '/
-        load(['/Users/Andy/Cruises_Research/ChiPod/Cham_Eq14_Compare/mfiles/Patches/ChamRawProc/test1m/eq14_' sprintf('%04d',cnum) '.mat']);
+%                load(['/Users/Andy/Cruises_Research/ChiPod/Cham_Eq14_Compare/mfiles/Patches/ChamRawProc/minOT_' num2str(10*minOTsize) '/
+%        load(['/Users/Andy/Cruises_Research/ChiPod/Cham_Eq14_Compare/mfiles/Patches/ChamRawProc/test1m/eq14_' sprintf('%04d',cnum) '.mat']);
         
         avg1=avg;clear avg
         
