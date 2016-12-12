@@ -11,7 +11,8 @@
 %
 % See also LookAtProfilesOT.m
 %
-% ** do dt/dz w/ ptmp also and compare??
+% - Run FindPatches_EQ14_Raw.m 1st to identify patches
+% - then run run_eq14_for_PATCHES.m to process cham data over these patches
 %
 %--------------
 % 11/22/16 - A.Pickering
@@ -21,13 +22,12 @@
 clear ; close all
 
 % load patch data (from FindPatches_EQ14_Raw.m)
-patch_size_min=1  % min patch size
+patch_size_min=0.5  % min patch size
 usetemp=1
 datdir='/Users/Andy/Cruises_Research/ChiPod/Cham_Eq14_Compare/mfiles/Patches/ChamRawProc'
 fname=['EQ14_raw_patches_minOT_' num2str(10*patch_size_min) '_usetemp_' num2str(usetemp) '.mat']
 load(fullfile(datdir,fname))
 
-% 
 patches=struct() ;
 patches.cnum = new_patch_data(:,1) ;
 patches.p1   = new_patch_data(:,2) ;
@@ -53,7 +53,7 @@ warning off
 hb=waitbar(0);
 
 for ip=1:Npatches
-
+    
     waitbar(ip/Npatches,hb)
     
     clear cnum
@@ -61,7 +61,6 @@ for ip=1:Npatches
     
     % check if this cast already loaded to avoid unnecessary re-loading
     if cnum_loaded~=cnum
-        %    try
         % load chameleon cast
         clear cal cal2 head
         cham_dir='/Users/Andy/Cruises_Research/ChiPod/Cham_Eq14_Compare/Data/Cham_proc_AP/cal';
@@ -70,6 +69,7 @@ for ip=1:Npatches
     else
         
     end
+    
     clear s t p lat
     s=cal.SAL(1:end-1); % (end-1) b/c last 2 values are same;
     t=cal.T1(1:end-1);
@@ -96,32 +96,28 @@ for ip=1:Npatches
     clear t_pot t_pot_sort
     ptmp_ot=sw_ptmp(s_ot,t_ot,p_ot,0);
     [ptmp_sort , Iptmp]=sort(ptmp_ot,1,'descend');
-            
+    
     clear DT dz dTdz
     dT=nanmax(ptmp_ot)-nanmin(ptmp_ot);
-%   dT=nanmax(t_ot)-nanmin(t_ot);
     dz=nanmax(p_ot)-nanmin(p_ot);
     dTdz=-dT/dz;
     
-%    b=p_ot(end) - (1/dTdz)*t_ot(end);
     b=p_ot(end) - (1/dTdz)*ptmp_ot(end);
-%    tvec=linspace(nanmin(t_ot),nanmax(t_ot),100);
-   tvec=linspace(nanmin(ptmp_ot),nanmax(ptmp_ot),100);
-    pvec=linspace(nanmin(p_ot),nanmax(p_ot),100);    
+    tvec=linspace(nanmin(ptmp_ot),nanmax(ptmp_ot),100);
+    pvec=linspace(nanmin(p_ot),nanmax(p_ot),100);
     yvec=dTdz*pvec - dTdz*b;
     
     % fit a line
-%    P=polyfit(p_ot,t_sort,1);
     P=polyfit(p_ot,ptmp_sort,1);
-        
+    
     % save results
     patches.dtdz1(ip)=dTdz;
     patches.dtdz2(ip)=P(1);
     
     %~~ 'bulk gradient' method from Smyth et al 2001
     % essentially = rms T (btw sorted/unsorted) /  thorpe scale ?
-%    t_rms= sqrt( nanmean(( t_ot - t_sort ).^2) );
-        t_rms= sqrt( nanmean(( ptmp_ot - ptmp_sort ).^2) );
+    %    t_rms= sqrt( nanmean(( t_ot - t_sort ).^2) );
+    t_rms= sqrt( nanmean(( ptmp_ot - ptmp_sort ).^2) );
     patches.dtdz3(ip)= t_rms / patches.Lt(ip) ;
     
     % Now do similar for density / N^2
@@ -154,14 +150,11 @@ for ip=1:Npatches
     % density controlled by temperature??)
     % I think missing divide by rho_0 also?
     patches.n3(ip)= 9.81 / nanmean(sgth_ot) * t_rms / patches.Lt(ip)    ;
-        
+    
     % compute N^2 w/ sw_bfrq
     clear n2
-%    n2=sw_bfrq(s_ot(I),t_ot(I),p_ot(I),0.5);
     n2=sw_bfrq(s_ot(I),t_ot(I),p_ot,0.5);
- %   n2pr=sw_bfreq(s,t,p,0.5);
     patches.n4(ip)=nanmean(n2);
-%    patches.n5(ip)=nanmean(n2pr(iz))
     
     
 end %ip
@@ -322,7 +315,7 @@ for ic=1:length(cnums)
             
             if size(iz)==1
                 patches.eps(ig(ip))=avg.EPSILON(iz);
-                patches.chi(ig(ip))=avg.CHI(iz);                
+                patches.chi(ig(ip))=avg.CHI(iz);
             end
             
         end %ip
@@ -436,7 +429,7 @@ for ip=1:Npatches
     patches.eps_bin(ip)=cham.EPSILON(I,Icham);
     
     if log10(cham.EPSILON(I,Icham))>-8.5
-    patches.gam_bin(ip)=ComputeGamma(cham.N2(I,Icham),cham.DTDZ_RHOORDER(I,Icham),cham.CHI(I,Icham),cham.EPSILON(I,Icham));    
+        patches.gam_bin(ip)=ComputeGamma(cham.N2(I,Icham),cham.DTDZ_RHOORDER(I,Icham),cham.CHI(I,Icham),cham.EPSILON(I,Icham));
     end
     
 end
@@ -514,7 +507,7 @@ ylabel('\Gamma patch')
 % P=polyfit(patches.gam_bin(ig),patches.gam3(ig),1);
 % hold on
 % plot(0:0.001:1,polyval(P,0:0.001:1),'r','linewidth',2)
- grid on
+grid on
 
 figdir='/Users/Andy/Cruises_Research/ChiPod/Analyses/Patch_n2_dTdz'
 print( fullfile( figdir, ['eq14_cham_gamma_binVspatch_scatter'] ), '-dpng' )
@@ -537,7 +530,7 @@ freqline(nanmedian(h2.Data))
 xlim([0 0.5])
 grid on
 xlabel('\Gamma','fontsize',15)
-ylabel('pdf','fontsize',15) 
+ylabel('pdf','fontsize',15)
 legend([h1 h2],'bin','patch')
 nanmedian(patches.gam_bin(:))
 nanmedian(patches.gam3(:))
@@ -560,7 +553,7 @@ freqline(nanmedian(h2.Data),'r--')
 xlim([-4 2])
 grid on
 xlabel('log_{10}[\Gamma]')
-ylabel('pdf') 
+ylabel('pdf')
 legend([h1 h2],'bin','patch')
 nanmedian(patches.gam_bin(:))
 nanmedian(patches.gam3(:))
