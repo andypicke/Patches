@@ -69,6 +69,7 @@ for ip=1:Npatches
     else
         
     end
+    %
     
     clear s t p lat
     s=cal.SAL(1:end-1); % (end-1) b/c last 2 values are same;
@@ -162,12 +163,9 @@ delete(hb)
 
 warning on
 
-%
+%% Add (patch-wise) Chameleon chi and epsilon for each patch
 
-
-%% Compute gamma using different N^2 and dT/dz values
-
-% first, need to get chi and epsilon for each patch
+% these are calulated in run_eq14_for_PATCHES.m
 
 data_dir=fullfile('/Users/Andy/Cruises_Research/ChiPod/Cham_Eq14_Compare/mfiles/Patches/ChamRawProc/',['minOT_' num2str(10*patch_size_min) '_usetemp_' num2str(usetemp)])
 
@@ -195,7 +193,8 @@ for ic=1:length(cnums)
         fname=['eq14_' sprintf('%04d',cnum) '.mat'];
         load(fullfile(data_dir,fname))
         
-        % now loop over all patches
+        % now loop over all patches and get average Eps and chi from those
+        % depths
         clear ig
         ig=find(patches.cnum==cnum);
         for ip=1:length(ig)
@@ -203,14 +202,14 @@ for ic=1:length(cnums)
             clear iz
             iz=isin( avg.P,[patches.p1(ig(ip)) patches.p2(ig(ip))]);
             
-            if size(iz)==1
-                patches.eps(ig(ip))=avg.EPSILON(iz);
-                patches.chi(ig(ip))=avg.CHI(iz);
+            if size(iz)>0
+                patches.eps(ig(ip)) = nanmean(avg.EPSILON(iz)) ;
+                patches.chi(ig(ip)) = nanmean(avg.CHI(iz))     ;
             end
             
         end %ip
         
-    end
+    end % try
     
 end % cnum
 delete(hb)
@@ -230,6 +229,70 @@ gam2=ComputeGamma(patches.nb,patches.dtdz2,patches.chi,patches.eps);
 gam3=ComputeGamma(patches.n3,patches.dtdz3,patches.chi,patches.eps);
 % plot histograms of each
 gam4=ComputeGamma(patches.n4,patches.dtdz2,patches.chi,patches.eps);
+
+%% save results so we don't have to run everything again
+
+patches.gam1=gam1;
+patches.gam2=gam2;
+patches.gam3=gam3;
+patches.gam4=gam4;
+
+save( fullfile( '/Users/Andy/Cruises_Research/ChiPod/Cham_Eq14_Compare/mfiles/Patches/ChamRawProc',...
+    ['eq14_cham_minOT_' num2str(10*patch_size_min) '_usetemp_' num2str(usetemp) '_patches_diffn2dtdzgamma.mat']), 'patches' )
+
+
+%% Get binned data (N^2,dTdz,chi,eps, gamma) at patch locations
+% I want to compare gamma from binned data to the gamma I compute over
+% patches. So for each patch I want to find the closest binned gamma and
+% then compare those.
+
+%clear ; close all
+
+% load binned chameleon data
+load('/Users/Andy/Cruises_Research/ChiPod/Cham_Eq14_Compare/Data/chameleon/processed/Cstar=0_032/sum/eq14_sum_clean.mat')
+
+% load the patch data ( from Compute_N2_dTdz_ChamProfiles_V2.m)
+%load(fullfile( '/Users/Andy/Cruises_Research/ChiPod/Cham_Eq14_Compare/mfiles/Patches/ChamRawProc',...
+%    'eq14_cham_patches_diffn2dtdzgamma.mat'))
+
+addpath /Users/Andy/Cruises_Research/ChiPod/Cham_Eq14_Compare/mfiles/Patches/code/
+
+Npatches=length(patches.cnum)
+patches.gam_bin=nan*ones(size(patches.gam1));
+patches.n2_bin=nan*ones(size(patches.gam1));
+patches.dtdz_bin=nan*ones(size(patches.gam1));
+patches.chi_bin=nan*ones(size(patches.gam1));
+patches.eps_bin=nan*ones(size(patches.gam1));
+
+for ip=1:Npatches
+    clear cnum pbin pmn val I
+    cnum=patches.cnum(ip);
+    Icham=find(cham.castnumber==cnum);
+    pbin=cham.P(:,Icham);
+    pmn=nanmean([patches.p1(ip) patches.p2(ip)]);
+    [val,I]=nanmin( abs(pbin-pmn));
+    
+    patches.n2_bin(ip)  = cham.N2(I,Icham) ;
+    patches.dtdz_bin(ip)= cham.DTDZ_RHOORDER(I,Icham) ;
+    patches.chi_bin(ip) = cham.CHI(I,Icham) ;
+    patches.eps_bin(ip) = cham.EPSILON(I,Icham) ;
+    
+    if log10(cham.EPSILON(I,Icham))>-8.5
+        patches.gam_bin(ip)=ComputeGamma(cham.N2(I,Icham),cham.DTDZ_RHOORDER(I,Icham),cham.CHI(I,Icham),cham.EPSILON(I,Icham));
+    end
+    
+end
+
+% save again w/ gam_bin added
+%save(fullfile( '/Users/Andy/Cruises_Research/ChiPod/Cham_Eq14_Compare/mfiles/Patches/ChamRawProc',...
+%    'eq14_cham_patches_diffn2dtdzgamma.mat'),'patches')
+save( fullfile( '/Users/Andy/Cruises_Research/ChiPod/Cham_Eq14_Compare/mfiles/Patches/ChamRawProc',...
+    ['eq14_cham_minOT_' num2str(10*patch_size_min) '_usetemp_' num2str(usetemp) '_patches_diffn2dtdzgamma.mat']), 'patches' )
+
+%
+%
+%
+%%
 
 figure(1);clf
 h1=histogram(log10(gam1(:)));
@@ -265,73 +328,30 @@ grid on
 xlabel('\Gamma')
 ylabel('count')
 
+if saveplots==1
 print( fullfile( figdir, ['eq14_cham_patch_gammas'] ), '-dpng' )
-
+end
 %%
 
 gams=[ nanmedian(gam1) nanmedian(gam2) nanmedian(gam3) nanmedian(gam4) ;
     nanmedian(gam1(iz1)) nanmedian(gam2(iz2)) nanmedian(gam3(iz3)) nanmedian(gam4(iz4)) ]
 
-%% save results so we don't have to run everything again
 
-patches.gam1=gam1;
-patches.gam2=gam2;
-patches.gam3=gam3;
-patches.gam4=gam4;
-
-save( fullfile( '/Users/Andy/Cruises_Research/ChiPod/Cham_Eq14_Compare/mfiles/Patches/ChamRawProc',...
-    'eq14_cham_patches_diffn2dtdzgamma.mat'), 'patches' )
-
-%
-
-%%
-% I want to compare gamma from binned data to the gamma I compute over
-% patches. So for each patch I want to find the closest binned gamma and
-% then compare those.
+%% Make plots
 
 clear ; close all
 
-% load binned chameleon data
-load('/Users/Andy/Cruises_Research/ChiPod/Cham_Eq14_Compare/Data/chameleon/processed/Cstar=0_032/sum/eq14_sum_clean.mat')
+patch_size_min=0.5
+usetemp=1
 
-% load the patch data ( from Compute_N2_dTdz_ChamProfiles_V2.m)
-load(fullfile( '/Users/Andy/Cruises_Research/ChiPod/Cham_Eq14_Compare/mfiles/Patches/ChamRawProc',...
-    'eq14_cham_patches_diffn2dtdzgamma.mat'))
+load( fullfile( '/Users/Andy/Cruises_Research/ChiPod/Cham_Eq14_Compare/mfiles/Patches/ChamRawProc',...
+    ['eq14_cham_minOT_' num2str(10*patch_size_min) '_usetemp_' num2str(usetemp) '_patches_diffn2dtdzgamma.mat']), 'patches' )
 
-addpath /Users/Andy/Cruises_Research/ChiPod/Cham_Eq14_Compare/mfiles/Patches/code/
-
-Npatches=length(patches.cnum)
-patches.gam_bin=nan*ones(size(patches.gam1));
-patches.n2_bin=nan*ones(size(patches.gam1));
-patches.dtdz_bin=nan*ones(size(patches.gam1));
-patches.chi_bin=nan*ones(size(patches.gam1));
-patches.eps_bin=nan*ones(size(patches.gam1));
-
-for ip=1:Npatches
-    clear cnum pbin pmn val I
-    cnum=patches.cnum(ip);
-    Icham=find(cham.castnumber==cnum);
-    pbin=cham.P(:,Icham);
-    pmn=nanmean([patches.p1(ip) patches.p2(ip)]);
-    [val,I]=nanmin( abs(pbin-pmn));
-    
-    patches.n2_bin(ip)=cham.N2(I,Icham);
-    patches.dtdz_bin(ip)=cham.DTDZ_RHOORDER(I,Icham);
-    patches.chi_bin(ip)=cham.CHI(I,Icham);
-    patches.eps_bin(ip)=cham.EPSILON(I,Icham);
-    
-    if log10(cham.EPSILON(I,Icham))>-8.5
-        patches.gam_bin(ip)=ComputeGamma(cham.N2(I,Icham),cham.DTDZ_RHOORDER(I,Icham),cham.CHI(I,Icham),cham.EPSILON(I,Icham));
-    end
-    
-end
-
-% save again w/ gam_bin added
-save(fullfile( '/Users/Andy/Cruises_Research/ChiPod/Cham_Eq14_Compare/mfiles/Patches/ChamRawProc',...
-    'eq14_cham_patches_diffn2dtdzgamma.mat'),'patches')
-
+figdir='/Users/Andy/Cruises_Research/ChiPod/Analyses/Patch_n2_dTdz'
 
 %% Plot 2D hist/scatter of different dt/dz methods
+
+
 
 figure(1);clf
 agutwocolumn(1)
@@ -354,8 +374,9 @@ ylabel('log_{10}[dtdz3]')
 %grid on
 grid on
 
-figdir='/Users/Andy/Cruises_Research/ChiPod/Analyses/Patch_n2_dTdz'
+if saveplots==1
 print( fullfile( figdir, ['eq14_cham_patch_dTdzs_scatter'] ), '-dpng' )
+end
 
 %% Make histogram of different dt/dzs
 
@@ -374,8 +395,9 @@ xlabel('log_{10}[dT/dz]')
 ylabel('count')
 legend([h1 h2 h3],'dtdz1','dtdz2','dtdz3')
 
-figdir='/Users/Andy/Cruises_Research/ChiPod/Analyses/Patch_n2_dTdz'
+if saveplots==1
 print( fullfile( figdir, ['eq14_cham_patch_dTdzs'] ), '-dpng' )
+end
 
 %% Plot 2D histograms of different N2 methods
 
@@ -417,8 +439,9 @@ ylabel('log_{10}[N^2_4]')
 xlim([xl])
 ylim([yl])
 
+if saveplots==1
 print( fullfile( figdir, ['eq14_cham_patch_N2s_scatter'] ), '-dpng' )
-%subplot(313)
+end
 
 %% Plot histogram of different N2s
 
@@ -442,7 +465,9 @@ xlabel('log_{10}[N^2]')
 ylabel('count')
 legend([h1 h2 h3 h4],'1  ','2 ','3 ','4 ','location','best')
 
+if saveplots==1
 print( fullfile( figdir, ['eq14_cham_patch_N2s'] ), '-dpng' )
+end
 
 %%
 
@@ -494,8 +519,9 @@ legend([h1 h2],'patch','bin','location','best')
 freqline(nanmedian(h1.Data),'b--')
 freqline(nanmedian(h2.Data),'r--')
 
-figdir='/Users/Andy/Cruises_Research/ChiPod/Analyses/Patch_n2_dTdz'
+if saveplots==1
 print( fullfile( figdir, ['eq14_cham_gamma_binVspatch_hists'] ), '-dpng' )
+end
 
 %%
 
@@ -514,9 +540,9 @@ ylabel('\Gamma patch')
 % plot(0:0.001:1,polyval(P,0:0.001:1),'r','linewidth',2)
 grid on
 
-figdir='/Users/Andy/Cruises_Research/ChiPod/Analyses/Patch_n2_dTdz'
+if saveplots==1
 print( fullfile( figdir, ['eq14_cham_gamma_binVspatch_scatter'] ), '-dpng' )
-
+end
 
 %%
 
@@ -540,9 +566,9 @@ legend([h1 h2],'bin','patch')
 nanmedian(patches.gam_bin(:))
 nanmedian(patches.gam3(:))
 
-figdir='/Users/Andy/Cruises_Research/ChiPod/Analyses/Patch_n2_dTdz'
+if saveplots==1
 print( fullfile( figdir, ['eq14_cham_gamma_binVspatch'] ), '-dpng' )
-
+end
 
 %%
 
@@ -564,9 +590,10 @@ nanmedian(patches.gam_bin(:))
 nanmedian(patches.gam3(:))
 hf=freqline(log10(0.2),'k--')
 set(hf,'linewidth',2)
-print( fullfile( figdir, ['eq14_cham_LOGgamma_binVspatch'] ), '-dpng' )
 
-%figdir='/Users/Andy/Cruises_Research/ChiPod/Analyses/Patch_n2_dTdz'
-%print( fullfile( figdir, ['eq14_cham_gamma_binVspatch'] ), '-dpng' )
+if saveplots==1
+print( fullfile( figdir, ['eq14_cham_LOGgamma_binVspatch'] ), '-dpng' )
+end
+
 
 %%
