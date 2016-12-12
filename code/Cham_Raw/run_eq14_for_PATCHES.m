@@ -55,7 +55,7 @@ clear all
 run_test=0;
 
 % load patch data (from FindPatches_EQ14_Raw.m)
-patch_size_min=1  % min patch size
+patch_size_min=0.5  % min patch size
 usetemp=1
 savedir='/Users/Andy/Cruises_Research/ChiPod/Cham_Eq14_Compare/mfiles/Patches/ChamRawProc'
 fname=['EQ14_raw_patches_minOT_' num2str(10*patch_size_min) '_usetemp_' num2str(usetemp) '.mat']
@@ -82,19 +82,13 @@ path_raw='/Users/Andy/Cruises_Research/ChiPod/Cham_Eq14_Compare/Data/chameleon/r
 % make directories for the single drop .mat files and for the summary file
 % turn warnings off so they don't say that a directory already exists
 warning off
-%path_save = [path_cham 'processed/mat' filesep];
-%path_save = [path_cham 'processed_AP_' num2str(fmax) 'hz/mat' filesep];
 
 if run_test==1
     path_save = ['/Users/Andy/Cruises_Research/ChiPod/Cham_Eq14_Compare/mfiles/Patches/ChamRawProc/test1m/'];
 else
-%    path_save = ['/Users/Andy/Cruises_Research/ChiPod/Cham_Eq14_Compare/mfiles/Patches/ChamRawProc/minOT_' num2str(10*patch_size_min) '/'];
     path_save = ['/Users/Andy/Cruises_Research/ChiPod/Cham_Eq14_Compare/mfiles/Patches/ChamRawProc/minOT_' num2str(10*patch_size_min) '_usetemp_' num2str(usetemp) '/'];
 end
 ChkMkDir(path_save)
-%path_sum = [path_cham 'processed/sum' filesep];
-%path_sum = [path_cham 'processed_AP_' num2str(fmax) 'hz/sum' filesep];
-%mkdir(path_sum);
 warning on
 
 % define imporant variables
@@ -170,9 +164,6 @@ for cast = [4:12 14:46 48:87 374:519 550:597 599:904 906:909 911:1070 ...
             % which sets how the shear spectra should be filtered.
             nfft=128;
             warning off
-            %        avg=average_data_gen1(q.series,'binsize',1,'nfft',nfft,'whole_bins',1);
-            %        avg=average_data_gen1_AP(q.series,'binsize',1,'nfft',nfft,'whole_bins',1);
-            
             
             % *** replace with average_data_PATCH_AP.m, need to load patch data also
             % and specify in inputs ***
