@@ -130,20 +130,19 @@ for cnum=4%icast=1%:length(Flist)
     %% find patches for this cnum
     igc=find(patches.cnum==cnum)
     
-    %% get start/stop indices for the patch depths
+    %% get start/stop indicies for the patch depths
     
-    Np=length(igc);
-    todo_inds=nan*ones(Np,2);
-    for ip=1:Np
-        iz=isin(cal.P,[patches.p1(igc(ip)) patches.p2(igc(ip)) ] )
-        todo_inds(ip,:)=[iz(1) iz(end)] ;
-    end
+   Np=length(igc);
+   for ip=1:Np
+      iz=isin(cal.P,[patches.p1(igc(ip)) patches.p2(igc(ip)) ] ) 
+       
+   end
     
 %% need to replace this, returns todo_inds, the indices of data for each window (start/stop)
     % Make windows for chi calcs
-%    clear TP
-%    TP=cal.TP;
-%    [todo_inds,Nwindows]=MakeCtdChiWindows(TP,Params.nfft);
+    clear TP
+    TP=cal.TP;
+    [todo_inds,Nwindows]=MakeCtdChiWindows(TP,Params.nfft);
     
     %%
     
