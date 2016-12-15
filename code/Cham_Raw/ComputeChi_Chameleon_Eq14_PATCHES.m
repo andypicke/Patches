@@ -220,9 +220,9 @@ for cnum=4%icast=1%:length(Flist)
  avg.dTdz = patches.dtdz2(igc) ;
  
  % ** find unique ctd.p values
- 
-    avg.T   =interp1(ctd.p(good_inds),ctd.t1(good_inds),avg.P);
-    avg.S   =interp1(ctd.p(good_inds),ctd.s1(good_inds),avg.P);
+    [p2,IA,IC] = unique(ctd.p(good_inds));
+    avg.T   =interp1(ctd.p(good_inds(IA)),ctd.t1(good_inds(IA)),avg.P);
+    avg.S   =interp1(ctd.p(good_inds(IA)),ctd.s1(good_inds(IA)),avg.P);
     
     
     
