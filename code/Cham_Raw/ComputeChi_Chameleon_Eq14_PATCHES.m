@@ -212,8 +212,15 @@ for cnum=4%icast=1%:length(Flist)
     % get N2, dTdz for each window
     good_inds=find(~isnan(ctd.p));
     % interpolate ctd data to same pressures as chipod
-    avg.N2  =interp1(ctd.p(good_inds),ctd.N2(good_inds),avg.P);
-    avg.dTdz=interp1(ctd.p(good_inds),ctd.dTdz(good_inds),avg.P);
+%    avg.N2  =interp1(ctd.p(good_inds),ctd.N2(good_inds),avg.P);
+ %   avg.dTdz=interp1(ctd.p(good_inds),ctd.dTdz(good_inds),avg.P);
+
+ % Get N2 and dTdz from patches structure instead
+ avg.N2 = patches.nb(igc) ;
+ avg.dTdz = patches.dtdz2(igc) ;
+ 
+ % ** find unique ctd.p values
+ 
     avg.T   =interp1(ctd.p(good_inds),ctd.t1(good_inds),avg.P);
     avg.S   =interp1(ctd.p(good_inds),ctd.s1(good_inds),avg.P);
     
