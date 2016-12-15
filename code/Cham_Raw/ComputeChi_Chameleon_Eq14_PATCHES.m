@@ -102,27 +102,27 @@ for cnum=4%icast=1%:length(Flist)
 %     [sbin zbin Nobs] = binprofile(cal.SAL,cal.P, zmin, dz, zmax,minobs);
 %     clear zmin dz zmax minobs
     
-    % Compute dT/dz and N^2 for chi calculations
-%     clear ctd z_smooth
-%     ctd=struct();
-%     ctd.t1=tbin;
-%     ctd.s1=sbin;
-%     ctd.p=zbin;
+%%
+     clear ctd z_smooth
+     ctd=struct();
+     ctd.t1=cal.T1;
+     ctd.s1=cal.SAL;
+     ctd.p=cal.P;
   
     % add in lat and lon (from sum_eq14.m)
-%     clear idot lat1 lat2
-%     idot=strfind(head.lon.start,'.');
-%     lon1=str2num(head.lon.start(1:idot-3))
-%     lon2=str2num(head.lon.start(idot-2:end))/60;
-%     ctd.lon=nanmean([lon1 lon2]);
+    clear idot lat1 lat2
+    idot=strfind(head.lon.start,'.');
+    lon1=str2num(head.lon.start(1:idot-3))
+    lon2=str2num(head.lon.start(idot-2:end))/60;
+    ctd.lon=nanmean([lon1 lon2]);
 
-%     clear idot lat1 lat2
-%     idot=strfind(head.lat.start,'.');
-%     lat1=str2num(head.lat.start(1:idot-3))
-%     lat2=str2num(head.lat.start(idot-2:end))/60;
-%     ctd.lat=nanmean([lat1 lat2]);
+    clear idot lat1 lat2
+    idot=strfind(head.lat.start,'.');
+    lat1=str2num(head.lat.start(1:idot-3))
+    lat2=str2num(head.lat.start(idot-2:end))/60;
+    ctd.lat=nanmean([lat1 lat2]);
 
-%    ctd.lat=nanmean([str2num(head.lat.start) str2num(head.lat.end)]);
+   ctd.lat=nanmean([str2num(head.lat.start) str2num(head.lat.end)]);
 %    ctd=Compute_N2_dTdz_forChi(ctd,Params.z_smooth);
     
     % are pressure loops already removed? or maybe there are none/few?
@@ -138,6 +138,8 @@ for cnum=4%icast=1%:length(Flist)
         iz=isin(cal.P,[patches.p1(igc(ip)) patches.p2(igc(ip)) ] )
         todo_inds(ip,:)=[iz(1) iz(end)] ;
     end
+    
+    Nwindows=Np;
     
 %% need to replace this, returns todo_inds, the indices of data for each window (start/stop)
     % Make windows for chi calcs
@@ -171,6 +173,7 @@ for cnum=4%icast=1%:length(Flist)
         avg.FspdStd(iwind)=nanstd(cal.FALLSPD(inds)/100);
     end
     
+    %%
     %~ save spectra to plot after
     % make empty arrays for spectra
     if savespec==1
@@ -187,6 +190,7 @@ for cnum=4%icast=1%:length(Flist)
         %~
     end
     
+    %%
     
     if makeplots==1
         %~~ plot histogram of avg.P to see how many good windows we have in
@@ -203,6 +207,7 @@ for cnum=4%icast=1%:length(Flist)
         end
     end
     
+    %%
     
     % get N2, dTdz for each window
     good_inds=find(~isnan(ctd.p));
@@ -212,6 +217,10 @@ for cnum=4%icast=1%:length(Flist)
     avg.T   =interp1(ctd.p(good_inds),ctd.t1(good_inds),avg.P);
     avg.S   =interp1(ctd.p(good_inds),ctd.s1(good_inds),avg.P);
     
+    
+    
+    
+    %%
     % note sw_visc not included in newer versions of sw?
     avg.nu=sw_visc_ctdchi(avg.S,avg.T,avg.P);
     avg.tdif=sw_tdif_ctdchi(avg.S,avg.T,avg.P);
