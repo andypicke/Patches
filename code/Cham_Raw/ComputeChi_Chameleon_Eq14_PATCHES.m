@@ -53,19 +53,21 @@ Params.fc       = 99  ;   % cutoff frequency for response correction
 Params.gamma    = 0.2 ;   % mixing efficiency
 
 % option to use gamma computed in patches, instead of a constant value
-use_patch_gam=1;
+use_patch_gam=0;
 
 if Params.resp_corr==0
     Params.fc=99;
 end
 
+whN2dTdz=3
+
 % Make directory to save processed casts in (name based on Params)
 if use_patch_gam==1
     datdirsave=fullfile('/Users/Andy/Cruises_Research/ChiPod/Cham_Eq14_Compare/mfiles/Patches/code/Cham_Raw/',...
-        ['zsm' num2str(Params.z_smooth) 'm_fmax' num2str(Params.fmax) 'Hz_respcorr' num2str(Params.resp_corr) '_fc_' num2str(Params.fc) 'hz_gammaPATCH_nfft_' num2str(Params.nfft)]);
+        ['N2dTdz_' num2str(whN2dTdz) '_fmax' num2str(Params.fmax) 'Hz_respcorr' num2str(Params.resp_corr) '_fc_' num2str(Params.fc) 'hz_gammaPATCH_nfft_' num2str(Params.nfft)]);
 else
     datdirsave=fullfile('/Users/Andy/Cruises_Research/ChiPod/Cham_Eq14_Compare/mfiles/Patches/code/Cham_Raw/',...
-        ['zsm' num2str(Params.z_smooth) 'm_fmax' num2str(Params.fmax) 'Hz_respcorr' num2str(Params.resp_corr) '_fc_' num2str(Params.fc) 'hz_gamma' num2str(Params.gamma*100) '_nfft_' num2str(Params.nfft)]);
+        ['N2dTdz_' num2str(whN2dTdz) '_fmax' num2str(Params.fmax) 'Hz_respcorr' num2str(Params.resp_corr) '_fc_' num2str(Params.fc) 'hz_gamma' num2str(Params.gamma*100) '_nfft_' num2str(Params.nfft)]);
 end
 
 disp(['Data will be saved to ' datdirsave])
@@ -207,9 +209,16 @@ for cnum=[4:12 14:46 48:87 374:519 550:597 599:904 906:909 911:1070 ...
         %   avg.dTdz=interp1(ctd.p(good_inds),ctd.dTdz(good_inds),avg.P);
         
         % Get N2 and dTdz from patches structure instead
+        
+        if whN2dTdz==2
         avg.N2   = patches.nb(igc)   ;
-        avg.dTdz = patches.dtdz2(igc);        
+        avg.dTdz = patches.dtdz2(igc);                
         avg.gamma= patches.gam2(igc) ;
+        elseif whN2dTdz==3
+        avg.N2   = patches.n3(igc)   ;
+        avg.dTdz = patches.dtdz3(igc);                
+        avg.gamma= patches.gam3(igc) ;
+        end
         
         % add binned eps and chi so we can compare after
         avg.eps_bin  =patches.eps_bin(igc);
