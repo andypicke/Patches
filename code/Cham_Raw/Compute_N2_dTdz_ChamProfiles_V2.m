@@ -22,7 +22,7 @@
 clear ; close all
 
 % load patch data (from FindPatches_EQ14_Raw.m)
-patch_size_min=0.5  % min patch size
+patch_size_min=0.25  % min patch size
 usetemp=1
 datdir='/Users/Andy/Cruises_Research/ChiPod/Cham_Eq14_Compare/mfiles/Patches/ChamRawProc'
 fname=['EQ14_raw_patches_minOT_' num2str(10*patch_size_min) '_usetemp_' num2str(usetemp) '.mat']
@@ -56,6 +56,8 @@ for ip=1:Npatches
     
     waitbar(ip/Npatches,hb)
     
+    try 
+        
     clear cnum
     cnum=patches.cnum(ip);
     
@@ -86,6 +88,9 @@ for ip=1:Npatches
     clear iz t_ot s_ot p_ot
     
     iz=isin(p,[ patches.p1(ip) patches.p2(ip) ]);
+    
+    if length(iz)>10
+    
     t_ot=t(iz);
     s_ot=s(iz);
     p_ot=p(iz);
@@ -157,6 +162,9 @@ for ip=1:Npatches
     n2=sw_bfrq(s_ot(I),t_ot(I),p_ot,0.5);
     patches.n4(ip)=nanmean(n2);
     
+    end
+    
+    end % try
     
 end %ip
 delete(hb)
@@ -249,7 +257,8 @@ save( fullfile( '/Users/Andy/Cruises_Research/ChiPod/Cham_Eq14_Compare/mfiles/Pa
 %clear ; close all
 
 % load binned chameleon data
-load('/Users/Andy/Cruises_Research/ChiPod/Cham_Eq14_Compare/Data/chameleon/processed/Cstar=0_032/sum/eq14_sum_clean.mat')
+%load('/Users/Andy/Cruises_Research/ChiPod/Cham_Eq14_Compare/Data/chameleon/processed/Cstar=0_032/sum/eq14_sum_clean.mat')
+load('/Users/Andy/Cruises_Research/ChiPod/Cham_Eq14_Compare/Data/chameleon/processed_AP_7hz/sum/eq14_sum_clean.mat')
 
 % load the patch data ( from Compute_N2_dTdz_ChamProfiles_V2.m)
 %load(fullfile( '/Users/Andy/Cruises_Research/ChiPod/Cham_Eq14_Compare/mfiles/Patches/ChamRawProc',...
@@ -258,19 +267,19 @@ load('/Users/Andy/Cruises_Research/ChiPod/Cham_Eq14_Compare/Data/chameleon/proce
 addpath /Users/Andy/Cruises_Research/ChiPod/Cham_Eq14_Compare/mfiles/Patches/code/
 
 Npatches=length(patches.cnum)
-patches.gam_bin=nan*ones(size(patches.gam1));
-patches.n2_bin=nan*ones(size(patches.gam1));
-patches.dtdz_bin=nan*ones(size(patches.gam1));
-patches.chi_bin=nan*ones(size(patches.gam1));
-patches.eps_bin=nan*ones(size(patches.gam1));
+patches.gam_bin = nan*ones(size(patches.gam1)) ;
+patches.n2_bin  = nan*ones(size(patches.gam1)) ;
+patches.dtdz_bin= nan*ones(size(patches.gam1)) ;
+patches.chi_bin = nan*ones(size(patches.gam1)) ;
+patches.eps_bin = nan*ones(size(patches.gam1)) ;
 
 for ip=1:Npatches
     clear cnum pbin pmn val I
-    cnum=patches.cnum(ip);
-    Icham=find(cham.castnumber==cnum);
-    pbin=cham.P(:,Icham);
-    pmn=nanmean([patches.p1(ip) patches.p2(ip)]);
-    [val,I]=nanmin( abs(pbin-pmn));
+    cnum = patches.cnum(ip) ;
+    Icham= find(cham.castnumber==cnum) ;
+    pbin = cham.P(:,Icham) ;
+    pmn  = nanmean([patches.p1(ip) patches.p2(ip)]) ;
+    [val,I]=nanmin( abs(pbin-pmn)) ;
     
     patches.n2_bin(ip)  = cham.N2(I,Icham) ;
     patches.dtdz_bin(ip)= cham.DTDZ_RHOORDER(I,Icham) ;
@@ -283,317 +292,9 @@ for ip=1:Npatches
     
 end
 
-% save again w/ gam_bin added
-%save(fullfile( '/Users/Andy/Cruises_Research/ChiPod/Cham_Eq14_Compare/mfiles/Patches/ChamRawProc',...
-%    'eq14_cham_patches_diffn2dtdzgamma.mat'),'patches')
+% save again 
 save( fullfile( '/Users/Andy/Cruises_Research/ChiPod/Cham_Eq14_Compare/mfiles/Patches/ChamRawProc',...
     ['eq14_cham_minOT_' num2str(10*patch_size_min) '_usetemp_' num2str(usetemp) '_patches_diffn2dtdzgamma.mat']), 'patches' )
 
-%
-%
-%
 %%
 
-figure(1);clf
-h1=histogram(log10(gam1(:)));
-hold on
-histogram(log10(gam2(:)),h1.BinEdges);
-histogram(real(log10(gam3(:))),h1.BinEdges);
-histogram(real(log10(gam4(:))),h1.BinEdges);
-%xlim([-3 1])
-%histogram((gam1(:)));xlim([0 1])
-
-iz1=find(gam1>0 & gam1<1);
-iz2=find(gam2>0 & gam2<1);
-iz3=find(gam3>0 & gam3<1 );%& log10(patches.eps)>-8);
-iz4=find(gam4>0 & gam4<1);
-
-figure(2);clf
-h1=histogram( gam1(iz1), 40 );
-hold on
-h2=histogram( gam2(iz2) , h1.BinEdges );
-h3=histogram( gam3(iz2) , h1.BinEdges );
-h4=histogram( gam4(iz2) , h1.BinEdges );
-freqline(nanmedian(gam1))
-freqline(nanmedian(gam2))
-freqline(nanmedian(gam3))
-freqline(nanmedian(gam4))
-text(nanmedian(gam1),3500,'\Gamma 1')
-text(nanmedian(gam2),3600,'\Gamma 2')
-text(nanmedian(gam3),3700,'\Gamma 3')
-text(nanmedian(gam4),3800,'\Gamma 4')
-legend([h1 h2 h3 h4],'\Gamma 1','\Gamma 2','\Gamma 3','\Gamma 4')
-xlim([0 0.5])
-grid on
-xlabel('\Gamma')
-ylabel('count')
-
-if saveplots==1
-print( fullfile( figdir, ['eq14_cham_patch_gammas'] ), '-dpng' )
-end
-%%
-
-gams=[ nanmedian(gam1) nanmedian(gam2) nanmedian(gam3) nanmedian(gam4) ;
-    nanmedian(gam1(iz1)) nanmedian(gam2(iz2)) nanmedian(gam3(iz3)) nanmedian(gam4(iz4)) ]
-
-
-%% Make plots
-
-clear ; close all
-
-patch_size_min=0.5
-usetemp=1
-
-load( fullfile( '/Users/Andy/Cruises_Research/ChiPod/Cham_Eq14_Compare/mfiles/Patches/ChamRawProc',...
-    ['eq14_cham_minOT_' num2str(10*patch_size_min) '_usetemp_' num2str(usetemp) '_patches_diffn2dtdzgamma.mat']), 'patches' )
-
-figdir='/Users/Andy/Cruises_Research/ChiPod/Analyses/Patch_n2_dTdz'
-
-%% Plot 2D hist/scatter of different dt/dz methods
-
-
-
-figure(1);clf
-agutwocolumn(1)
-wysiwyg
-set(gcf,'defaultaxesfontsize',15)
-
-subplot(211)
-%loglog(abs(dtdz1(:)),abs(dtdz2(:)),'.')
-histogram2(log10(abs(patches.dtdz1(:))),log10(abs(patches.dtdz2(:))),50,'displaystyle','tile')
-xlabel('log_{10}[dtdz1]')
-ylabel('log_{10}[dtdz2]')
-%grid on
-grid on
-
-subplot(212)
-%loglog(abs(dtdz1(:)),abs(dtdz2(:)),'.')
-histogram2(log10(abs(patches.dtdz1(:))),log10(abs(patches.dtdz3(:))),50,'displaystyle','tile')
-xlabel('log_{10}[dtdz1]')
-ylabel('log_{10}[dtdz3]')
-%grid on
-grid on
-
-if saveplots==1
-print( fullfile( figdir, ['eq14_cham_patch_dTdzs_scatter'] ), '-dpng' )
-end
-
-%% Make histogram of different dt/dzs
-
-figure(1);clf
-agutwocolumn(0.7)
-wysiwyg
-set(gcf,'defaultaxesfontsize',14)
-
-h1=histogram(log10(abs(patches.dtdz1(:))),'DisplayStyle','stair')%,'edgecolor','none');
-hold on
-h2=histogram(log10(abs(patches.dtdz2(:))),h1.BinEdges,'DisplayStyle','stair')%,'edgecolor','none');
-h3=histogram(log10(abs(patches.dtdz3(:))),h1.BinEdges,'DisplayStyle','stair')%,'edgecolor','none');
-grid on
-xlim([-4 -0.5])
-xlabel('log_{10}[dT/dz]')
-ylabel('count')
-legend([h1 h2 h3],'dtdz1','dtdz2','dtdz3')
-
-if saveplots==1
-print( fullfile( figdir, ['eq14_cham_patch_dTdzs'] ), '-dpng' )
-end
-
-%% Plot 2D histograms of different N2 methods
-
-figure(2);clf
-agutwocolumn(1)
-wysiwyg
-set(gcf,'defaultaxesfontsize',15)
-
-xl=[-5.5 -3]
-yl=[-6.75 -2.5]
-m=3
-n=1
-
-subplot(m,n,1)
-%loglog(n1(:),nb(:),'.')
-histogram2(real(log10(patches.n1(:))),real(log10(patches.nb(:))),50,'displaystyle','tile')
-grid on
-xlim(xl)
-ylim(yl)
-
-xlabel('log_{10}[N^2_1]')
-ylabel('log_{10}[N^2_2]')
-
-subplot(m,n,2)
-%loglog(n1(:),n3(:),'.')
-histogram2(real(log10(patches.n1(:))),real(log10(patches.n3(:))),50,'displaystyle','tile')
-grid on
-xlabel('log_{10}[N^2_1]')
-ylabel('log_{10}[N^2_3]')
-xlim(xl)
-ylim(yl)
-
-subplot(m,n,3)
-%loglog(n1(:),n3(:),'.')
-histogram2(real(log10(patches.n1(:))),real(log10(patches.n4(:))),50,'displaystyle','tile')
-grid on
-xlabel('log_{10}[N^2_1]')
-ylabel('log_{10}[N^2_4]')
-xlim([xl])
-ylim([yl])
-
-if saveplots==1
-print( fullfile( figdir, ['eq14_cham_patch_N2s_scatter'] ), '-dpng' )
-end
-
-%% Plot histogram of different N2s
-
-figure(2);clf
-agutwocolumn(0.7)
-wysiwyg
-set(gcf,'defaultaxesfontsize',14)
-
-h1=histogram(real(log10(patches.n1(:)))) ;
-hold on
-h2=histogram(real(log10(patches.nb(:))),h1.BinEdges) ;
-h3=histogram(real(log10(patches.n3(:))),h1.BinEdges) ;
-h4=histogram(real(log10(patches.n4(:))),h1.BinEdges) ;
-freqline(nanmedian(h1.Data))
-freqline(nanmedian(h2.Data))
-freqline(nanmedian(h3.Data))
-freqline(nanmedian(h4.Data))
-grid on
-xlim([-6 -2.5])
-xlabel('log_{10}[N^2]')
-ylabel('count')
-legend([h1 h2 h3 h4],'1  ','2 ','3 ','4 ','location','best')
-
-if saveplots==1
-print( fullfile( figdir, ['eq14_cham_patch_N2s'] ), '-dpng' )
-end
-
-%%
-
-figure(1);clf
-agutwocolumn(1)
-wysiwyg
-
-ax1=subplot(221);
-h1=histogram(real(log10(patches.nb(:))),'Normalization','pdf','edgecolor','none');
-hold on
-h2=histogram(real(log10(patches.n2_bin(:))),h1.BinEdges,'Normalization','pdf','edgecolor','none');
-xlim([-6.5 -2.5])
-grid on
-xlabel('log_{10}[N^2]')
-legend([h1 h2],'patch','bin','location','best')
-freqline(nanmedian(h1.Data),'b--')
-freqline(nanmedian(h2.Data),'r--')
-
-ax2=subplot(222);
-h1=histogram(real(log10(patches.dtdz2(:))),'Normalization','pdf','edgecolor','none');
-hold on
-h2=histogram(real(log10(patches.dtdz_bin(:))),h1.BinEdges,'Normalization','pdf','edgecolor','none');
-xlim([-5 0])
-grid on
-xlabel('log_{10}[dT/dz]')
-legend([h1 h2],'patch','bin','location','best')
-freqline(nanmedian(h1.Data),'b--')
-freqline(nanmedian(h2.Data),'r--')
-
-ax3=subplot(223);
-h1=histogram(real(log10(patches.chi(:))),'Normalization','pdf','edgecolor','none');
-hold on
-h2=histogram(real(log10(patches.chi_bin(:))),h1.BinEdges,'Normalization','pdf','edgecolor','none');
-xlim([-12 -3])
-grid on
-xlabel('log_{10}[\chi]')
-legend([h1 h2],'patch','bin','location','best')
-freqline(nanmedian(h1.Data),'b--')
-freqline(nanmedian(h2.Data),'r--')
-
-ax4=subplot(224);
-h1=histogram(real(log10(patches.eps(:))),'Normalization','pdf','edgecolor','none');
-hold on
-h2=histogram(real(log10(patches.eps_bin(:))),h1.BinEdges,'Normalization','pdf','edgecolor','none');
-%xlim([-12 -3])
-grid on
-xlabel('log_{10}[\epsilon]')
-legend([h1 h2],'patch','bin','location','best')
-freqline(nanmedian(h1.Data),'b--')
-freqline(nanmedian(h2.Data),'r--')
-
-if saveplots==1
-print( fullfile( figdir, ['eq14_cham_gamma_binVspatch_hists'] ), '-dpng' )
-end
-
-%%
-
-ib=find(patches.gam_bin>1);
-
-figure(1);clf
-%scatter(log10(patches.gam_bin(:)),log10(patches.gam3(:)),'o','filled','MarkerFaceAlpha',0.05)
-scatter(patches.gam_bin(:), patches.gam3(:),'o','filled','MarkerFaceAlpha',0.1) ; xlim([0 0.5]) ; ylim([0 0.5])
-%xlim([-3 1]);ylim([-3 1])
-xlabel('\Gamma bin')
-ylabel('\Gamma patch')
-
-% ig=find(~isnan(patches.gam_bin) & ~isnan(patches.gam2));
-% P=polyfit(patches.gam_bin(ig),patches.gam3(ig),1);
-% hold on
-% plot(0:0.001:1,polyval(P,0:0.001:1),'r','linewidth',2)
-grid on
-
-if saveplots==1
-print( fullfile( figdir, ['eq14_cham_gamma_binVspatch_scatter'] ), '-dpng' )
-end
-
-%%
-
-gam_bin_all=ComputeGamma(cham.N2(:),cham.DTDZ_RHOORDER(:),cham.CHI(:),cham.EPSILON(:));
-
-ig1=find(patches.gam_bin<=1);
-ig2=find(patches.gam2<=1);
-
-figure(2);clf
-h1=histogram((patches.gam_bin(ig1)),'Normalization','pdf');
-hold on
-h2=histogram((patches.gam2(ig2)),'Normalization','pdf');
-%histogram(log10(gam_bin_all(:)),'Normalization','pdf')
-freqline(nanmedian(h1.Data))
-freqline(nanmedian(h2.Data))
-xlim([0 0.5])
-grid on
-xlabel('\Gamma','fontsize',15)
-ylabel('pdf','fontsize',15)
-legend([h1 h2],'bin','patch')
-nanmedian(patches.gam_bin(:))
-nanmedian(patches.gam3(:))
-
-if saveplots==1
-print( fullfile( figdir, ['eq14_cham_gamma_binVspatch'] ), '-dpng' )
-end
-
-%%
-
-figure(2);clf
-h1=histogram(log10(patches.gam_bin(:)),'Normalization','pdf');
-hold on
-h2=histogram(log10(patches.gam2(:)),'Normalization','pdf');
-%histogram(log10(gam_bin_all(:)),'Normalization','pdf')
-freqline(nanmedian(h1.Data),'b--')
-freqline(nanmedian(h2.Data),'r--')
-%freqline(nanmean(h1.Data),'b')
-%freqline(nanmean(h2.Data),'r')
-xlim([-4 2])
-grid on
-xlabel('log_{10}[\Gamma]')
-ylabel('pdf')
-legend([h1 h2],'bin','patch')
-nanmedian(patches.gam_bin(:))
-nanmedian(patches.gam3(:))
-hf=freqline(log10(0.2),'k--')
-set(hf,'linewidth',2)
-
-if saveplots==1
-print( fullfile( figdir, ['eq14_cham_LOGgamma_binVspatch'] ), '-dpng' )
-end
-
-
-%%

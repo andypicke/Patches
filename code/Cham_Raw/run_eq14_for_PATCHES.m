@@ -45,17 +45,15 @@
 % all notes and comments added by sally
 %
 % Sally Warner, March 2015
+%%
 
 clear all
 
-% ** Have to ALSO change in calc_chi_AP.m
-%fmax=7
-%
 
 run_test=0;
 
 % load patch data (from FindPatches_EQ14_Raw.m)
-patch_size_min=0.5  % min patch size
+patch_size_min=0.25  % min patch size
 usetemp=1
 savedir='/Users/Andy/Cruises_Research/ChiPod/Cham_Eq14_Compare/mfiles/Patches/ChamRawProc'
 fname=['EQ14_raw_patches_minOT_' num2str(10*patch_size_min) '_usetemp_' num2str(usetemp) '.mat']
@@ -64,6 +62,7 @@ clear savedir fname
 
 addpath /Users/Andy/Cruises_Research/mixingsoftware/Chameleon2/Version2015/
 addpath /Users/Andy/Cruises_Research/mixingsoftware/seawater/
+addpath /Users/Andy/Cruises_Research/mixingsoftware/general/
 addpath /Users/Andy/Cruises_Research/mixingsoftware/marlcham/
 addpath /Users/Andy/Cruises_Research/mixingsoftware/marlcham/calibrate/
 addpath /Users/Andy/Cruises_Research/mixingsoftware/calibrate/
@@ -306,6 +305,7 @@ for cast = [4:12 14:46 48:87 374:519 550:597 599:904 906:909 911:1070 ...
     end % try
     
 end % cast
+
 %%
 %%%%%%%% COMBINE ALL CASTS AND SAVE SUM FILE %%%%%%%%
 %sum_eq14(path_save,path_sum,depth_max,cruise_id);

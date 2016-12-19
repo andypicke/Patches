@@ -29,15 +29,12 @@ clear ; close all
 mixpath='/Users/Andy/Cruises_Research/mixingsoftware/'
 addpath(fullfile(mixpath,'seawater'))
 
-% for IdentifyPatches.m
-addpath /Users/Andy/Cruises_Research/ChiPod/Cham_Eq14_Compare/mfiles/Patches/code/
-
 datdir='/Users/Andy/Cruises_Research/ChiPod/Cham_Eq14_Compare/Data/Cham_proc_AP/cal'
 
 % patch options
-save_data=1
-patch_size_min=1  % min patch size
-usetemp=1 % 1=use pot. temp, 0= use density
+save_data = 1 ;        % save data at the end
+patch_size_min = 0.25 ;% min patch size
+usetemp  = 1 ;         % 1=use pot. temp, 0= use density
 
 patch_data=[];
 % loop through each cast
@@ -74,15 +71,11 @@ for cnum= cnums_to_do;
         lat1=str2num(head.lat.start(1:idot-3));
         lat2=str2num(head.lat.start(idot-2:end))/60;
         lat=nanmean([lat1 lat2]);
-        
-        % find overturns
-        %        clear pstarts pstops
-        %       [pstarts pstops]=IdentifyPatches(s,t,p,lat);
-        
+                        
         clear Params
         Params.lat=lat;
         Params.plotit=0;
-        Params.sigma=1e-4;
+        Params.sigma=1e-5;
         Params.runlmin=0;
         Params.minotsize=patch_size_min;
         Params.usetemp=usetemp;
