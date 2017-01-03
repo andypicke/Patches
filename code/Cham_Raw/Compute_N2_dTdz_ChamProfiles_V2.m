@@ -21,9 +21,11 @@
 
 clear ; close all
 
-% load patch data (from FindPatches_EQ14_Raw.m)
+% options
 patch_size_min=0.25  % min patch size
 usetemp=1
+
+% load patch data (from FindPatches_EQ14_Raw.m)
 datdir='/Users/Andy/Cruises_Research/ChiPod/Cham_Eq14_Compare/mfiles/Patches/ChamRawProc'
 fname=['EQ14_raw_patches_minOT_' num2str(10*patch_size_min) '_usetemp_' num2str(usetemp) '.mat']
 load(fullfile(datdir,fname))
@@ -37,14 +39,17 @@ patches.Lt   = new_patch_data(:,6) ;
 % Make empty arrays for results
 Npatches=length(patches.p1);
 EmpVec=nan*ones(Npatches,1);
-patches.n1=EmpVec;
-patches.nb=EmpVec;
-patches.n3=EmpVec;
+
+% Different methods of computing N^2
+patches.n2_range=EmpVec;
+patches.n2_line=EmpVec;
+patches.n2_bulk=EmpVec;
 patches.n4=EmpVec;
 
-patches.dtdz1=EmpVec;
-patches.dtdz2=EmpVec;
-patches.dtdz3=EmpVec;
+% Different methods of computing dT/dz
+patches.dtdz_range=EmpVec;
+patches.dtdz_line=EmpVec;
+patches.dtdz_bulk=EmpVec;
 
 addpath /Users/Andy/Cruises_Research/seawater_ver3_2/
 
@@ -56,114 +61,115 @@ for ip=1:Npatches
     
     waitbar(ip/Npatches,hb)
     
-    try 
+    try
         
-    clear cnum
-    cnum=patches.cnum(ip);
-    
-    % check if this cast already loaded to avoid unnecessary re-loading
-    if cnum_loaded~=cnum
-        % load chameleon cast
-        clear cal cal2 head
-        cham_dir='/Users/Andy/Cruises_Research/ChiPod/Cham_Eq14_Compare/Data/Cham_proc_AP/cal';
-        load( fullfile( cham_dir, ['eq14_' sprintf('%04d',cnum) '.mat'] ) )
-        cnum_loaded=cnum;
-    else
+        clear cnum
+        cnum=patches.cnum(ip);
         
-    end
-    %
-    
-    clear s t p lat
-    s=cal.SAL(1:end-1); % (end-1) b/c last 2 values are same;
-    t=cal.T1(1:end-1);
-    p=cal.P(1:end-1);
-    
-    clear idot lat1 lat2
-    idot=strfind(head.lat.start,'.');
-    lat1=str2num(head.lat.start(1:idot-3));
-    lat2=str2num(head.lat.start(idot-2:end))/60;
-    lat=nanmean([lat1 lat2]);
-    
-    clear pstarts pstops
-    clear iz t_ot s_ot p_ot
-    
-    iz=isin(p,[ patches.p1(ip) patches.p2(ip) ]);
-    
-    if length(iz)>10
-    
-    t_ot=t(iz);
-    s_ot=s(iz);
-    p_ot=p(iz);
-    
-    clear t_sort I
-    [t_sort , I]=sort(t_ot,1,'descend');
-    
-    % compute potential temp
-    clear t_pot t_pot_sort
-    ptmp_ot=sw_ptmp(s_ot,t_ot,p_ot,0);
-    [ptmp_sort , Iptmp]=sort(ptmp_ot,1,'descend');
-    
-    clear DT dz dTdz
-    dT=nanmax(ptmp_ot)-nanmin(ptmp_ot);
-    dz=nanmax(p_ot)-nanmin(p_ot);
-    dTdz=-dT/dz;
-    
-    b=p_ot(end) - (1/dTdz)*ptmp_ot(end);
-    tvec=linspace(nanmin(ptmp_ot),nanmax(ptmp_ot),100);
-    pvec=linspace(nanmin(p_ot),nanmax(p_ot),100);
-    yvec=dTdz*pvec - dTdz*b;
-    
-    % fit a line
-    P=polyfit(p_ot,ptmp_sort,1);
-    
-    % save results
-    patches.dtdz1(ip)=dTdz;
-    patches.dtdz2(ip)=P(1);
-    
-    %~~ 'bulk gradient' method from Smyth et al 2001
-    % essentially = rms T (btw sorted/unsorted) /  thorpe scale ?
-    %    t_rms= sqrt( nanmean(( t_ot - t_sort ).^2) );
-    t_rms= sqrt( nanmean(( ptmp_ot - ptmp_sort ).^2) );
-    patches.dtdz3(ip)= t_rms / patches.Lt(ip) ;
-    
-    % Now do similar for density / N^2
-    
-    clear sgth sgth_ot
-    sgth=sw_pden(s,t,p,0);
-    sgth_ot=sw_pden(s_ot,t_ot,p_ot,0);
-    
-    clear sgth_sort I
-    [sgth_sort , I]=sort(sgth_ot,1,'ascend');
-    
-    % try the range/dz method
-    drho=nanmax(sgth_ot)-nanmin(sgth_ot);
-    dz=nanmax(p_ot)-nanmin(p_ot);
-    n2_1=9.81/nanmean(sgth_ot)*drho/dz;
-    
-    patches.n1(ip)=n2_1;
-    
-    % fit a line to sgth
-    clear P1
-    P1=polyfit(p_ot,sgth_sort,1);
-    % calculate N^2 from this fit
-    clear drhodz n2_2 drho dz n2_3
-    drhodz=P1(1);
-    n2_2=9.81/nanmean(sgth_ot)*drhodz;
-    
-    patches.nb(ip)=n2_2;
-    
-    % Smyth eta al says associated N^2=g*bulk gradient (assuming
-    % density controlled by temperature??)
-    % I think missing divide by rho_0 also?
-    patches.n3(ip)= 9.81 / nanmean(sgth_ot) * t_rms / patches.Lt(ip)    ;
-    
-    % compute N^2 w/ sw_bfrq
-    clear n2
-    n2=sw_bfrq(s_ot(I),t_ot(I),p_ot,0.5);
-    patches.n4(ip)=nanmean(n2);
-    
-    end
-    
+        % check if this cast already loaded to avoid unnecessary re-loading
+        if cnum_loaded~=cnum
+            % load chameleon cast
+            clear cal cal2 head
+            cham_dir='/Users/Andy/Cruises_Research/ChiPod/Cham_Eq14_Compare/Data/Cham_proc_AP/cal';
+            load( fullfile( cham_dir, ['eq14_' sprintf('%04d',cnum) '.mat'] ) )
+            cnum_loaded=cnum;
+        else
+            
+        end
+        %
+        
+        clear s t p lat
+        s=cal.SAL(1:end-1); % (end-1) b/c last 2 values are same;
+        t=cal.T1(1:end-1);
+        p=cal.P(1:end-1);
+        
+        clear idot lat1 lat2
+        idot=strfind(head.lat.start,'.');
+        lat1=str2num(head.lat.start(1:idot-3));
+        lat2=str2num(head.lat.start(idot-2:end))/60;
+        lat=nanmean([lat1 lat2]);
+        
+        clear pstarts pstops
+        clear iz t_ot s_ot p_ot
+        
+        iz=isin(p,[ patches.p1(ip) patches.p2(ip) ]);
+        
+        if length(iz)>10
+            
+            t_ot=t(iz);
+            s_ot=s(iz);
+            p_ot=p(iz);
+            
+            clear t_sort I
+            [t_sort , I]=sort(t_ot,1,'descend');
+            
+            % compute potential temp
+            clear t_pot t_pot_sort
+            ptmp_ot=sw_ptmp(s_ot,t_ot,p_ot,0);
+            [ptmp_sort , Iptmp]=sort(ptmp_ot,1,'descend');
+            
+            clear DT dz dTdz
+            dT=nanmax(ptmp_ot)-nanmin(ptmp_ot);
+            dz=nanmax(p_ot)-nanmin(p_ot);
+            dTdz=-dT/dz;
+            
+            b=p_ot(end) - (1/dTdz)*ptmp_ot(end);
+            tvec=linspace(nanmin(ptmp_ot),nanmax(ptmp_ot),100);
+            pvec=linspace(nanmin(p_ot),nanmax(p_ot),100);
+            yvec=dTdz*pvec - dTdz*b;
+            
+            % fit a line
+            P=polyfit(p_ot,ptmp_sort,1);
+            
+            % save results
+            patches.dtdz_range(ip)=dTdz;
+            
+            patches.dtdz_line(ip)=P(1);
+            
+            %~~ 'bulk gradient' method from Smyth et al 2001
+            % essentially = rms T (btw sorted/unsorted) /  thorpe scale ?
+            %    t_rms= sqrt( nanmean(( t_ot - t_sort ).^2) );
+            t_rms= sqrt( nanmean(( ptmp_ot - ptmp_sort ).^2) );
+            patches.dtdz_bulk(ip)= t_rms / patches.Lt(ip) ;
+            
+            %~~ Now do similar for density / N^2
+            
+            clear sgth sgth_ot
+            sgth=sw_pden(s,t,p,0);
+            sgth_ot=sw_pden(s_ot,t_ot,p_ot,0);
+            
+            clear sgth_sort I
+            [sgth_sort , I]=sort(sgth_ot,1,'ascend');
+            
+            % try the range/dz method
+            drho=nanmax(sgth_ot)-nanmin(sgth_ot);
+            dz=nanmax(p_ot)-nanmin(p_ot);
+            n2_1=9.81/nanmean(sgth_ot)*drho/dz;
+            
+            patches.n2_range(ip)=n2_1;
+            
+            % fit a line to sgth
+            clear P1
+            P1=polyfit(p_ot,sgth_sort,1);
+            % calculate N^2 from this fit
+            clear drhodz n2_2 drho dz n2_3
+            drhodz=P1(1);
+            n2_2=9.81/nanmean(sgth_ot)*drhodz;
+            
+            patches.n2_line(ip)=n2_2;
+            
+            % Smyth eta al says associated N^2=g*bulk gradient (assuming
+            % density controlled by temperature??)
+            % I think missing divide by rho_0 also?
+            patches.n2_bulk(ip)= 9.81 / nanmean(sgth_ot) * t_rms / patches.Lt(ip)    ;
+            
+            % compute N^2 w/ sw_bfrq
+            clear n2
+            n2=sw_bfrq(s_ot(I),t_ot(I),p_ot,0.5);
+            patches.n4(ip)=nanmean(n2);
+            
+        end
+        
     end % try
     
 end %ip
@@ -230,19 +236,19 @@ patches.eps(ib)=nan;
 %%
 addpath /Users/Andy/Cruises_Research/ChiPod/Cham_Eq14_Compare/mfiles/Patches/code/
 % use 'bulk gradient' for both
-gam1=ComputeGamma(patches.n1,patches.dtdz1,patches.chi,patches.eps);
+gam1=ComputeGamma(patches.n2_range,patches.dtdz_range,patches.chi,patches.eps);
 % use polyfit for both
-gam2=ComputeGamma(patches.nb,patches.dtdz2,patches.chi,patches.eps);
+gam_line=ComputeGamma(patches.n2_line,patches.dtdz_line,patches.chi,patches.eps);
 % use range/dz for both
-gam3=ComputeGamma(patches.n3,patches.dtdz3,patches.chi,patches.eps);
+gam_bulk=ComputeGamma(patches.n2_bulk,patches.dtdz_bulk,patches.chi,patches.eps);
 % plot histograms of each
-gam4=ComputeGamma(patches.n4,patches.dtdz2,patches.chi,patches.eps);
+gam4=ComputeGamma(patches.n4,patches.dtdz_line,patches.chi,patches.eps);
 
 %% save results so we don't have to run everything again
 
-patches.gam1=gam1;
-patches.gam2=gam2;
-patches.gam3=gam3;
+patches.gam_range=gam_range;
+patches.gam_line=gam_line;
+patches.gam_bulk=gam_bulk;
 patches.gam4=gam4;
 
 save( fullfile( '/Users/Andy/Cruises_Research/ChiPod/Cham_Eq14_Compare/mfiles/Patches/ChamRawProc',...
@@ -292,7 +298,7 @@ for ip=1:Npatches
     
 end
 
-% save again 
+% save again
 save( fullfile( '/Users/Andy/Cruises_Research/ChiPod/Cham_Eq14_Compare/mfiles/Patches/ChamRawProc',...
     ['eq14_cham_minOT_' num2str(10*patch_size_min) '_usetemp_' num2str(usetemp) '_patches_diffn2dtdzgamma.mat']), 'patches' )
 
