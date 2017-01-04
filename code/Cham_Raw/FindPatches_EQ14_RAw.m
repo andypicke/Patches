@@ -14,7 +14,8 @@
 % ProcessEq14Cham_AP.m, which was modified from Sally's code so I could
 % make files to apply chipod method to. See also ComputeChi_Chameleon_Eq14.m
 %
-% Will do using temp and dens, and w/ a variety of min OT sizes
+% Dependencies:
+%   - compute_overturns_discrete_AP.m
 %
 %-----------------
 % 10/27/16 - A.Pickering - andypicke@gmail.com
@@ -34,18 +35,19 @@ datdir='/Users/Andy/Cruises_Research/ChiPod/Cham_Eq14_Compare/Data/Cham_proc_AP/
 % patch options
 save_data = 1 ;        % save data at the end
 patch_size_min = 0.25 ;% min patch size
-usetemp  = 1 ;         % 1=use pot. temp, 0= use density
+usetemp   = 1 ;         % 1=use pot. temp, 0= use density
 
 patch_data=[];
+
 % loop through each cast
 warning off
 hb=waitbar(0,'working on profiles');
 
 % only do profiles that are done in chameleon processing
 cnums_to_do=[4:12 14:46 48:87 374:519 550:597 599:904 906:909 911:1070 ...
-        1075:1128 1130:1737 1739:2550 2552:2996 2998:3092];
-%for cnum=1:3100%
-for cnum= cnums_to_do;  
+    1075:1128 1130:1737 1739:2550 2552:2996 2998:3092];
+
+for cnum= cnums_to_do;
     
     waitbar(cnum/length(cnums_to_do),hb)
     
@@ -71,7 +73,7 @@ for cnum= cnums_to_do;
         lat1=str2num(head.lat.start(1:idot-3));
         lat2=str2num(head.lat.start(idot-2:end))/60;
         lat=nanmean([lat1 lat2]);
-                        
+        
         clear Params
         Params.lat=lat;
         Params.plotit=0;
@@ -97,53 +99,11 @@ end % cnum
 delete(hb)
 warning on
 
-% if join_patches==1
-%     % Join patches if they are separated by less than patch_sep_min
-%
-%     prof_nums=unique(patch_data(:,1));
-%     new_patch_data=[]
-%     for ip=1:length(prof_nums)
-%
-%         clear ig patch_small new_patch
-%         ig=find(patch_data(:,1)==prof_nums(ip));
-%
-%         if length(ig)>1
-%             patch_small=patch_data(ig,1:3);
-%             ii=1;
-%             while ii<size(patch_small,1)
-%                 clear new_patch
-%                 % check if separated by <15cm
-%                 if ( patch_small(ii+1,2) - patch_small(ii,3) ) < patch_sep_min
-%                     % join patch
-%                     new_patch=[prof_nums(ip) patch_small(ii,2) patch_small(ii+1,3)];
-%                     patch_small=[patch_small(1:ii-1,:) ; new_patch ; patch_small(ii+2:end,:)];
-%                 else
-%                 end
-%                 ii=ii+1;
-%
-%             end % patches for 1 profile
-%
-%             % add patch size column
-%             patch_small=[patch_small patch_small(:,3)-patch_small(:,2)];
-%
-%             new_patch_data=[new_patch_data ; patch_small];
-%         else
-%             new_patch_data=[new_patch_data ; patch_data(ig,:)];
-%         end % have more than 1 patch
-%
-%     end %ip (which profile
-%
-% else % don't join patches
-%     new_patch_data=patch_data;
-% end % if join_patches==1
-%
-% save data
 
 new_patch_data=patch_data;
 
 if save_data==1
     savedir='/Users/Andy/Cruises_Research/ChiPod/Cham_Eq14_Compare/mfiles/Patches/ChamRawProc/'
-    %    fname=['EQ14_raw_patches_minOT_' num2str(patch_size_min) '_join_' num2str(join_patches) '_sep_' num2str(100*patch_sep_min) '.mat']
     fname=['EQ14_raw_patches_minOT_' num2str(10*patch_size_min) '_usetemp_' num2str(usetemp) '.mat']
     save( fullfile( savedir,fname), 'new_patch_data')
 end
