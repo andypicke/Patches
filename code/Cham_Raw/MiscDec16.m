@@ -1,8 +1,10 @@
-%%
-
-% looking for relation ships between patch gamma and other variables that
-% will let us predict patch gamma when we don't measure epsilon
-
+%~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+%
+% In this script i'm looking for relationships between patch gamma
+% and other variables that will let us predict patch gamma when we 
+% don't measure epsilon
+%
+%~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 %%
 clear ; close all
 
@@ -11,6 +13,8 @@ usetemp = 1
 
 load( fullfile( '/Users/Andy/Cruises_Research/ChiPod/Cham_Eq14_Compare/mfiles/Patches/ChamRawProc',...
     ['eq14_cham_minOT_' num2str(10*patch_size_min) '_usetemp_' num2str(usetemp) '_patches_diffn2dtdzgamma.mat']), 'patches' )
+
+%%
 
 figure(1);clf
 %loglog(patches.n3,patches.gam3,'.')

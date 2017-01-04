@@ -1,0 +1,101 @@
+\documentclass[11pt]{article}
+\usepackage{geometry}                % See geometry.pdf to learn the layout options. There are lots.
+\geometry{letterpaper}                   % ... or a4paper or a5paper or ... 
+%\geometry{landscape}                % Activate for for rotated page geometry
+%\usepackage[parfill]{parskip}    % Activate to begin paragraphs with an empty line rather than an indent
+\usepackage{graphicx}
+\usepackage{amssymb}
+\usepackage{amsmath}
+\usepackage{epstopdf}
+\usepackage{hyperref}
+\usepackage{natbib}
+\DeclareGraphicsRule{.tif}{png}{.png}{`convert #1 `dirname #1`/`basename #1 .tif`.png}
+
+
+\graphicspath{
+{/Users/Andy/Cruises_Research/ChiPod/Cham_Eq14_Compare/mfiles/Patches/figures/}
+{/Users/Andy/Cruises_Research/ChiPod/ChiPod_Methods_Paper/figures/}
+{/Users/Andy/Cruises_Research/ChiPod/Cham_Eq14_Compare/Figures/}
+}
+
+\title{Chipod Analysis Summary - Jan 9}
+\author{Andy Pickering}
+%\date{}                                           % Activate to display a given date or no date
+
+
+\begin{document}
+\maketitle
+
+\tableofcontents
+\newpage
+
+%~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+\section{Goal}
+
+Compute $\chi$ and $\epsilon$ from $\chi$-pod (ie fast thermistor) profiles. Show that this method works.
+
+%~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+\section{Approach}
+Use data from Chameleon profiler, which has thermistor and shear probe. Apply $\chi$-pod method to thermistor data only, and compare results to the 'true' data calculated with thermistor and shear probe. 
+
+%~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+\section{Results}
+Good agreement for $\chi$, but $\epsilon$ is off by about a factor of 10.
+
+\begin{figure}[htbp]
+\includegraphics[scale=0.95]{EQ14_2dhist_chi_WITHhist_zsm10m_fmax7Hz_respcorr0_fc_99hz_gamma20.png}
+\caption{2D histogram of $\chi$ computed with chipod method on binned chameleon data Vs chameleon data w/ shear probe.}
+\label{}
+\end{figure}
+
+\begin{figure}[htbp]
+\includegraphics[scale=0.95]{EQ14_2dhist_eps_zsm10m_fmax10Hz_respcorr1_gamma20.png}
+\caption{2D histogram of $\epsilon$ computed with chipod method on binned chameleon data Vs chameleon data w/ shear probe.}
+\label{}
+\end{figure}
+
+
+%~~~~~~~~~~~
+\subsection{Why is epsilon off by so much?}
+If we compute gamma from the binned chameleon data we get about 0.01. If that gamma is used in the chipod calculations instead of 0.2, we get about the right epsilon.
+
+But how do we determine the correct gamma to use when we don't have shear probe data (the whole point of the chipods is to avoid having to make those measurements).
+
+
+%~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+\section{Try doing computations over patches:}
+
+If we compute $N^2$,$dT/dz$,$\chi$,$\epsilon$ over patches, we get gamma is about 0.2. So this is good. Also, the method to compute $N^2$ and $dT/dz$ matters. Bill's `bulk' gradient method works better.
+
+If we use the $N^2$ and $dT/dz$ computed using the bulk formula, and a constant gamma of 0.2, we get about the right epsilons.
+
+\begin{figure}[htbp]
+\includegraphics[scale=0.95]{eps_scatter_compare_N2dTdz_3.png}
+\caption{2D histograms of $\epsilon$ computed with chipod method to chameleon $\epsilon$. Top: $\chi$-pod method with N2 and dTdz computed for patches, and constant gamma 0.2. }
+\label{}
+\end{figure}
+
+
+%~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+\section{What to do about rest of the profile (non-patches)?}
+
+
+
+\begin{figure}[htbp]
+\includegraphics[scale=0.95]{.png}
+\caption{}
+\label{}
+\end{figure}
+
+
+
+
+%~~~~~~~~~~~~~~~~~~~~~~~~~
+\bibliographystyle{ametsoc2014}
+\bibliography{/Users/Andy/Cruises_Research/wavechasers_bib/main}
+
+
+
+
+
+\end{document}  

@@ -53,7 +53,7 @@ Params.fc       = 99  ;   % cutoff frequency for response correction
 Params.gamma    = 0.2 ;   % mixing efficiency
 
 % option to use gamma computed in patches, instead of a constant value
-use_patch_gam=0;
+use_patch_gam=1;
 
 if Params.resp_corr==0
     Params.fc=99;

@@ -73,15 +73,13 @@ for ip=1:Npatches
             cham_dir='/Users/Andy/Cruises_Research/ChiPod/Cham_Eq14_Compare/Data/Cham_proc_AP/cal';
             load( fullfile( cham_dir, ['eq14_' sprintf('%04d',cnum) '.mat'] ) )
             cnum_loaded=cnum;
-        else
-            
+        else            
         end
-        %
         
         clear s t p lat
-        s=cal.SAL(1:end-1); % (end-1) b/c last 2 values are same;
-        t=cal.T1(1:end-1);
-        p=cal.P(1:end-1);
+        s = cal.SAL(1:end-1); % (end-1) b/c last 2 values are same;
+        t = cal.T1 (1:end-1);
+        p = cal.P  (1:end-1);
         
         clear idot lat1 lat2
         idot=strfind(head.lat.start,'.');
