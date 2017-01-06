@@ -7,7 +7,8 @@
 % all data for specified patches, instead of the normal evenly-spaced bins.
 % Data paths also modified from Sally's version.
 %
-% output saved to path_save = '/Users/Andy/Cruises_Research/ChiPod/Cham_Eq14_Compare/mfiles/Patches/ChamRawProc/';
+% output saved to:
+% '/Users/Andy/Cruises_Research/ChiPod/Cham_Eq14_Compare/mfiles/Patches/data/ChamRawProc/';
 %
 %--------
 % 11/01/16 - A.Pickering
@@ -30,7 +31,7 @@
 % 2) In average_dat_gen1_AP:
 % calc_chi > calc_chi_AP
 %
-%~~~~~~~~~~~~~~~~~
+%~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 %
 % Adapting Sasha's processing from Dynamo11 for the eq14 cruise. The
 % realtime processing doesn't go throuhg the cleaning and filtering steps
@@ -49,14 +50,15 @@
 
 clear all
 
-
+% option to test w/ 1m patches to make sure we get same results as original
+% binned processing
 run_test=0;
 
 % load patch data (from FindPatches_EQ14_Raw.m)
 patch_size_min=0.25  % min patch size
 usetemp=1
-savedir='/Users/Andy/Cruises_Research/ChiPod/Cham_Eq14_Compare/mfiles/Patches/ChamRawProc'
-fname=['EQ14_raw_patches_minOT_' num2str(10*patch_size_min) '_usetemp_' num2str(usetemp) '.mat']
+savedir='/Users/Andy/Cruises_Research/ChiPod/Cham_Eq14_Compare/mfiles/Patches/data/ChamRawProc'
+fname=['EQ14_raw_patches_minOT_' num2str(100*patch_size_min) '_usetemp_' num2str(usetemp) '.mat']
 load(fullfile(savedir,fname))
 clear savedir fname
 
@@ -83,9 +85,9 @@ path_raw='/Users/Andy/Cruises_Research/ChiPod/Cham_Eq14_Compare/Data/chameleon/r
 warning off
 
 if run_test==1
-    path_save = ['/Users/Andy/Cruises_Research/ChiPod/Cham_Eq14_Compare/mfiles/Patches/ChamRawProc/test1m/'];
+    path_save = ['/Users/Andy/Cruises_Research/ChiPod/Cham_Eq14_Compare/mfiles/Patches/data/ChamRawProc/test1m/'];
 else
-    path_save = ['/Users/Andy/Cruises_Research/ChiPod/Cham_Eq14_Compare/mfiles/Patches/ChamRawProc/minOT_' num2str(10*patch_size_min) '_usetemp_' num2str(usetemp) '/'];
+    path_save = ['/Users/Andy/Cruises_Research/ChiPod/Cham_Eq14_Compare/mfiles/Patches/data/ChamRawProc/minOT_' num2str(100*patch_size_min) '_usetemp_' num2str(usetemp) '/'];
 end
 ChkMkDir(path_save)
 warning on
@@ -125,7 +127,7 @@ warning off
 % good for whatever reason. Here, you're just supposed to have a matrix so
 % the bad files are skipped over. In other words, "bad" isn't implemented.)
 for cast = [4:12 14:46 48:87 374:519 550:597 599:904 906:909 911:1070 ...
-        1075:1128 1130:1737 1739:2550 2552:2996 2998:3092];
+        1075:1128 [1130:1737 1739:2550 2552:2996 2998:3092];
     
     try
         

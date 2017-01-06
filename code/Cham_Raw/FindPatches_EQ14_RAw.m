@@ -13,6 +13,7 @@
 % The raw mat files for each chameleon cast are made w/
 % ProcessEq14Cham_AP.m, which was modified from Sally's code so I could
 % make files to apply chipod method to. See also ComputeChi_Chameleon_Eq14.m
+% They are in the folder /ChiPod/Cham_Eq14_Compare/Data/Cham_proc_AP/cal/
 %
 % Dependencies:
 %   - compute_overturns_discrete_AP.m
@@ -33,8 +34,8 @@ addpath(fullfile(mixpath,'seawater'))
 datdir='/Users/Andy/Cruises_Research/ChiPod/Cham_Eq14_Compare/Data/Cham_proc_AP/cal'
 
 % patch options
-save_data = 1 ;        % save data at the end
-patch_size_min = 0.25 ;% min patch size
+save_data = 1 ;         % save data at the end
+patch_size_min = 0.25 ; % min patch size
 usetemp   = 1 ;         % 1=use pot. temp, 0= use density
 
 patch_data=[];
@@ -99,12 +100,11 @@ end % cnum
 delete(hb)
 warning on
 
-
 new_patch_data=patch_data;
 
 if save_data==1
-    savedir='/Users/Andy/Cruises_Research/ChiPod/Cham_Eq14_Compare/mfiles/Patches/ChamRawProc/'
-    fname=['EQ14_raw_patches_minOT_' num2str(10*patch_size_min) '_usetemp_' num2str(usetemp) '.mat']
+    savedir='/Users/Andy/Cruises_Research/ChiPod/Cham_Eq14_Compare/mfiles/Patches/data/ChamRawProc/'
+    fname=['EQ14_raw_patches_minOT_' num2str(100*patch_size_min) '_usetemp_' num2str(usetemp) '.mat']
     save( fullfile( savedir,fname), 'new_patch_data')
 end
 

@@ -26,8 +26,8 @@ patch_size_min=0.25  % min patch size
 usetemp=1
 
 % load patch data (from FindPatches_EQ14_Raw.m)
-datdir='/Users/Andy/Cruises_Research/ChiPod/Cham_Eq14_Compare/mfiles/Patches/ChamRawProc'
-fname=['EQ14_raw_patches_minOT_' num2str(10*patch_size_min) '_usetemp_' num2str(usetemp) '.mat']
+datdir='/Users/Andy/Cruises_Research/ChiPod/Cham_Eq14_Compare/mfiles/Patches/data/ChamRawProc/'
+fname=['EQ14_raw_patches_minOT_' num2str(100*patch_size_min) '_usetemp_' num2str(usetemp) '.mat']
 load(fullfile(datdir,fname))
 
 patches=struct() ;
@@ -179,7 +179,7 @@ warning on
 
 % these are calulated in run_eq14_for_PATCHES.m
 
-data_dir=fullfile('/Users/Andy/Cruises_Research/ChiPod/Cham_Eq14_Compare/mfiles/Patches/ChamRawProc/',['minOT_' num2str(10*patch_size_min) '_usetemp_' num2str(usetemp)])
+data_dir=fullfile('/Users/Andy/Cruises_Research/ChiPod/Cham_Eq14_Compare/mfiles/Patches/data/ChamRawProc/',['minOT_' num2str(100*patch_size_min) '_usetemp_' num2str(usetemp)])
 
 chi_all=[];
 eps_all=[];
@@ -234,7 +234,7 @@ patches.eps(ib)=nan;
 %%
 addpath /Users/Andy/Cruises_Research/ChiPod/Cham_Eq14_Compare/mfiles/Patches/code/
 % use 'bulk gradient' for both
-gam1=ComputeGamma(patches.n2_range,patches.dtdz_range,patches.chi,patches.eps);
+gam_range=ComputeGamma(patches.n2_range,patches.dtdz_range,patches.chi,patches.eps);
 % use polyfit for both
 gam_line=ComputeGamma(patches.n2_line,patches.dtdz_line,patches.chi,patches.eps);
 % use range/dz for both
@@ -249,8 +249,8 @@ patches.gam_line=gam_line;
 patches.gam_bulk=gam_bulk;
 patches.gam4=gam4;
 
-save( fullfile( '/Users/Andy/Cruises_Research/ChiPod/Cham_Eq14_Compare/mfiles/Patches/ChamRawProc',...
-    ['eq14_cham_minOT_' num2str(10*patch_size_min) '_usetemp_' num2str(usetemp) '_patches_diffn2dtdzgamma.mat']), 'patches' )
+save( fullfile( '/Users/Andy/Cruises_Research/ChiPod/Cham_Eq14_Compare/mfiles/Patches/data/ChamRawProc',...
+    ['eq14_cham_minOT_' num2str(100*patch_size_min) '_usetemp_' num2str(usetemp) '_patches_diffn2dtdzgamma.mat']), 'patches' )
 
 
 %% Get binned data (N^2,dTdz,chi,eps, gamma) at patch locations
@@ -271,11 +271,11 @@ load('/Users/Andy/Cruises_Research/ChiPod/Cham_Eq14_Compare/Data/chameleon/proce
 addpath /Users/Andy/Cruises_Research/ChiPod/Cham_Eq14_Compare/mfiles/Patches/code/
 
 Npatches=length(patches.cnum)
-patches.gam_bin = nan*ones(size(patches.gam1)) ;
-patches.n2_bin  = nan*ones(size(patches.gam1)) ;
-patches.dtdz_bin= nan*ones(size(patches.gam1)) ;
-patches.chi_bin = nan*ones(size(patches.gam1)) ;
-patches.eps_bin = nan*ones(size(patches.gam1)) ;
+patches.gam_bin = nan*ones(size(patches.gam_bulk)) ;
+patches.n2_bin  = nan*ones(size(patches.gam_bulk)) ;
+patches.dtdz_bin= nan*ones(size(patches.gam_bulk)) ;
+patches.chi_bin = nan*ones(size(patches.gam_bulk)) ;
+patches.eps_bin = nan*ones(size(patches.gam_bulk)) ;
 
 for ip=1:Npatches
     clear cnum pbin pmn val I
@@ -297,8 +297,8 @@ for ip=1:Npatches
 end
 
 % save again
-save( fullfile( '/Users/Andy/Cruises_Research/ChiPod/Cham_Eq14_Compare/mfiles/Patches/ChamRawProc',...
-    ['eq14_cham_minOT_' num2str(10*patch_size_min) '_usetemp_' num2str(usetemp) '_patches_diffn2dtdzgamma.mat']), 'patches' )
+save( fullfile( '/Users/Andy/Cruises_Research/ChiPod/Cham_Eq14_Compare/mfiles/Patches/data/ChamRawProc',...
+    ['eq14_cham_minOT_' num2str(100*patch_size_min) '_usetemp_' num2str(usetemp) '_patches_diffn2dtdzgamma.mat']), 'patches' )
 
 %%
 

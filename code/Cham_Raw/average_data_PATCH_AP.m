@@ -1,4 +1,8 @@
 function avg=average_data_PATCH_AP(series,nfft,pstarts,pstops)
+%~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+%
+% pstarts: pressures of patch starts
+% pstops : pressures of patch stops
 %
 %
 % Modifed from average_data_gen_AP.m . Instead of computing values for
@@ -132,11 +136,7 @@ function avg=average_data_PATCH_AP(series,nfft,pstarts,pstops)
 
 %% define some parameters (some of these will be overwritten with varargin)
 
-%min_bin=0; % first depth bin
-%max_bin=inf; % final depth bin
 depth_or_time='P'; % this is the cal.?? series to be used for binning.
-%whole_bins=0; % set to 1 for bins spaced at 1m, 2m instead of 0.5m, 1.5m etc.
-%binsize=1; % in m
 %nfft=256; % number of slow-sampled data points for an epsilon calculation
 epsilon_glitch_factor=6; % the ratio of EPSILON1/EPSILON2 which, if
 %                          % exceeded, selects the smaller epsilon for avg.EPSILON
@@ -171,19 +171,19 @@ eval(['series={''' depth_or_time ''' series{:}};'])
 min_ind=[];%nan*ones(length(pstarts),1);
 max_ind=[];%min_ind;
 for ip=1:length(pstarts)
-
-%firstbin=binsize*max(floor(min(binseries)/binsize),min_bin/binsize)+(whole_bins~=0)*binsize/2;
-%lastbin=binsize*min(ceil(max(binseries)/binsize),max_bin/binsize)-(whole_bins~=0)*binsize/2;
-%ip
-% find the indices of each meter's worth of data
-%try
-clear iz
-iz=isin(binseries,[pstarts(ip) pstops(ip)]);
-if length(iz)>1
-min_ind=[min_ind ; iz(1)];
-max_ind=[max_ind ; iz(end)];
-end
-
+    
+    %firstbin=binsize*max(floor(min(binseries)/binsize),min_bin/binsize)+(whole_bins~=0)*binsize/2;
+    %lastbin=binsize*min(ceil(max(binseries)/binsize),max_bin/binsize)-(whole_bins~=0)*binsize/2;
+    %ip
+    % find the indices of each meter's worth of data
+    %try
+    clear iz
+    iz=isin(binseries,[pstarts(ip) pstops(ip)]);
+    if length(iz)>1
+        min_ind=[min_ind ; iz(1)];
+        max_ind=[max_ind ; iz(end)];
+    end
+    
 end
 
 nmax=length(max_ind); %length(pstarts)
@@ -346,7 +346,7 @@ rhoav=nanmean(avg.SIGMA)+1000;
 for n=1:nmax
     
     clear inds T S P dT dP sgth dSigma
-%    inds=min_ind(n):max_ind(n);
+    %    inds=min_ind(n):max_ind(n);
     T=cal.T1(min_ind(n)*head.irep.T1 : max_ind(n)*head.irep.T1);
     S=cal.SAL(min_ind(n)*head.irep.SAL : max_ind(n)*head.irep.SAL);
     P=cal.P(min_ind(n)*head.irep.P : max_ind(n)*head.irep.P);

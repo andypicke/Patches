@@ -37,8 +37,8 @@ savespec =0  % save wavenumber spectra
 patch_size_min = 0.25
 usetemp = 1
 
-load( fullfile( '/Users/Andy/Cruises_Research/ChiPod/Cham_Eq14_Compare/mfiles/Patches/ChamRawProc',...
-    ['eq14_cham_minOT_' num2str(10*patch_size_min) '_usetemp_' num2str(usetemp) '_patches_diffn2dtdzgamma.mat']), 'patches' )
+load( fullfile( '/Users/Andy/Cruises_Research/ChiPod/Cham_Eq14_Compare/mfiles/Patches/data/ChamRawProc',...
+    ['eq14_cham_minOT_' num2str(100*patch_size_min) '_usetemp_' num2str(usetemp) '_patches_diffn2dtdzgamma.mat']), 'patches' )
 
 % directory for chameleon casts we have (made w/ ProcessEq14Cham_AP.m)
 datdir='/Users/Andy/Cruises_Research/ChiPod/Cham_Eq14_Compare/Data/Cham_proc_AP/cal'
@@ -53,20 +53,20 @@ Params.fc       = 99  ;   % cutoff frequency for response correction
 Params.gamma    = 0.2 ;   % mixing efficiency
 
 % option to use gamma computed in patches, instead of a constant value
-use_patch_gam=1;
+use_patch_gam=0;
 
 if Params.resp_corr==0
     Params.fc=99;
 end
 
-whN2dTdz=3
+whN2dTdz='bulk'
 
 % Make directory to save processed casts in (name based on Params)
 if use_patch_gam==1
-    datdirsave=fullfile('/Users/Andy/Cruises_Research/ChiPod/Cham_Eq14_Compare/mfiles/Patches/code/Cham_Raw/',...
+    datdirsave=fullfile('/Users/Andy/Cruises_Research/ChiPod/Cham_Eq14_Compare/mfiles/Patches/data/ChipodPatches',...
         ['N2dTdz_' num2str(whN2dTdz) '_fmax' num2str(Params.fmax) 'Hz_respcorr' num2str(Params.resp_corr) '_fc_' num2str(Params.fc) 'hz_gammaPATCH_nfft_' num2str(Params.nfft)]);
 else
-    datdirsave=fullfile('/Users/Andy/Cruises_Research/ChiPod/Cham_Eq14_Compare/mfiles/Patches/code/Cham_Raw/',...
+    datdirsave=fullfile('/Users/Andy/Cruises_Research/ChiPod/Cham_Eq14_Compare/mfiles/Patches/data/ChipodPatches',...
         ['N2dTdz_' num2str(whN2dTdz) '_fmax' num2str(Params.fmax) 'Hz_respcorr' num2str(Params.resp_corr) '_fc_' num2str(Params.fc) 'hz_gamma' num2str(Params.gamma*100) '_nfft_' num2str(Params.nfft)]);
 end
 
@@ -214,10 +214,10 @@ for cnum=[4:12 14:46 48:87 374:519 550:597 599:904 906:909 911:1070 ...
         avg.N2   = patches.nb(igc)   ;
         avg.dTdz = patches.dtdz2(igc);                
         avg.gamma= patches.gam2(igc) ;
-        elseif whN2dTdz==3
-        avg.N2   = patches.n3(igc)   ;
-        avg.dTdz = patches.dtdz3(igc);                
-        avg.gamma= patches.gam3(igc) ;
+        elseif strcmp(whN2dTdz,'bulk')
+        avg.N2   = patches.n2_bulk(igc)   ;
+        avg.dTdz = patches.dtdz_bulk(igc);                
+        avg.gamma= patches.gam_bulk(igc) ;
         end
         
         % add binned eps and chi so we can compare after

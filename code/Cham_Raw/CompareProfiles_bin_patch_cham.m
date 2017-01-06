@@ -84,8 +84,8 @@ eps_bin  = [] ;
 eps_patch= [] ;
 eps_chipod_binned    = [] ;
 
-whN2dTdz=2
-dir1=fullfile('/Users/Andy/Cruises_Research/ChiPod/Cham_Eq14_Compare/mfiles/Patches/code/Cham_Raw/')
+whN2dTdz='bulk'
+dir1=fullfile('/Users/Andy/Cruises_Research/ChiPod/Cham_Eq14_Compare/mfiles/Patches/data/ChipodPatches/')
 %,...
  %       ['N2dTdz_' num2str(whN2dTdz) '_fmax' num2str(Params.fmax) 'Hz_respcorr' num2str(Params.resp_corr) '_fc_' num2str(Params.fc) 'hz_gammaPATCH_nfft_' num2str(Params.nfft)]);
 
@@ -95,11 +95,11 @@ for cnum=1:3100
         
         % patch N^2,dTdz w/ constant gamma
         %load(['/Users/Andy/Cruises_Research/ChiPod/Cham_Eq14_Compare/mfiles/Patches/code/Cham_Raw/zsm0m_fmax7Hz_respcorr0_fc_99hz_gamma20_nfft_128/EQ14_' sprintf('%04d',cnum) 'avg.mat'])
-        load( fullfile( dir1, ['N2dTdz_' num2str(whN2dTdz) '_fmax7Hz_respcorr0_fc_99hz_gamma20_nfft_128'],['EQ14_' sprintf('%04d',cnum) 'avg.mat']))
+        load( fullfile( dir1, ['N2dTdz_' (whN2dTdz) '_fmax7Hz_respcorr0_fc_99hz_gamma20_nfft_128'],['EQ14_' sprintf('%04d',cnum) 'avg.mat']))
         avg_patchN2dTdz_constGam=avg;clear avg
         
         % patch N^2,dTdz w/ patch gamma
-        load( fullfile( dir1, ['N2dTdz_' num2str(whN2dTdz) '_fmax7Hz_respcorr0_fc_99hz_gammaPATCH_nfft_128'],['EQ14_' sprintf('%04d',cnum) 'avg.mat']))
+        load( fullfile( dir1, ['N2dTdz_' (whN2dTdz) '_fmax7Hz_respcorr0_fc_99hz_gammaPATCH_nfft_128'],['EQ14_' sprintf('%04d',cnum) 'avg.mat']))
         %load(['/Users/Andy/Cruises_Research/ChiPod/Cham_Eq14_Compare/mfiles/Patches/code/Cham_Raw/zsm0m_fmax7Hz_respcorr0_fc_99hz_gammaPATCH_nfft_128/EQ14_' sprintf('%04d',cnum) 'avg.mat'])
         %load(['/Users/Andy/Cruises_Research/ChiPod/Cham_Eq14_Compare/mfiles/Patches/code/Cham_Raw/zsm0m_fmax7Hz_respcorr1_fc_32hz_gammaPATCH_nfft_128/EQ14_' sprintf('%04d',cnum) 'avg.mat'])
         avg_patchN2dTdzGam=avg;clear avg
@@ -143,16 +143,16 @@ AllEps=struct('eps_chipod_binned',eps_chipod_binned,'eps_patchN2dTdz_constGam',.
 AllEps.MakeInfo=['Made ' datestr(now) ' w/ CompareProfiles_bin_patch_cham.m']
 % save data
 sav_name = ['epsilons_N2dTdz_' num2str(whN2dTdz) '_chipodmethods.mat'] ; 
-sav_dir='/Users/Andy/Cruises_Research/ChiPod/Cham_Eq14_Compare/mfiles/Patches/code/Cham_Raw'
+sav_dir='/Users/Andy/Cruises_Research/ChiPod/Cham_Eq14_Compare/mfiles/Patches/data/ChipodPatches'
 save(fullfile(sav_dir,sav_name),'AllEps')
 
 %%
 
 clear ; close all
 
-whN2dTdz=3
-sav_name = ['epsilons_N2dTdz_' num2str(whN2dTdz) '_chipodmethods.mat'] ; 
-sav_dir='/Users/Andy/Cruises_Research/ChiPod/Cham_Eq14_Compare/mfiles/Patches/code/Cham_Raw'
+whN2dTdz='bulk'
+sav_name = ['epsilons_N2dTdz_' (whN2dTdz) '_chipodmethods.mat'] ; 
+sav_dir='/Users/Andy/Cruises_Research/ChiPod/Cham_Eq14_Compare/mfiles/Patches/data/ChipodPatches'
 load(fullfile(sav_dir,sav_name))
 
 figure(1);clf
@@ -200,7 +200,7 @@ title('regular chi-pod method, gam=0.2')
 % save figure
 
 %print('/Users/Andy/Cruises_Research/ChiPod/Cham_Eq14_Compare/mfiles/Patches/figures/eps_scatter_compare','-dpng')
-print(['/Users/Andy/Cruises_Research/ChiPod/Cham_Eq14_Compare/mfiles/Patches/figures/eps_scatter_compare_N2dTdz_' num2str(whN2dTdz) ],'-dpng')
+%print(['/Users/Andy/Cruises_Research/ChiPod/Cham_Eq14_Compare/mfiles/Patches/figures/eps_scatter_compare_N2dTdz_' num2str(whN2dTdz) ],'-dpng')
 
 %%
 

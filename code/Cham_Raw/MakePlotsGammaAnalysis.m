@@ -11,12 +11,12 @@
 
 clear ; close all
 
-patch_size_min = 0.15
+patch_size_min = 0.25
 usetemp = 1
-saveplots = 1
+saveplots = 0
 
-load( fullfile( '/Users/Andy/Cruises_Research/ChiPod/Cham_Eq14_Compare/mfiles/Patches/ChamRawProc',...
-    ['eq14_cham_minOT_' num2str(10*patch_size_min) '_usetemp_' num2str(usetemp) '_patches_diffn2dtdzgamma.mat']), 'patches' )
+load( fullfile( '/Users/Andy/Cruises_Research/ChiPod/Cham_Eq14_Compare/mfiles/Patches/data/ChamRawProc',...
+    ['eq14_cham_minOT_' num2str(100*patch_size_min) '_usetemp_' num2str(usetemp) '_patches_diffn2dtdzgamma.mat']), 'patches' )
 
 %figdir = '/Users/Andy/Cruises_Research/ChiPod/Analyses/Patch_n2_dTdz'
 figdir=['/Users/Andy/Cruises_Research/ChiPod/Cham_Eq14_Compare/mfiles/Patches/figures/minOT_' num2str(100*patch_size_min) '_usetemp_' num2str(usetemp) ]
@@ -27,37 +27,37 @@ figure(1);clf
 agutwocolumn(0.5)
 wysiwyg
 
-h1 = histogram(log10(patches.gam1(:)),200,'EdgeColor','none') ;
+h1 = histogram(log10(patches.gam_range(:)),200,'EdgeColor','none') ;
 hold on
-histogram(log10(patches.gam2(:)),h1.BinEdges,'EdgeColor','none') ;
-histogram(real(log10(patches.gam3(:))),h1.BinEdges,'EdgeColor','none') ;
+histogram(log10(patches.gam_line(:)),h1.BinEdges,'EdgeColor','none') ;
+histogram(real(log10(patches.gam_bulk(:))),h1.BinEdges,'EdgeColor','none') ;
 histogram(real(log10(patches.gam4(:))),h1.BinEdges,'EdgeColor','none') ;
 xlim([-3 1])
 grid on
 xlabel('log_{10}\Gamma')
 ylabel('count')
 
-iz1 = find( patches.gam1>0 & patches.gam1<1 ) ;
-iz2 = find( patches.gam2>0 & patches.gam2<1 ) ;
-iz3 = find( patches.gam3>0 & patches.gam3<1 ) ;
+iz1 = find( patches.gam_range>0 & patches.gam_range<1 ) ;
+iz2 = find( patches.gam_line>0 & patches.gam_line<1 ) ;
+iz3 = find( patches.gam_bulk>0 & patches.gam_bulk<1 ) ;
 iz4 = find( patches.gam4>0 & patches.gam4<1 ) ;
 
 figure(2);clf
 agutwocolumn(0.6)
 wysiwyg
 
-h1 = histogram( patches.gam1(iz1), 50 , 'Normalization', 'pdf') ;
+h1 = histogram( patches.gam_range(iz1), 50 , 'Normalization', 'pdf') ;
 hold on
-h2 = histogram( patches.gam2(iz2) , h1.BinEdges , 'Normalization', 'pdf') ;
-h3 = histogram( patches.gam3(iz2) , h1.BinEdges , 'Normalization', 'pdf') ;
+h2 = histogram( patches.gam_line(iz2) , h1.BinEdges , 'Normalization', 'pdf') ;
+h3 = histogram( patches.gam_bulk(iz2) , h1.BinEdges , 'Normalization', 'pdf') ;
 h4 = histogram( patches.gam4(iz2) , h1.BinEdges , 'Normalization', 'pdf') ;
-freqline(nanmedian(patches.gam1))
-freqline(nanmedian(patches.gam2))
-freqline(nanmedian(patches.gam3))
+freqline(nanmedian(patches.gam_range))
+freqline(nanmedian(patches.gam_line))
+freqline(nanmedian(patches.gam_bulk))
 freqline(nanmedian(patches.gam4))
-text(nanmedian(patches.gam1),6,'\Gamma 1')
-text(nanmedian(patches.gam2),5.5,'\Gamma 2')
-text(nanmedian(patches.gam3),5,'\Gamma 3')
+text(nanmedian(patches.gam_range),6,'\Gamma 1')
+text(nanmedian(patches.gam_line),5.5,'\Gamma 2')
+text(nanmedian(patches.gam_bulk),5,'\Gamma 3')
 text(nanmedian(patches.gam4),4.5,'\Gamma 4')
 legend([h1 h2 h3 h4],'\Gamma 1','\Gamma 2','\Gamma 3','\Gamma 4')
 xlim([0 0.5])
@@ -78,18 +78,18 @@ wysiwyg
 set(gcf,'defaultaxesfontsize',15)
 
 subplot(211)
-%loglog(abs(dtdz1(:)),abs(dtdz2(:)),'.')
-histogram2(log10(abs(patches.dtdz1(:))),log10(abs(patches.dtdz2(:))),50,'displaystyle','tile')
-xlabel('log_{10}[dtdz1]')
-ylabel('log_{10}[dtdz2]')
+%loglog(abs(dtdz_range(:)),abs(dtdz_line(:)),'.')
+histogram2(log10(abs(patches.dtdz_range(:))),log10(abs(patches.dtdz_line(:))),50,'displaystyle','tile')
+xlabel('log_{10}[dtdz_range]')
+ylabel('log_{10}[dtdz_line]')
 %grid on
 grid on
 
 subplot(212)
-%loglog(abs(dtdz1(:)),abs(dtdz2(:)),'.')
-histogram2(log10(abs(patches.dtdz1(:))),log10(abs(patches.dtdz3(:))),50,'displaystyle','tile')
-xlabel('log_{10}[dtdz1]')
-ylabel('log_{10}[dtdz3]')
+%loglog(abs(dtdz_range(:)),abs(dtdz_line(:)),'.')
+histogram2(log10(abs(patches.dtdz_range(:))),log10(abs(patches.dtdz_bulk(:))),50,'displaystyle','tile')
+xlabel('log_{10}[dtdz_range]')
+ylabel('log_{10}[dtdz_bulk]')
 %grid on
 grid on
 
@@ -104,15 +104,15 @@ agutwocolumn(0.7)
 wysiwyg
 set(gcf,'defaultaxesfontsize',14)
 
-h1 = histogram(log10(abs(patches.dtdz1(:))),'DisplayStyle','stair') ;%,'edgecolor','none');
+h1 = histogram(log10(abs(patches.dtdz_range(:))),'DisplayStyle','stair') ;%,'edgecolor','none');
 hold on
-h2 = histogram(log10(abs(patches.dtdz2(:))),h1.BinEdges,'DisplayStyle','stair') ;%,'edgecolor','none');
-h3 = histogram(log10(abs(patches.dtdz3(:))),h1.BinEdges,'DisplayStyle','stair') ;%,'edgecolor','none');
+h2 = histogram(log10(abs(patches.dtdz_line(:))),h1.BinEdges,'DisplayStyle','stair') ;%,'edgecolor','none');
+h3 = histogram(log10(abs(patches.dtdz_bulk(:))),h1.BinEdges,'DisplayStyle','stair') ;%,'edgecolor','none');
 grid on
 xlim([-4 -0.5])
 xlabel('log_{10}[dT/dz]')
 ylabel('count')
-legend([h1 h2 h3],'dtdz1','dtdz2','dtdz3')
+legend([h1 h2 h3],'dtdz_range','dtdz_line','dtdz_bulk')
 
 if saveplots==1
 print( fullfile( figdir, ['eq14_cham_patch_dTdzs'] ), '-dpng' )
@@ -132,7 +132,7 @@ n=1
 
 subplot(m,n,1)
 %loglog(n1(:),nb(:),'.')
-histogram2(real(log10(patches.n1(:))),real(log10(patches.nb(:))),50,'displaystyle','tile')
+histogram2(real(log10(patches.n2_range(:))),real(log10(patches.n2_line(:))),100,'displaystyle','tile')
 grid on
 xlim(xl)
 ylim(yl)
@@ -142,7 +142,7 @@ ylabel('log_{10}[N^2_2]')
 
 subplot(m,n,2)
 %loglog(n1(:),n3(:),'.')
-histogram2(real(log10(patches.n1(:))),real(log10(patches.n3(:))),50,'displaystyle','tile')
+histogram2(real(log10(patches.n2_range(:))),real(log10(patches.n2_bulk(:))),100,'displaystyle','tile')
 grid on
 xlabel('log_{10}[N^2_1]')
 ylabel('log_{10}[N^2_3]')
@@ -151,7 +151,7 @@ ylim(yl)
 
 subplot(m,n,3)
 %loglog(n1(:),n3(:),'.')
-histogram2(real(log10(patches.n1(:))),real(log10(patches.n4(:))),50,'displaystyle','tile')
+histogram2(real(log10(patches.n2_range(:))),real(log10(patches.n4(:))),100,'displaystyle','tile')
 grid on
 xlabel('log_{10}[N^2_1]')
 ylabel('log_{10}[N^2_4]')
@@ -169,10 +169,10 @@ agutwocolumn(0.7)
 wysiwyg
 set(gcf,'defaultaxesfontsize',14)
 
-h1 = histogram(real(log10(patches.n1(:)))) ;
+h1 = histogram(real(log10(patches.n2_range(:)))) ;
 hold on
-h2 = histogram(real(log10(patches.nb(:))),h1.BinEdges) ;
-h3 = histogram(real(log10(patches.n3(:))),h1.BinEdges) ;
+h2 = histogram(real(log10(patches.n2_line(:))),h1.BinEdges) ;
+h3 = histogram(real(log10(patches.n2_bulk(:))),h1.BinEdges) ;
 h4 = histogram(real(log10(patches.n4(:))),h1.BinEdges) ;
 freqline(nanmedian(h1.Data))
 freqline(nanmedian(h2.Data))
@@ -182,7 +182,7 @@ grid on
 xlim([-6 -2.5])
 xlabel('log_{10}[N^2]')
 ylabel('count')
-legend([h1 h2 h3 h4],'1  ','2 ','3 ','4 ','location','best')
+legend([h1 h2 h3 h4],'n2 range','n2 line ','n2 bulk ','4 ','location','best')
 
 if saveplots==1
 print( fullfile( figdir, ['eq14_cham_patch_N2s'] ), '-dpng' )
@@ -195,7 +195,7 @@ agutwocolumn(1)
 wysiwyg
 
 ax1 = subplot(221);
-h1 = histogram(real(log10(patches.nb(:))),'Normalization','pdf','edgecolor','none');
+h1 = histogram(real(log10(patches.n2_line(:))),'Normalization','pdf','edgecolor','none');
 hold on
 h2 = histogram(real(log10(patches.n2_bin(:))),h1.BinEdges,'Normalization','pdf','edgecolor','none');
 xlim([-6.5 -2.5])
@@ -206,7 +206,7 @@ freqline(nanmedian(h1.Data),'b--')
 freqline(nanmedian(h2.Data),'r--')
 
 ax2 = subplot(222);
-h1 = histogram(real(log10(patches.dtdz2(:))),'Normalization','pdf','edgecolor','none');
+h1 = histogram(real(log10(patches.dtdz_line(:))),'Normalization','pdf','edgecolor','none');
 hold on
 h2 = histogram(real(log10(patches.dtdz_bin(:))),h1.BinEdges,'Normalization','pdf','edgecolor','none');
 xlim([-5 0])
@@ -249,14 +249,14 @@ ib=find(patches.gam_bin>1);
 figure(1);clf
 agutwocolumn(0.5)
 wysiwyg
-%scatter(log10(patches.gam_bin(:)),log10(patches.gam3(:)),'o','filled','MarkerFaceAlpha',0.05)
-scatter(patches.gam_bin(:), patches.gam3(:),'o','filled','MarkerFaceAlpha',0.1) ; xlim([0 0.5]) ; ylim([0 0.5])
+%scatter(log10(patches.gam_bin(:)),log10(patches.gam_bulk(:)),'o','filled','MarkerFaceAlpha',0.05)
+scatter(patches.gam_bin(:), patches.gam_bulk(:),'o','filled','MarkerFaceAlpha',0.1) ; xlim([0 0.5]) ; ylim([0 0.5])
 %xlim([-3 1]);ylim([-3 1])
 xlabel('\Gamma bin')
 ylabel('\Gamma patch')
 
-% ig=find(~isnan(patches.gam_bin) & ~isnan(patches.gam2));
-% P=polyfit(patches.gam_bin(ig),patches.gam3(ig),1);
+% ig=find(~isnan(patches.gam_bin) & ~isnan(patches.gam_line));
+% P=polyfit(patches.gam_bin(ig),patches.gam_bulk(ig),1);
 % hold on
 % plot(0:0.001:1,polyval(P,0:0.001:1),'r','linewidth',2)
 grid on
@@ -274,7 +274,7 @@ wysiwyg
 
 h1 = histogram(log10(patches.gam_bin(:)),'Normalization','pdf');
 hold on
-h2 = histogram(log10(patches.gam2(:)),h1.BinEdges,'Normalization','pdf');
+h2 = histogram(log10(patches.gam_line(:)),h1.BinEdges,'Normalization','pdf');
 freqline(nanmedian(h1.Data),'b--')
 freqline(nanmedian(h2.Data),'r--')
 xlim([-4 2])
@@ -283,7 +283,7 @@ xlabel('log_{10}[\Gamma]','fontsize',16)
 ylabel('pdf','fontsize',16)
 legend([h1 h2],'bin','patch')
 nanmedian(patches.gam_bin(:))
-nanmedian(patches.gam3(:))
+nanmedian(patches.gam_bulk(:))
 hf=freqline(log10(0.2),'k--')
 set(hf,'linewidth',2)
 
@@ -300,8 +300,8 @@ wysiwyg
 
 subplot(221)
 %loglog(patches.chi_bin(:),patches.chi(:),'.')
-%scatter( log10(patches.n2_bin(:)), log10(patches.nb(:)),'o','filled','MarkerFaceAlpha',0.05) ; 
-histogram2(real(log10(patches.n2_bin(:))), real(log10(patches.nb(:))), 100 ,'DisplayStyle','Tile')
+%scatter( log10(patches.n2_bin(:)), log10(patches.n2_line(:)),'o','filled','MarkerFaceAlpha',0.05) ; 
+histogram2(real(log10(patches.n2_bin(:))), real(log10(patches.n2_line(:))), 100 ,'DisplayStyle','Tile')
 grid on
 %xl=[1e-11 1e-4]
 xl=[-6.5 -2.5]
@@ -316,8 +316,8 @@ plot(xvec,xvec,'k--','linewidth',2)
 
 subplot(222)
 %loglog(patches.chi_bin(:),patches.chi(:),'.')
-%scatter( log10(patches.dtdz_bin(:)), log10(patches.dtdz2(:)),'o','filled','MarkerFaceAlpha',0.05) ; 
-histogram2(real(log10(patches.dtdz_bin(:))), real(log10(patches.dtdz2(:))), 100 ,'DisplayStyle','Tile')
+%scatter( log10(patches.dtdz_bin(:)), log10(patches.dtdz_line(:)),'o','filled','MarkerFaceAlpha',0.05) ; 
+histogram2(real(log10(patches.dtdz_bin(:))), real(log10(patches.dtdz_line(:))), 100 ,'DisplayStyle','Tile')
 grid on
 %xl=[1e-11 1e-4]
 xl=[-4.5 0]
@@ -366,7 +366,7 @@ figure(1);clf
 agutwocolumn(0.6)
 wysiwyg
 
-histogram2(real(log10(patches.gam_bin)), real(log10(patches.gam2)), 200 ,'DisplayStyle','Tile')
+histogram2(real(log10(patches.gam_bin)), real(log10(patches.gam_line)), 200 ,'DisplayStyle','Tile')
 grid on
 xl=[-3.5 1]
 xlim(xl)
