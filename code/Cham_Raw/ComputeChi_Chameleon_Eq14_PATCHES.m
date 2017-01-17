@@ -221,6 +221,9 @@ for cnum=[4:12 14:46 48:87 374:519 550:597 599:904 906:909 911:1070 ...
         end
         
         % add binned eps and chi so we can compare after
+        avg.chi_bin   = patches.chi_bin(igc) ;
+        avg.chi_patch = patches.chi(igc) ;
+        
         avg.eps_bin  =patches.eps_bin(igc);
         avg.eps_patch=patches.eps(igc)    ;
         

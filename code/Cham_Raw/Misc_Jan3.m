@@ -128,50 +128,63 @@ figure(1);clf
 agutwocolumn(1)
 wysiwyg
 
-subplot(211)
+subplot(311)
 %loglog(patches.n2_bulk,patches.n2_bin,'.')
 histogram2(real(log10(patches.n2_bin)),real(log10(patches.n2_bulk)),100,'DisplayStyle','Tile')
 hold on
-xvec=linspace(-6,-2,100);
+xvec=linspace(-6,-3,100);
 loglog(xvec,xvec,'k--')
-xlim([-6 -2])
-ylim([-6 -2])
-xlabel('N2 bin')
-ylabel('N2 bulk')
+xlim([-6 -3])
+ylim([-6 -2.5])
+xlabel('N^2 bin')
+ylabel('N^2 bulk')
 
-subplot(212)
+subplot(312)
 %loglog(patches.n2_bulk,patches.n2_bin,'.')
 histogram2(real(log10(patches.dtdz_bin)),real(log10(patches.dtdz_bulk)),100,'DisplayStyle','Tile')
 hold on
 xvec=linspace(-5,0,100);
 loglog(xvec,xvec,'k--')
-xlim([-5 0])
-ylim([-5 0])
-xlabel('dTdz bin')
-ylabel('dTdz bulk')
+xlim([-4.5 0])
+ylim([-4 -0.5])
+xlabel('T_z bin')
+ylabel('T_z bulk')
 
-%% check if the ratio of N^2/dTdz^2 differs for binned vs patch computations ?
-
+% check if the ratio of N^2/dTdz^2 differs for binned vs patch computations ?
 % yes, the ratio is higher for the patch values computed
 
-clear
+%clear
 
-load('/Users/Andy/Cruises_Research/ChiPod/Cham_Eq14_Compare/mfiles/Patches/data/ChamRawProc/eq14_cham_minOT_25_usetemp_1_patches_diffn2dtdzgamma.mat')
+%load('/Users/Andy/Cruises_Research/ChiPod/Cham_Eq14_Compare/mfiles/Patches/data/ChamRawProc/eq14_cham_minOT_25_usetemp_1_patches_diffn2dtdzgamma.mat')
 
 rat_bin=patches.n2_bin ./ patches.dtdz_bin.^2 ;
 rat_bulk=patches.n2_bulk ./ patches.dtdz_bulk.^2 ;
+% 
+% %figure(1);clf
+% subplot(313)
+% hbin=histogram(real(log10(rat_bin)),'Normalization','pdf','Edgecolor','none')
+% hold on
+% hbulk=histogram(real(log10(rat_bulk)),hbin.BinEdges,'Normalization','pdf','Edgecolor','none')
+% xlim([-3 3])
+% grid on
+% legend([hbin hbulk],'bin','bulk')
+% xlabel('log_{10}[N^2/<dTdz>^2]')
+% ylabel('pdf')
 
-figure(1);clf
-hbin=histogram(real(log10(rat_bin)),'Normalization','pdf','Edgecolor','none')
+%
+%figure(2);clf
+subplot(313)
+histogram2( real(log10(rat_bin)), log10(rat_bulk) ,'DisplayStyle','Tile')
+xvec=linspace(-4,4,100);
 hold on
-hbulk=histogram(real(log10(rat_bulk)),hbin.BinEdges,'Normalization','pdf','Edgecolor','none')
-xlim([-3 3])
-grid on
-legend([hbin hbulk],'bin','bulk')
-xlabel('log_{10}[N^2/<dTdz>^2]')
-ylabel('pdf')
+plot(xvec,xvec,'k--')
+xlim([-4 4])
+ylim([-2 2])
+xlabel('log_{10}[N^2/<dTdz>^2] (bin)')
+ylabel('log_{10}[N^2/<dTdz>^2] (patch)')
 
-
+%%
+figdir=
 
 %% what percent of water column do patches cover?
 
