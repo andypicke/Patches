@@ -60,6 +60,7 @@ if Params.resp_corr==0
 end
 
 whN2dTdz='bulk'
+%whN2dTdz='bulk2'
 
 % Make directory to save processed casts in (name based on Params)
 if use_patch_gam==1
@@ -211,13 +212,17 @@ for cnum=[4:12 14:46 48:87 374:519 550:597 599:904 906:909 911:1070 ...
         % Get N2 and dTdz from patches structure instead
         
         if whN2dTdz==2
-        avg.N2   = patches.nb(igc)   ;
-        avg.dTdz = patches.dtdz2(igc);                
-        avg.gamma= patches.gam2(igc) ;
+            avg.N2   = patches.nb(igc)   ;
+            avg.dTdz = patches.dtdz2(igc);
+            avg.gamma= patches.gam2(igc) ;
         elseif strcmp(whN2dTdz,'bulk')
-        avg.N2   = patches.n2_bulk(igc)   ;
-        avg.dTdz = patches.dtdz_bulk(igc);                
-        avg.gamma= patches.gam_bulk(igc) ;
+            avg.N2   = patches.n2_bulk(igc)   ;
+            avg.dTdz = patches.dtdz_bulk(igc);
+            avg.gamma= patches.gam_bulk(igc) ;
+        elseif strcmp(whN2dTdz,'bulk2')
+            avg.N2   = patches.n2_bulk_2(igc)   ;
+            avg.dTdz = patches.dtdz_bulk(igc);
+            avg.gamma= patches.gam_bulk(igc) ;
         end
         
         % add binned eps and chi so we can compare after
