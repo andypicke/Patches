@@ -45,6 +45,10 @@ patches.n2_range=EmpVec;
 patches.n2_line=EmpVec;
 patches.n2_bulk=EmpVec;
 patches.n4=EmpVec;
+patches.n2_bulk_2=EmpVec;
+
+patches.drhodz_bulk=EmpVec;
+patches.drhodz_line=EmpVec;
 
 % Different methods of computing dT/dz
 patches.dtdz_range=EmpVec;
@@ -122,13 +126,13 @@ for ip=1:Npatches
             % save results
             patches.dtdz_range(ip)=dTdz;
             
-            patches.dtdz_line(ip)=P(1);
+            patches.dtdz_line(ip)=-P(1);
             
             %~~ 'bulk gradient' method from Smyth et al 2001
             % essentially = rms T (btw sorted/unsorted) /  thorpe scale ?
             %    t_rms= sqrt( nanmean(( t_ot - t_sort ).^2) );
             t_rms= sqrt( nanmean(( ptmp_ot - ptmp_sort ).^2) );
-            patches.dtdz_bulk(ip)= t_rms / patches.Lt(ip) ;
+            patches.dtdz_bulk(ip)=  t_rms / patches.Lt(ip) ;
             
             %~~ Now do similar for density / N^2
             
@@ -149,11 +153,13 @@ for ip=1:Npatches
             % fit a line to sgth
             clear P1
             P1=polyfit(p_ot,sgth_sort,1);
+           
             % calculate N^2 from this fit
             clear drhodz n2_2 drho dz n2_3
-            drhodz=P1(1);
-            n2_2=9.81/nanmean(sgth_ot)*drhodz;
+            drhodz=-P1(1);
+            patches.drhodz_line(ip)=drhodz;
             
+            n2_2=-9.81/nanmean(sgth_ot)*drhodz;
             patches.n2_line(ip)=n2_2;
             
             % Smyth eta al says associated N^2=g*bulk gradient (assuming
@@ -161,6 +167,13 @@ for ip=1:Npatches
             % I think missing divide by rho_0 also?
             patches.n2_bulk(ip)= 9.81 / nanmean(sgth_ot) * t_rms / patches.Lt(ip)    ;
             
+            % try computing drho/dz using 'bulk' method (instead of
+            % assuming rho only depends on T
+            clear rho_rms
+            rho_rms = sqrt( nanmean(( sgth_ot - sgth_sort ).^2) );
+            patches.drhodz_bulk(ip) = - rho_rms / patches.Lt(ip) ;
+            patches.n2_bulk_2(ip) = - 9.81 / nanmean(sgth_ot) * patches.drhodz_bulk(ip);
+                        
             % compute N^2 w/ sw_bfrq
             clear n2
             n2=sw_bfrq(s_ot(I),t_ot(I),p_ot,0.5);
@@ -237,9 +250,11 @@ addpath /Users/Andy/Cruises_Research/ChiPod/Cham_Eq14_Compare/mfiles/Patches/cod
 gam_range=ComputeGamma(patches.n2_range,patches.dtdz_range,patches.chi,patches.eps);
 % use polyfit for both
 gam_line=ComputeGamma(patches.n2_line,patches.dtdz_line,patches.chi,patches.eps);
-% use range/dz for both
+% use bulk for both
 gam_bulk=ComputeGamma(patches.n2_bulk,patches.dtdz_bulk,patches.chi,patches.eps);
-% plot histograms of each
+%
+gam_bulk_2=ComputeGamma(patches.n2_bulk_2,patches.dtdz_bulk,patches.chi,patches.eps);
+% 
 gam4=ComputeGamma(patches.n4,patches.dtdz_line,patches.chi,patches.eps);
 
 %% save results so we don't have to run everything again
@@ -247,6 +262,7 @@ gam4=ComputeGamma(patches.n4,patches.dtdz_line,patches.chi,patches.eps);
 patches.gam_range=gam_range;
 patches.gam_line=gam_line;
 patches.gam_bulk=gam_bulk;
+patches.gam_bulk_2=gam_bulk_2;
 patches.gam4=gam4;
 
 save( fullfile( '/Users/Andy/Cruises_Research/ChiPod/Cham_Eq14_Compare/mfiles/Patches/data/ChamRawProc',...
