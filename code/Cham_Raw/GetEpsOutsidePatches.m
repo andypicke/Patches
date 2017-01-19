@@ -11,7 +11,7 @@
 
 clear ; close all
 
-Params.gamma=0.03
+Params.gamma=0.2
 
 % binned Chameleon epsilon
 eps_bin_IN  = [] ;
@@ -41,8 +41,7 @@ for cnum=1:3100
         clear ipatch Np this_patch
         ipatch=find(new_patch_data(:,1)==cnum) ;
         Np=length(ipatch);
-        this_patch = new_patch_data(ipatch,:);
-        
+        this_patch = new_patch_data(ipatch,:);        
                            
         % load binned chameleon profile
         load(['/Users/Andy/Cruises_Research/ChiPod/Cham_Eq14_Compare/Data/chameleon/processed_AP_7hz/mat/eq14_' sprintf('%04d',cnum) '.mat'])
