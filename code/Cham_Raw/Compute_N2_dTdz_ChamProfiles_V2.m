@@ -80,10 +80,12 @@ for ip=1:Npatches
         else            
         end
         
-        clear s t p lat
+        clear s t p lat ptmp sgth
         s = cal.SAL(1:end-1); % (end-1) b/c last 2 values are same;
         t = cal.T1 (1:end-1);
         p = cal.P  (1:end-1);
+        ptmp=sw_ptmp(s,t,p,0);
+        sgth=sw_pden(s,t,p,0);
         
         clear idot lat1 lat2
         idot=strfind(head.lat.start,'.');
@@ -92,7 +94,7 @@ for ip=1:Npatches
         lat=nanmean([lat1 lat2]);
         
         clear pstarts pstops
-        clear iz t_ot s_ot p_ot
+        clear iz t_ot s_ot p_ot ptmp_ot sgth_ot
         
         iz=isin(p,[ patches.p1(ip) patches.p2(ip) ]);
         
@@ -101,13 +103,15 @@ for ip=1:Npatches
             t_ot=t(iz);
             s_ot=s(iz);
             p_ot=p(iz);
+            ptmp_ot=ptmp(iz);
+            sgth_ot=sgth(iz);
             
             clear t_sort I
             [t_sort , I]=sort(t_ot,1,'descend');
             
             % compute potential temp
             clear t_pot t_pot_sort
-            ptmp_ot=sw_ptmp(s_ot,t_ot,p_ot,0);
+%            ptmp_ot=sw_ptmp(s_ot,t_ot,p_ot,0);
             [ptmp_sort , Iptmp]=sort(ptmp_ot,1,'descend');
             
             clear DT dz dTdz
@@ -137,8 +141,8 @@ for ip=1:Npatches
             %~~ Now do similar for density / N^2
             
             clear sgth sgth_ot
-            sgth=sw_pden(s,t,p,0);
-            sgth_ot=sw_pden(s_ot,t_ot,p_ot,0);
+            %sgth=sw_pden(s,t,p,0);
+            %sgth_ot=sw_pden(s_ot,t_ot,p_ot,0);
             
             clear sgth_sort I
             [sgth_sort , I]=sort(sgth_ot,1,'ascend');
@@ -307,6 +311,8 @@ for ip=1:Npatches
     if log10(cham.EPSILON(I,Icham))>-8.5
         patches.gam_bin(ip)=ComputeGamma(cham.N2(I,Icham),cham.DTDZ_RHOORDER(I,Icham),cham.CHI(I,Icham),cham.EPSILON(I,Icham));
     end
+
+    %~~~ 1/19 - use mean over patch instead of value in middle?
     
 end
 
