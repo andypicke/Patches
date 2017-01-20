@@ -140,11 +140,9 @@ for ip=1:Npatches
             
             %~~ Now do similar for density / N^2
             
-            clear sgth sgth_ot
             %sgth=sw_pden(s,t,p,0);
             %sgth_ot=sw_pden(s_ot,t_ot,p_ot,0);
             
-            clear sgth_sort I
             [sgth_sort , I]=sort(sgth_ot,1,'ascend');
             
             % try the range/dz method
@@ -316,7 +314,10 @@ for ip=1:Npatches
     
 end
 
-% save again
+%% save again
+
+patches.MakeInfo=['Made ' datestr(now) ' w/ Compute_N2_dTdz_ChamProfiles_V2.m']
+
 save( fullfile( '/Users/Andy/Cruises_Research/ChiPod/Cham_Eq14_Compare/mfiles/Patches/data/ChamRawProc',...
     ['eq14_cham_minOT_' num2str(100*patch_size_min) '_usetemp_' num2str(usetemp) '_patches_diffn2dtdzgamma.mat']), 'patches' )
 
