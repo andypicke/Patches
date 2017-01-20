@@ -294,6 +294,7 @@ patches.n2_bin  = nan*ones(size(patches.gam_bulk)) ;
 patches.dtdz_bin= nan*ones(size(patches.gam_bulk)) ;
 patches.chi_bin = nan*ones(size(patches.gam_bulk)) ;
 patches.eps_bin = nan*ones(size(patches.gam_bulk)) ;
+patches.drhodz_bin=nan*ones(size(patches.gam_bulk)) ;
 
 for ip=1:Npatches
     clear cnum pbin pmn val I
@@ -307,7 +308,7 @@ for ip=1:Npatches
     patches.dtdz_bin(ip)= cham.DTDZ_RHOORDER(I,Icham) ;
     patches.chi_bin(ip) = cham.CHI(I,Icham) ;
     patches.eps_bin(ip) = cham.EPSILON(I,Icham) ;
-    
+    patches.drhodz_bin(ip)= cham.N2(I,Icham) * (nanmean(cham.SIGMA(:,Icham))+1000) / -9.81;
     if log10(cham.EPSILON(I,Icham))>-8.5
         patches.gam_bin(ip)=ComputeGamma(cham.N2(I,Icham),cham.DTDZ_RHOORDER(I,Icham),cham.CHI(I,Icham),cham.EPSILON(I,Icham));
     end
