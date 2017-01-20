@@ -167,15 +167,17 @@ for ip=1:Npatches
             % Smyth eta al says associated N^2=g*bulk gradient (assuming
             % density controlled by temperature??)
             % I think missing divide by rho_0 also?
-            patches.n2_bulk(ip)= 9.81 / nanmean(sgth_ot) * t_rms / patches.Lt(ip)    ;
-            
+            patches.n2_bulk(ip)= 9.81 / nanmean(sgth) * t_rms / patches.Lt(ip)    ;
+            %patches.n2_bulk(ip)= 9.81 / nanmean(sgth_ot) * t_rms / patches.Lt(ip)    ;
+                        
             % try computing drho/dz using 'bulk' method (instead of
             % assuming rho only depends on T
             clear rho_rms
             rho_rms = sqrt( nanmean(( sgth_ot - sgth_sort ).^2) );
             patches.drhodz_bulk(ip) = - rho_rms / patches.Lt(ip) ;
-            patches.n2_bulk_2(ip) = - 9.81 / nanmean(sgth_ot) * patches.drhodz_bulk(ip);
-                        
+            %patches.n2_bulk_2(ip) = - 9.81 / nanmean(sgth_ot) * patches.drhodz_bulk(ip);
+            patches.n2_bulk_2(ip) = - 9.81 / nanmean(sgth) * patches.drhodz_bulk(ip);
+            
             % compute N^2 w/ sw_bfrq
             clear n2
             n2=sw_bfrq(s_ot(I),t_ot(I),p_ot,0.5);
