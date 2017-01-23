@@ -35,7 +35,7 @@ makeplots=0
 savespec =0  % save wavenumber spectra
 
 patch_size_min = 0.25
-usetemp = 0
+usetemp = 1
 
 load( fullfile( '/Users/Andy/Cruises_Research/ChiPod/Cham_Eq14_Compare/mfiles/Patches/data/ChamRawProc',...
     ['eq14_cham_minOT_' num2str(100*patch_size_min) '_usetemp_' num2str(usetemp) '_patches_diffn2dtdzgamma.mat']), 'patches' )
@@ -53,7 +53,7 @@ Params.fc       = 99  ;   % cutoff frequency for response correction
 Params.gamma    = 0.2 ;   % mixing efficiency
 
 % option to use gamma computed in patches, instead of a constant value
-use_patch_gam=1;
+use_patch_gam=0;
 
 if Params.resp_corr==0
     Params.fc=99;
