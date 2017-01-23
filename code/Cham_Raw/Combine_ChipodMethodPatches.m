@@ -24,8 +24,12 @@
 clear ; close all
 
 whN2dTdz='bulk'
-whN2dTdz='bulk2'
+%whN2dTdz='bulk2'
 Params.gamma=0.2;
+
+patch_size_min = 0.25
+usetemp = 1
+
 savedata=1;
 
 % pre-allocate empty arrays
@@ -48,11 +52,11 @@ for cnum=1:3100
     try
         
         % patch N^2,dTdz w/ constant gamma
-        load( fullfile( dir1, ['N2dTdz_' (whN2dTdz) '_fmax7Hz_respcorr0_fc_99hz_gamma' num2str(Params.gamma*100) '_nfft_128'],['EQ14_' sprintf('%04d',cnum) 'avg.mat']))
+        load( fullfile( dir1, ['N2dTdz_' (whN2dTdz) '_fmax7Hz_respcorr0_fc_99hz_gamma' num2str(Params.gamma*100) '_nfft_128_otmin' num2str(100*patch_size_min) '_usetemp_' num2str(usetemp)],['EQ14_' sprintf('%04d',cnum) 'avg.mat']))
         avg_patchN2dTdz_constGam=avg;clear avg
         
         % patch N^2,dTdz w/ patch gamma
-        load( fullfile( dir1, ['N2dTdz_' (whN2dTdz) '_fmax7Hz_respcorr0_fc_99hz_gammaPATCH_nfft_128'],['EQ14_' sprintf('%04d',cnum) 'avg.mat']))
+        load( fullfile( dir1, ['N2dTdz_' (whN2dTdz) '_fmax7Hz_respcorr0_fc_99hz_gammaPATCH_nfft_128_otmin' num2str(100*patch_size_min) '_usetemp_' num2str(usetemp)],['EQ14_' sprintf('%04d',cnum) 'avg.mat']))
         avg_patchN2dTdzGam=avg;clear avg
                 
         % regular chi-pod method on binned data
@@ -106,7 +110,7 @@ AllEps.MakeInfo=['Made ' datestr(now) ' w/ Combine_ChipodMethodPatches.m']
 
 if savedata==1
 % save data
-sav_name = ['epsilons_N2dTdz_' num2str(whN2dTdz) '_chipodmethods.mat'] ; 
+sav_name = ['epsilons_N2dTdz_' num2str(whN2dTdz) '_otmin' num2str(100*patch_size_min) '_usetemp_' num2str(usetemp) '_chipodmethods.mat'] ; 
 sav_dir='/Users/Andy/Cruises_Research/ChiPod/Cham_Eq14_Compare/mfiles/Patches/data/ChipodPatches'
 save(fullfile(sav_dir,sav_name),'AllEps')
 end
