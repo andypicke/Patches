@@ -12,6 +12,8 @@
 %   'eps_bin', 'eps_patch' etc
 % - chi-pod estimates for binned profiles are made w/ ComputeChi_Chameleon_Eq14.m
 %
+% Produces a structure 'AllEps'
+%
 % Used to be part of CompareProfiles_bin_patch_cham.m
 %
 %--------------
@@ -22,8 +24,9 @@
 clear ; close all
 
 whN2dTdz='bulk'
-Params.gamma=0.2
-savedata=0
+whN2dTdz='bulk2'
+Params.gamma=0.2;
+savedata=1;
 
 % pre-allocate empty arrays
 eps_patchN2dTdz_constGam = [] ;
@@ -40,7 +43,7 @@ chi_chipod_binned    = [] ;
 
 dir1=fullfile('/Users/Andy/Cruises_Research/ChiPod/Cham_Eq14_Compare/mfiles/Patches/data/ChipodPatches/')
 
-for cnum=4%1:3100
+for cnum=1:3100
     
     try
         
@@ -107,5 +110,20 @@ sav_name = ['epsilons_N2dTdz_' num2str(whN2dTdz) '_chipodmethods.mat'] ;
 sav_dir='/Users/Andy/Cruises_Research/ChiPod/Cham_Eq14_Compare/mfiles/Patches/data/ChipodPatches'
 save(fullfile(sav_dir,sav_name),'AllEps')
 end
+
+%%
+
+figure(1);clf
+histogram2( log10(AllEps.chi_bin(:)), log10(AllEps.chi_patch(:)), 100, 'DisplayStyle','Tile')
+xlim([-12 -3])
+ylim([-12 -3])
+
+%%
+
+figure(1);clf
+histogram2( log10(AllEps.eps_bin(:)), log10(AllEps.eps_patch(:)), 100, 'DisplayStyle','Tile')
+xlim([-8.5 -5])
+ylim([-8.5 -5])
+
 
 %%

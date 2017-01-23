@@ -56,7 +56,8 @@ run_test=0;
 
 % load patch data (from FindPatches_EQ14_Raw.m)
 patch_size_min=0.25  % min patch size
-usetemp=1
+usetemp=0
+
 savedir='/Users/Andy/Cruises_Research/ChiPod/Cham_Eq14_Compare/mfiles/Patches/data/ChamRawProc'
 fname=['EQ14_raw_patches_minOT_' num2str(100*patch_size_min) '_usetemp_' num2str(usetemp) '.mat']
 load(fullfile(savedir,fname))
@@ -127,7 +128,7 @@ warning off
 % good for whatever reason. Here, you're just supposed to have a matrix so
 % the bad files are skipped over. In other words, "bad" isn't implemented.)
 for cast = [4:12 14:46 48:87 374:519 550:597 599:904 906:909 911:1070 ...
-        1075:1128 [1130:1737 1739:2550 2552:2996 2998:3092];
+        1075:1128 1130:1737 1739:2550 2552:2996 2998:3092];
     
     try
         
@@ -304,6 +305,7 @@ for cast = [4:12 14:46 48:87 374:519 550:597 599:904 906:909 911:1070 ...
             
         end
         
+    catch
     end % try
     
 end % cast

@@ -22,15 +22,15 @@
 clear ; close all
 
 % options
-patch_size_min=0.25  % min patch size
-usetemp=1
+patch_size_min = 0.25  % min patch size
+usetemp = 0
 
 % load patch data (from FindPatches_EQ14_Raw.m)
 datdir='/Users/Andy/Cruises_Research/ChiPod/Cham_Eq14_Compare/mfiles/Patches/data/ChamRawProc/'
 fname=['EQ14_raw_patches_minOT_' num2str(100*patch_size_min) '_usetemp_' num2str(usetemp) '.mat']
 load(fullfile(datdir,fname))
 
-patches=struct() ;
+patches = struct() ;
 patches.cnum = new_patch_data(:,1) ;
 patches.p1   = new_patch_data(:,2) ;
 patches.p2   = new_patch_data(:,3) ;
