@@ -36,7 +36,7 @@ datdir='/Users/Andy/Cruises_Research/ChiPod/Cham_Eq14_Compare/Data/Cham_proc_AP/
 % patch options
 save_data = 1 ;         % save data at the end
 patch_size_min = 0.25 ; % min patch size
-usetemp   = 1 ;         % 1=use pot. temp, 0= use density
+usetemp   = 0 ;         % 1=use pot. temp, 0= use density
 
 patch_data=[];
 
@@ -65,7 +65,7 @@ for cnum= cnums_to_do;
         cal=cal2;
         
         clear s t p lat
-        s=cal.SAL(1:end-1); % (end-1) b/c last 2 values are same;
+        s=smooth( cal.SAL(1:end-1), 20 ); % (end-1) b/c last 2 values are same;
         t=cal.T1(1:end-1);
         p=cal.P(1:end-1);
         
