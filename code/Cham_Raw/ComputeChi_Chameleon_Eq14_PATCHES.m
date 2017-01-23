@@ -35,7 +35,7 @@ makeplots=0
 savespec =0  % save wavenumber spectra
 
 patch_size_min = 0.25
-usetemp = 1
+usetemp = 0
 
 load( fullfile( '/Users/Andy/Cruises_Research/ChiPod/Cham_Eq14_Compare/mfiles/Patches/data/ChamRawProc',...
     ['eq14_cham_minOT_' num2str(100*patch_size_min) '_usetemp_' num2str(usetemp) '_patches_diffn2dtdzgamma.mat']), 'patches' )
@@ -53,22 +53,22 @@ Params.fc       = 99  ;   % cutoff frequency for response correction
 Params.gamma    = 0.2 ;   % mixing efficiency
 
 % option to use gamma computed in patches, instead of a constant value
-use_patch_gam=0;
+use_patch_gam=1;
 
 if Params.resp_corr==0
     Params.fc=99;
 end
 
-whN2dTdz='bulk'
-%whN2dTdz='bulk2'
+%whN2dTdz='bulk'
+whN2dTdz='bulk2'
 
 % Make directory to save processed casts in (name based on Params)
 if use_patch_gam==1
     datdirsave=fullfile('/Users/Andy/Cruises_Research/ChiPod/Cham_Eq14_Compare/mfiles/Patches/data/ChipodPatches',...
-        ['N2dTdz_' num2str(whN2dTdz) '_fmax' num2str(Params.fmax) 'Hz_respcorr' num2str(Params.resp_corr) '_fc_' num2str(Params.fc) 'hz_gammaPATCH_nfft_' num2str(Params.nfft)]);
+        ['N2dTdz_' num2str(whN2dTdz) '_fmax' num2str(Params.fmax) 'Hz_respcorr' num2str(Params.resp_corr) '_fc_' num2str(Params.fc) 'hz_gammaPATCH_nfft_' num2str(Params.nfft) '_otmin' num2str(100*patch_size_min) '_usetemp_' num2str(usetemp)]);
 else
     datdirsave=fullfile('/Users/Andy/Cruises_Research/ChiPod/Cham_Eq14_Compare/mfiles/Patches/data/ChipodPatches',...
-        ['N2dTdz_' num2str(whN2dTdz) '_fmax' num2str(Params.fmax) 'Hz_respcorr' num2str(Params.resp_corr) '_fc_' num2str(Params.fc) 'hz_gamma' num2str(Params.gamma*100) '_nfft_' num2str(Params.nfft)]);
+        ['N2dTdz_' num2str(whN2dTdz) '_fmax' num2str(Params.fmax) 'Hz_respcorr' num2str(Params.resp_corr) '_fc_' num2str(Params.fc) 'hz_gamma' num2str(Params.gamma*100) '_nfft_' num2str(Params.nfft) '_otmin' num2str(100*patch_size_min) '_usetemp_' num2str(usetemp) ]);
 end
 
 disp(['Data will be saved to ' datdirsave])
@@ -81,7 +81,7 @@ tstart=tic;
 % loop through each cast
 for cnum=[4:12 14:46 48:87 374:519 550:597 599:904 906:909 911:1070 ...
         1075:1128 1130:1737 1739:2550 2552:2996 2998:3092]
-        
+    
     disp(['Working on cnum ' num2str(cnum) ])
     
     close all
@@ -236,7 +236,7 @@ for cnum=[4:12 14:46 48:87 374:519 550:597 599:904 906:909 911:1070 ...
         [p2,IA,IC] = unique(ctd.p(good_inds));
         avg.T   =interp1(ctd.p(good_inds(IA)),ctd.t1(good_inds(IA)),avg.P);
         avg.S   =interp1(ctd.p(good_inds(IA)),ctd.s1(good_inds(IA)),avg.P);
-                
+        
         
         %%
         % note sw_visc not included in newer versions of sw?
@@ -286,8 +286,7 @@ for cnum=[4:12 14:46 48:87 374:519 550:597 599:904 906:909 911:1070 ...
                 avg.eps1(iwind)=epsil1(1);
                 avg.KT1(iwind)=0.5*chi1(1)/avg.dTdz(iwind)^2;
                 avg.kstart(iwind)=stats.k_start;
-                avg.kstop(iwind)=stats.k_stop;
-                
+                avg.kstop(iwind)=stats.k_stop;                
                 avg.n_iter(iwind)=length(chi1);
                 
                 if savespec==1
@@ -340,8 +339,7 @@ for cnum=[4:12 14:46 48:87 374:519 550:597 599:904 906:909 911:1070 ...
         
         % save results
         save(fullfile(datdirsave,['EQ14_' sprintf('%04d',cnum) 'avg.mat']),'avg')
-        
-        
+                
     end % try
     
 end % icast
