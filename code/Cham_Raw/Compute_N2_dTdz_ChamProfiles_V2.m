@@ -21,9 +21,9 @@
 
 clear ; close all
 
-% options
+% patch options
 patch_size_min = 0.25  % min patch size
-usetemp = 0
+usetemp = 1
 
 % load patch data (from FindPatches_EQ14_Raw.m)
 datdir='/Users/Andy/Cruises_Research/ChiPod/Cham_Eq14_Compare/mfiles/Patches/data/ChamRawProc/'
@@ -82,6 +82,7 @@ for ip=1:Npatches
         
         clear s t p lat ptmp sgth
         s = cal.SAL(1:end-1); % (end-1) b/c last 2 values are same;
+        s = smooth(s,20);
         t = cal.T1 (1:end-1);
         p = cal.P  (1:end-1);
         ptmp=sw_ptmp(s,t,p,0);
@@ -139,10 +140,7 @@ for ip=1:Npatches
             patches.dtdz_bulk(ip)=  t_rms / patches.Lt(ip) ;
             
             %~~ Now do similar for density / N^2
-            
-            %sgth=sw_pden(s,t,p,0);
-            %sgth_ot=sw_pden(s_ot,t_ot,p_ot,0);
-            
+                        
             [sgth_sort , I]=sort(sgth_ot,1,'ascend');
             
             % try the range/dz method
