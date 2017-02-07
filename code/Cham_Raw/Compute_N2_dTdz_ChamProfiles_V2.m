@@ -31,10 +31,10 @@ fname=['EQ14_raw_patches_minOT_' num2str(100*patch_size_min) '_usetemp_' num2str
 load(fullfile(datdir,fname))
 
 patches = struct() ;
-patches.cnum = new_patch_data(:,1) ;
-patches.p1   = new_patch_data(:,2) ;
-patches.p2   = new_patch_data(:,3) ;
-patches.Lt   = new_patch_data(:,6) ;
+patches.cnum = patch_data(:,1) ;
+patches.p1   = patch_data(:,2) ;
+patches.p2   = patch_data(:,3) ;
+patches.Lt   = patch_data(:,6) ;
 
 % Make empty arrays for results
 Npatches=length(patches.p1);
