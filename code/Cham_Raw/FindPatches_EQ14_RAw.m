@@ -90,7 +90,10 @@ for cnum= cnums_to_do;
         pstops=OT.pstops_each;
         
         for i=1:length(pstarts)
+            % don't keep patches shallower than 10m depth
+            if pstarts(i)>10
             patch_data=[patch_data ; cnum pstarts(i) pstops(i)  ( pstops(i) - pstarts(i) ) OT.Otnsq_each(i) OT.Lt_each(i) ];
+            end
         end
         
     end % try
@@ -100,12 +103,12 @@ end % cnum
 delete(hb)
 warning on
 
-new_patch_data=patch_data;
+%new_patch_data=patch_data;
 
 if save_data==1
     savedir='/Users/Andy/Cruises_Research/ChiPod/Cham_Eq14_Compare/mfiles/Patches/data/ChamRawProc/'
     fname=['EQ14_raw_patches_minOT_' num2str(100*patch_size_min) '_usetemp_' num2str(usetemp) '.mat']
-    save( fullfile( savedir,fname), 'new_patch_data')
+    save( fullfile( savedir,fname), 'patch_data')
 end
 
 %%
