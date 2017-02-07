@@ -22,11 +22,10 @@ grid on
 % axis equal
 P=polyfit(cal2.ptmp,cal2.sgth,1)
 hold on
-plot(cal2.ptmp,polyval(P,cal2.ptmp))
+plot(cal2.ptmp,polyval(P,cal2.ptmp),'linewidth',2)
 axis tight
-%tvec=linspace(10,26,100);
-%hold on
-%plot(tvec,tvec,'--')
+xlabel('pot. temp')
+ylabel('pot. dens')
 %%
 
 

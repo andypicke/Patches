@@ -23,8 +23,8 @@
 
 clear ; close all
 
-whN2dTdz='bulk'
-%whN2dTdz='bulk2'
+%whN2dTdz='bulk'
+whN2dTdz='bulk2'
 Params.gamma=0.2;
 
 patch_size_min = 0.25

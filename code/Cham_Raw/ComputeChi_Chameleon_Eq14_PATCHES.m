@@ -59,8 +59,8 @@ if Params.resp_corr==0
     Params.fc=99;
 end
 
-%whN2dTdz='bulk'
-whN2dTdz='bulk2'
+whN2dTdz='bulk'
+%whN2dTdz='bulk2'
 
 % Make directory to save processed casts in (name based on Params)
 if use_patch_gam==1
