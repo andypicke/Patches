@@ -9,6 +9,8 @@
 
 clear ; close all
 
+addpath /Users/Andy/Cruises_Research/seawater_ver3_2/
+
 cnum=2024
 cham_dir='/Users/Andy/Cruises_Research/ChiPod/Cham_Eq14_Compare/Data/Cham_proc_AP/cal';
 load( fullfile( cham_dir, ['eq14_' sprintf('%04d',cnum) '.mat'] ) )

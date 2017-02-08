@@ -12,18 +12,18 @@
 
 clear ; close all
 
-datadir='/Users/Andy/Cruises_Research/ChiPod/Cham_Eq14_Compare/mfiles/Patches/ChamRawProc/'
+datadir='/Users/Andy/Cruises_Research/ChiPod/Cham_Eq14_Compare/mfiles/Patches/data/ChamRawProc'
 
 % load patches
-patch_size_min=0.5
+patch_size_min=0.25
 usetemp=1
-fname=['EQ14_raw_patches_minOT_' num2str(10*patch_size_min) '_usetemp_' num2str(usetemp) '.mat']
+fname=['EQ14_raw_patches_minOT_' num2str(100*patch_size_min) '_usetemp_' num2str(usetemp) '.mat']
 load( fullfile( datadir, fname) )
 
 % load Chameleon data (1m avg)
 load('/Users/Andy/Cruises_Research/ChiPod/Cham_Eq14_Compare/Data/chameleon/processed/Cstar=0_032/sum/eq14_sum_clean.mat')
 
-patch1=new_patch_data;
+patch1=patch_data;
 
 figure(1);clf
 ezpc(cham.castnumber,cham.P,log10(cham.EPSILON))
@@ -43,15 +43,14 @@ ylabel('p [db]')
 
 clear ; close all
 
-
-datadir='/Users/Andy/Cruises_Research/ChiPod/Cham_Eq14_Compare/mfiles/Patches/ChamRawProc/'
+datadir='/Users/Andy/Cruises_Research/ChiPod/Cham_Eq14_Compare/mfiles/Patches/data/ChamRawProc'
 
 % load patches from raw data
-patch_size_min=1
+patch_size_min=0.25
 usetemp=1
 fname=['EQ14_raw_patches_minOT_' num2str(10*patch_size_min) '_usetemp_' num2str(usetemp) '.mat']
 load( fullfile( datadir, fname) )
-patch1=new_patch_data;
+patch1=patch_data;
 
 % load patches from 1m avg data
 %load('/Users/Andy/Cruises_Research/ChiPod/Cham_Eq14_Compare/mfiles/Patches/EQ14_raw_patches_minOT_1_join_0_sep_50.mat')
@@ -100,18 +99,17 @@ linkaxes([ax1 ax2])
 
 clear ; close all
 
-datadir='/Users/Andy/Cruises_Research/ChiPod/Cham_Eq14_Compare/mfiles/Patches/ChamRawProc/'
+datadir='/Users/Andy/Cruises_Research/ChiPod/Cham_Eq14_Compare/mfiles/Patches/data/ChamRawProc'
 
 % load patches from raw data
-patch_size_min=1
+patch_size_min=0.25
 usetemp=1
-fname=['EQ14_raw_patches_minOT_' num2str(10*patch_size_min) '_usetemp_' num2str(usetemp) '.mat']
+fname=['EQ14_raw_patches_minOT_' num2str(100*patch_size_min) '_usetemp_' num2str(usetemp) '.mat']
 load( fullfile( datadir, fname) )
-%patch1=new_patch_data;
 
 figure(1);clf
-h1=histogram(new_patch_data(:,4));
-xlim([0 20])
+h1=histogram(patch_data(:,4));
+xlim([0 6])
 freqline(nanmedian(h1.Data))
 xlabel('patch size')
 grid on

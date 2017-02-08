@@ -5,10 +5,6 @@
 % Find patches (overturns) in EQ14 chameleon profiles, using raw (not
 % binned/averaged) data.
 %
-% Ideally i'd like to do this for tiwe data and compare to what Bill got
-% for his patches. But i'm doing it on this better-documented data set
-% first to figure it out. I'll compare the patches from this to what I get
-% using the 1m binned/avg data.
 %
 % The raw mat files for each chameleon cast are made w/
 % ProcessEq14Cham_AP.m, which was modified from Sally's code so I could
@@ -36,7 +32,7 @@ datdir='/Users/Andy/Cruises_Research/ChiPod/Cham_Eq14_Compare/Data/Cham_proc_AP/
 % patch options
 save_data = 1 ;         % save data at the end
 patch_size_min = 0.25 ; % min patch size
-usetemp   = 0 ;         % 1=use pot. temp, 0= use density
+usetemp   = 1 ;         % 1=use pot. temp, 0= use density
 
 patch_data=[];
 
@@ -92,7 +88,7 @@ for cnum= cnums_to_do;
         for i=1:length(pstarts)
             % don't keep patches shallower than 10m depth
             if pstarts(i)>10
-            patch_data=[patch_data ; cnum pstarts(i) pstops(i)  ( pstops(i) - pstarts(i) ) OT.Otnsq_each(i) OT.Lt_each(i) ];
+                patch_data=[patch_data ; cnum pstarts(i) pstops(i)  ( pstops(i) - pstarts(i) ) OT.Otnsq_each(i) OT.Lt_each(i) ];
             end
         end
         
@@ -103,7 +99,6 @@ end % cnum
 delete(hb)
 warning on
 
-%new_patch_data=patch_data;
 
 if save_data==1
     savedir='/Users/Andy/Cruises_Research/ChiPod/Cham_Eq14_Compare/mfiles/Patches/data/ChamRawProc/'

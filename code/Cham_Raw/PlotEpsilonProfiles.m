@@ -5,6 +5,7 @@
 % Plot profiles of binned epsilon w/ patch epsilon overplotted. Is epsilon
 % only large within patches, or in other places?
 %
+%------------
 % 12/9/16 - AP
 %~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 %%
@@ -12,8 +13,10 @@
 clear ; close all
 
 % load the patch data ( from Compute_N2_dTdz_ChamProfiles_V2.m)
-load(fullfile( '/Users/Andy/Cruises_Research/ChiPod/Cham_Eq14_Compare/mfiles/Patches/ChamRawProc',...
-    'eq14_cham_patches_diffn2dtdzgamma.mat'))
+%load(fullfile( '/Users/Andy/Cruises_Research/ChiPod/Cham_Eq14_Compare/mfiles/Patches/ChamRawProc',...
+%   'eq14_cham_patches_diffn2dtdzgamma.mat'))
+load('/Users/Andy/Cruises_Research/ChiPod/Cham_Eq14_Compare/mfiles/Patches/data/ChamRawProc/eq14_cham_minOT_25_usetemp_1_patches_diffn2dtdzgamma.mat')
+
 
 addpath /Users/Andy/Cruises_Research/ChiPod/Cham_Eq14_Compare/mfiles/Patches/code/
 
@@ -33,7 +36,7 @@ for cnum=1:50:3100
         wysiwyg
         
         
-        semilogx(avg.EPSILON,avg.P,'.')
+        semilogx(avg.EPSILON,avg.P,'.-')
         axis ij
         grid on
         xlim([1e-11 1e-4])

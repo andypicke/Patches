@@ -91,46 +91,46 @@ save(fullfile('/Users/Andy/Cruises_Research/ChiPod/Cham_Eq14_Compare/mfiles/Patc
 
 
 %%
-% 
-% saveplots=0
-% 
-% eps_bin(log10(eps_bin)<-8.5)=nan;
-% %eps_chipod_binned(log10(eps_chipod_binned)<-8.5)=nan;
-% 
-% figure(1);clf
-% histogram2(log10(PatchInOut.eps_bin_IN),log10(eps_chipod_binned),100,'DisplayStyle','Tile')
-% xlim([-8.5 -4])
-% ylim([-12 -4])
-% xvec=linspace(-8.5,-4,100);
-% hold on
-% plot(xvec,xvec,'k--','linewidth',2)
-% plot(xvec,xvec-1,'r--','linewidth',2)
-% plot(xvec,xvec+1,'r--','linewidth',2)
-% xlabel('log_{10}[\epsilon cham]')
-% ylabel('log_{10}[\epsilon \chi]')
-% title('OUTSIDE patches')
-% 
-% 
-% if saveplots==1
-%     figdir='/Users/Andy/Cruises_Research/ChiPod/Cham_Eq14_Compare/mfiles/Patches/figures/'
-%     print(fullfile(figdir,'EpsBin_scatter_OUTSIDEpatches'),'-dpng')
-% end
-% 
-% figure(2);clf
-% to_plot= log10( eps_chipod_binned ./ eps_bin ) ;
-% histogram(to_plot,'Normalization','pdf')
-% xlim([-4.5 2])
-% ylabel('pdf')
-% freqline(nanmean(to_plot))
-% text(0.5,0.3,['\mu = ' num2str(roundx(nanmean(to_plot),2))])
-% text(0.5,0.25,['\mu = ' num2str(roundx(nanstd(to_plot),2))])
-% xlabel('log_{10}[\epsilon_{\chi}/\epsilon_{cham}]')
-% title('OUTSIDE patches')
-% grid on
-% 
-% if saveplots==1
-%     figdir='/Users/Andy/Cruises_Research/ChiPod/Cham_Eq14_Compare/mfiles/Patches/figures/'
-%     print(fullfile(figdir,'EpsBin_hist_OUTSIDEpatches'),'-dpng')
-% end
-% 
-% %%
+
+saveplots=0
+
+eps_bin(log10(eps_bin)<-8.5)=nan;
+%eps_chipod_binned(log10(eps_chipod_binned)<-8.5)=nan;
+
+figure(1);clf
+histogram2(log10(PatchInOut.eps_bin_IN),log10(eps_chipod_binned),100,'DisplayStyle','Tile')
+xlim([-8.5 -4])
+ylim([-12 -4])
+xvec=linspace(-8.5,-4,100);
+hold on
+plot(xvec,xvec,'k--','linewidth',2)
+plot(xvec,xvec-1,'r--','linewidth',2)
+plot(xvec,xvec+1,'r--','linewidth',2)
+xlabel('log_{10}[\epsilon cham]')
+ylabel('log_{10}[\epsilon \chi]')
+title('OUTSIDE patches')
+
+
+if saveplots==1
+    figdir='/Users/Andy/Cruises_Research/ChiPod/Cham_Eq14_Compare/mfiles/Patches/figures/'
+    print(fullfile(figdir,'EpsBin_scatter_OUTSIDEpatches'),'-dpng')
+end
+
+figure(2);clf
+to_plot= log10( eps_chipod_binned ./ eps_bin ) ;
+histogram(to_plot,'Normalization','pdf')
+xlim([-4.5 2])
+ylabel('pdf')
+freqline(nanmean(to_plot))
+text(0.5,0.3,['\mu = ' num2str(roundx(nanmean(to_plot),2))])
+text(0.5,0.25,['\mu = ' num2str(roundx(nanstd(to_plot),2))])
+xlabel('log_{10}[\epsilon_{\chi}/\epsilon_{cham}]')
+title('OUTSIDE patches')
+grid on
+
+if saveplots==1
+    figdir='/Users/Andy/Cruises_Research/ChiPod/Cham_Eq14_Compare/mfiles/Patches/figures/'
+    print(fullfile(figdir,'EpsBin_hist_OUTSIDEpatches'),'-dpng')
+end
+
+%%

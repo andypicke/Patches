@@ -56,7 +56,7 @@ run_test=0;
 
 % load patch data (from FindPatches_EQ14_Raw.m)
 patch_size_min=0.25  % min patch size
-usetemp=0
+usetemp=1
 
 savedir='/Users/Andy/Cruises_Research/ChiPod/Cham_Eq14_Compare/mfiles/Patches/data/ChamRawProc'
 fname=['EQ14_raw_patches_minOT_' num2str(100*patch_size_min) '_usetemp_' num2str(usetemp) '.mat']
