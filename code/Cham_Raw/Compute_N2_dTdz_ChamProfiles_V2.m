@@ -229,7 +229,7 @@ for ic=1:length(cnums)
             clear iz
             iz=isin( avg.P,[patches.p1(ig(ip)) patches.p2(ig(ip))]);
             
-            if size(iz)>0
+            if size(iz)==1
                 patches.eps(ig(ip)) = nanmean(avg.EPSILON(iz)) ;
                 patches.chi(ig(ip)) = nanmean(avg.CHI(iz))     ;
             end
