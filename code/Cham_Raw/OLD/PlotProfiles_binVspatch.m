@@ -15,7 +15,7 @@
 
 clear ; close all
 
-saveplots=1
+saveplots=0
 
 % load the patch data ( from Compute_N2_dTdz_ChamProfiles_V2.m)
 %load(fullfile( '/Users/Andy/Cruises_Research/ChiPod/Cham_Eq14_Compare/mfiles/Patches/ChamRawProc',...
