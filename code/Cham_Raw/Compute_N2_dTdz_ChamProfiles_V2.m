@@ -159,7 +159,7 @@ for ip=1:Npatches
             drhodz=-P1(1);
             patches.drhodz_line(ip)=drhodz;
             
-            n2_2=-9.81/nanmean(sgth_ot)*drhodz;
+            n2_2=-9.81/nanmean(sgth)*drhodz;
             patches.n2_line(ip)=n2_2;
             
             % Smyth eta al says associated N^2=g*bulk gradient (assuming
@@ -296,36 +296,35 @@ patches.drhodz_bin=nan*ones(size(patches.gam_bulk)) ;
 
 for ip=1:Npatches
     
-    clear cnum pbin pmn val I
+    clear cnum pbin pmn val I Icham
     cnum = patches.cnum(ip) ;
     Icham= find(cham.castnumber==cnum) ;
-    pbin = cham.P(:,Icham) ;
-            
+    pbin = cham.P(:,Icham) ;            
     pmn  = nanmean([patches.p1(ip) patches.p2(ip)]) ;
     
     clear ig
-    ig=find(~isnan(pbin));
-    patches.n2_bin(ip) = interp1(pbin(ig),cham.N2(ig,Icham),pmn);
-    patches.dtdz_bin(ip) = interp1(pbin(ig),cham.DTDZ_RHOORDER(ig,Icham),pmn);
-    patches.chi_bin(ip) = interp1(pbin(ig),cham.CHI(ig,Icham),pmn);
-    patches.eps_bin(ip) = interp1(pbin(ig),cham.EPSILON(ig,Icham),pmn);
+    ig=find(~isnan(pbin)) ;
+    patches.n2_bin(ip)    = interp1(pbin(ig) , cham.N2(ig,Icham) , pmn);
+    patches.dtdz_bin(ip)  = interp1(pbin(ig) , cham.DTDZ_RHOORDER(ig,Icham) , pmn);
+    patches.chi_bin(ip)   = interp1(pbin(ig) , cham.CHI(ig,Icham) , pmn);
+    patches.eps_bin(ip)   = interp1(pbin(ig) , cham.EPSILON(ig,Icham) , pmn);
     patches.drhodz_bin(ip)= patches.n2_bin(ip) * (nanmean(cham.SIGMA(:,Icham))+1000) / -9.81 ;
   
     if log10(patches.eps_bin(ip))>-8.5
         patches.gam_bin(ip)=ComputeGamma(patches.n2_bin(ip),patches.dtdz_bin(ip),patches.chi_bin(ip),patches.eps_bin(ip));
     end
-
+    
     %  [val,I]=nanmin( abs(pbin-pmn)) ;
     
-%    patches.n2_bin(ip)  = cham.N2(I,Icham) ;
- %   patches.dtdz_bin(ip)= cham.DTDZ_RHOORDER(I,Icham) ;
+    %    patches.n2_bin(ip)  = cham.N2(I,Icham) ;
+    %   patches.dtdz_bin(ip)= cham.DTDZ_RHOORDER(I,Icham) ;
     %patches.chi_bin(ip) = cham.CHI(I,Icham) ;
     %patches.eps_bin(ip) = cham.EPSILON(I,Icham) ;
-%    patches.drhodz_bin(ip)= cham.N2(I,Icham) * (nanmean(cham.SIGMA(:,Icham))+1000) / -9.81;
-
-%     if log10(cham.EPSILON(I,Icham))>-8.5
-%         patches.gam_bin(ip)=ComputeGamma(cham.N2(I,Icham),cham.DTDZ_RHOORDER(I,Icham),cham.CHI(I,Icham),cham.EPSILON(I,Icham));
-%     end
+    %    patches.drhodz_bin(ip)= cham.N2(I,Icham) * (nanmean(cham.SIGMA(:,Icham))+1000) / -9.81;
+    
+    %     if log10(cham.EPSILON(I,Icham))>-8.5
+    %         patches.gam_bin(ip)=ComputeGamma(cham.N2(I,Icham),cham.DTDZ_RHOORDER(I,Icham),cham.CHI(I,Icham),cham.EPSILON(I,Icham));
+    %     end
 
     
 end
