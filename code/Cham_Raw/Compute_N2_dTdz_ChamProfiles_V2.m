@@ -5,7 +5,7 @@
 % Compute N2 and dT/dz for overturns in EQ14 chameleon profiles using a few
 % different methods.
 %
-% Uses patches found in Find_Patches_EQ14_Raw.m 
+% Uses patches found in Find_Patches_EQ14_Raw.m
 %
 % OUTPUT:
 % 'patches' structure
@@ -78,24 +78,26 @@ for ip=1:Npatches
             cham_dir='/Users/Andy/Cruises_Research/ChiPod/Cham_Eq14_Compare/Data/Cham_proc_AP/cal';
             load( fullfile( cham_dir, ['eq14_' sprintf('%04d',cnum) '.mat'] ) )
             cnum_loaded=cnum;
-        else            
+            
+            % compute pot. temp, pot. density etc.
+            clear s t p lat ptmp sgth
+            s = cal.SAL(1:end-1); % (end-1) b/c last 2 values are same;
+            s = smooth(s,20);
+            t = cal.T1 (1:end-1);
+            p = cal.P  (1:end-1);
+            ptmp=sw_ptmp(s,t,p,0);
+            sgth=sw_pden(s,t,p,0);
+            
+            % get latitude for profile
+            clear idot lat1 lat2
+            idot=strfind(head.lat.start,'.');
+            lat1=str2num(head.lat.start(1:idot-3));
+            lat2=str2num(head.lat.start(idot-2:end))/60;
+            lat=nanmean([lat1 lat2]);
+            
+        else                        
         end
         
-        % compute pot. temp, pot. density etc.
-        clear s t p lat ptmp sgth
-        s = cal.SAL(1:end-1); % (end-1) b/c last 2 values are same;
-        s = smooth(s,20);
-        t = cal.T1 (1:end-1);
-        p = cal.P  (1:end-1);
-        ptmp=sw_ptmp(s,t,p,0);
-        sgth=sw_pden(s,t,p,0);
-        
-        % get latitude for profile
-        clear idot lat1 lat2
-        idot=strfind(head.lat.start,'.');
-        lat1=str2num(head.lat.start(1:idot-3));
-        lat2=str2num(head.lat.start(idot-2:end))/60;
-        lat=nanmean([lat1 lat2]);
         
         clear pstarts pstops
         clear iz t_ot s_ot p_ot ptmp_ot sgth_ot
@@ -116,7 +118,7 @@ for ip=1:Npatches
             
             % compute potential temp
             clear t_pot t_pot_sort
-%            ptmp_ot=sw_ptmp(s_ot,t_ot,p_ot,0);
+            %            ptmp_ot=sw_ptmp(s_ot,t_ot,p_ot,0);
             [ptmp_sort , Iptmp]=sort(ptmp_ot,1,'descend');
             
             clear DT dz dTdz
@@ -144,7 +146,7 @@ for ip=1:Npatches
             patches.dtdz_bulk(ip)=  t_rms / patches.Lt(ip) ;
             
             %~~ Now do similar for density / N^2
-                        
+            
             [sgth_sort , I]=sort(sgth_ot,1,'ascend');
             
             % try the range/dz method
@@ -157,7 +159,7 @@ for ip=1:Npatches
             % fit a line to sgth
             clear P1
             P1=polyfit(p_ot,sgth_sort,1);
-           
+            
             % calculate N^2 from this fit
             clear drhodz n2_2 drho dz n2_3
             drhodz=-P1(1);
@@ -169,9 +171,9 @@ for ip=1:Npatches
             % Smyth eta al says associated N^2=g*bulk gradient (assuming
             % density controlled by temperature??)
             % I think missing divide by rho_0 also?
-            %patches.n2_bulk(ip)= 9.81 / nanmean(sgth) * t_rms / patches.Lt(ip)    ;            
+            %patches.n2_bulk(ip)= 9.81 / nanmean(sgth) * t_rms / patches.Lt(ip)    ;
             alpha = -0.2641; % from fit of sgth vs theta
-            patches.n2_bulk(ip)= -9.81 / nanmean(sgth) * alpha * t_rms / patches.Lt(ip)    ; 
+            patches.n2_bulk(ip)= -9.81 / nanmean(sgth) * alpha * t_rms / patches.Lt(ip)    ;
             
             % try computing drho/dz using 'bulk' method (instead of
             % assuming rho only depends on T
@@ -260,7 +262,7 @@ gam_line=ComputeGamma(patches.n2_line,patches.dtdz_line,patches.chi,patches.eps)
 gam_bulk=ComputeGamma(patches.n2_bulk,patches.dtdz_bulk,patches.chi,patches.eps);
 %
 gam_bulk_2=ComputeGamma(patches.n2_bulk_2,patches.dtdz_bulk,patches.chi,patches.eps);
-% 
+%
 gam4=ComputeGamma(patches.n4,patches.dtdz_line,patches.chi,patches.eps);
 
 %% save results so we don't have to run everything again
@@ -303,7 +305,7 @@ for ip=1:Npatches
     clear cnum pbin pmn val I Icham
     cnum = patches.cnum(ip) ;
     Icham= find(cham.castnumber==cnum) ;
-    pbin = cham.P(:,Icham) ;            
+    pbin = cham.P(:,Icham) ;
     pmn  = nanmean([patches.p1(ip) patches.p2(ip)]) ;
     
     clear ig
@@ -313,7 +315,7 @@ for ip=1:Npatches
     patches.chi_bin(ip)   = interp1(pbin(ig) , cham.CHI(ig,Icham) , pmn);
     patches.eps_bin(ip)   = interp1(pbin(ig) , cham.EPSILON(ig,Icham) , pmn);
     patches.drhodz_bin(ip)= patches.n2_bin(ip) * (nanmean(cham.SIGMA(:,Icham))+1000) / -9.81 ;
-  
+    
     if log10(patches.eps_bin(ip))>-8.5
         patches.gam_bin(ip)=ComputeGamma(patches.n2_bin(ip),patches.dtdz_bin(ip),patches.chi_bin(ip),patches.eps_bin(ip));
     end
@@ -329,7 +331,7 @@ for ip=1:Npatches
     %     if log10(cham.EPSILON(I,Icham))>-8.5
     %         patches.gam_bin(ip)=ComputeGamma(cham.N2(I,Icham),cham.DTDZ_RHOORDER(I,Icham),cham.CHI(I,Icham),cham.EPSILON(I,Icham));
     %     end
-
+    
     
 end
 
