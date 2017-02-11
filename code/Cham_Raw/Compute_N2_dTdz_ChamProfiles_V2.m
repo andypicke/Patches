@@ -2,12 +2,13 @@
 %
 % Compute_N2_dTdz_ChamProfiles_V2.m
 %
-% Modified to use patches found in Find_Patches_EQ14_Raw.m instead of
-% re-finding them here. This way we will have exact same patches to lineup
-% with chi and eps values..
-%
 % Compute N2 and dT/dz for overturns in EQ14 chameleon profiles using a few
-% different methods to compare the results.
+% different methods.
+%
+% Uses patches found in Find_Patches_EQ14_Raw.m 
+%
+% OUTPUT:
+% 'patches' structure
 %
 % See also LookAtProfilesOT.m
 %
@@ -22,7 +23,7 @@
 clear ; close all
 
 % patch options
-patch_size_min = 0.25  % min patch size
+patch_size_min = 0.5  % min patch size
 usetemp = 1
 
 % load patch data (from FindPatches_EQ14_Raw.m)
@@ -80,6 +81,7 @@ for ip=1:Npatches
         else            
         end
         
+        % compute pot. temp, pot. density etc.
         clear s t p lat ptmp sgth
         s = cal.SAL(1:end-1); % (end-1) b/c last 2 values are same;
         s = smooth(s,20);
@@ -88,6 +90,7 @@ for ip=1:Npatches
         ptmp=sw_ptmp(s,t,p,0);
         sgth=sw_pden(s,t,p,0);
         
+        % get latitude for profile
         clear idot lat1 lat2
         idot=strfind(head.lat.start,'.');
         lat1=str2num(head.lat.start(1:idot-3));
@@ -97,6 +100,7 @@ for ip=1:Npatches
         clear pstarts pstops
         clear iz t_ot s_ot p_ot ptmp_ot sgth_ot
         
+        % get indices of data in patch
         iz=isin(p,[ patches.p1(ip) patches.p2(ip) ]);
         
         if length(iz)>10
@@ -165,15 +169,15 @@ for ip=1:Npatches
             % Smyth eta al says associated N^2=g*bulk gradient (assuming
             % density controlled by temperature??)
             % I think missing divide by rho_0 also?
-            patches.n2_bulk(ip)= 9.81 / nanmean(sgth) * t_rms / patches.Lt(ip)    ;
-            %patches.n2_bulk(ip)= 9.81 / nanmean(sgth_ot) * t_rms / patches.Lt(ip)    ;
-                        
+            %patches.n2_bulk(ip)= 9.81 / nanmean(sgth) * t_rms / patches.Lt(ip)    ;            
+            alpha = -0.2641; % from fit of sgth vs theta
+            patches.n2_bulk(ip)= -9.81 / nanmean(sgth) * alpha * t_rms / patches.Lt(ip)    ; 
+            
             % try computing drho/dz using 'bulk' method (instead of
             % assuming rho only depends on T
             clear rho_rms
             rho_rms = sqrt( nanmean(( sgth_ot - sgth_sort ).^2) );
             patches.drhodz_bulk(ip) = - rho_rms / patches.Lt(ip) ;
-            %patches.n2_bulk_2(ip) = - 9.81 / nanmean(sgth_ot) * patches.drhodz_bulk(ip);
             patches.n2_bulk_2(ip) = - 9.81 / nanmean(sgth) * patches.drhodz_bulk(ip);
             
             % compute N^2 w/ sw_bfrq
