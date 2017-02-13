@@ -1,0 +1,73 @@
+\documentclass[11pt]{article}
+\usepackage{geometry}                % See geometry.pdf to learn the layout options. There are lots.
+\geometry{letterpaper}                   % ... or a4paper or a5paper or ... 
+%\geometry{landscape}                % Activate for for rotated page geometry
+%\usepackage[parfill]{parskip}    % Activate to begin paragraphs with an empty line rather than an indent
+\usepackage{graphicx}
+\usepackage{amssymb}
+\usepackage{amsmath}
+\usepackage{epstopdf}
+\usepackage{hyperref}
+\DeclareGraphicsRule{.tif}{png}{.png}{`convert #1 `dirname #1`/`basename #1 .tif`.png}
+
+
+
+\graphicspath{
+{/Users/Andy/Cruises_Research/ResearchNotes/}
+}
+
+\title{Research Notes}
+\author{Andy Pickering}
+%\date{}                                           % Activate to display a given date or no date
+
+
+
+\begin{document}
+\maketitle
+
+\tableofcontents
+\newpage
+
+
+
+%\begin{figure}[htbp]
+%\includegraphics[scale=0.8]{}
+%\caption{}
+%\label{}
+%\end{figure}
+
+
+
+\clearpage
+%~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+\section{Feb 11, 2017}
+
+So after correcting (I think) $N^2$, it appears that we don't get gammas near 0.2 after all.... Trying now to summarize what i've done:
+
+\begin{itemize}
+\item Identify patches (overturns) in Chameleon profiles using potential temperature. \verb+FindPatches_EQ14_Raw.m+
+\item Compute $N^2$, $T_z$, $\chi$, and $\epsilon$ for each patch. $N^2$ and $T_z$ are computed with two different methods. \verb+Compute_N2_dTdz_ChamProfiles_V2.m+
+\item `line' method: fit line to T,density to get slope.
+\item `bulk' method: From Smyth et al. $N^2$ is computed from the bulk $T_z$ using a linear fit of density to temperature; $\sigma=\alpha \theta$, and then $N^2=-\frac{g}{\rho_o} \alpha T_{z <bulk>}$
+ (Fig \ref{sgth_theta_fit}). \verb+Fit_rho_vs_T.m+.
+\item Compute $\Gamma=\frac{N^2\chi}{2\epsilon T_{z}^{2}}$ from above values (Fig \ref{gamshist}).
+\end{itemize}
+
+
+\begin{figure}[htbp]
+\includegraphics[scale=0.8]{eq14_sght_vs_theta_fit.png}
+\caption{Fit of potential density to potential temperature for EQ14 chameleon profiles.}
+\label{sgth_theta_fit}
+\end{figure}
+
+
+
+\begin{figure}[htbp]
+\includegraphics[scale=0.8]{eq14_gamma_hist_line_bulk.png}
+\caption{$log_{10}[\Gamma$] for EQ14 patches. For (1) 1m binned data (2) `bulk' $N^2$ and $T_z$ (3) `line' $N^2$ and $T_z$. Dashed line shows $\Gamma=0.2$}
+\label{gamshist}
+\end{figure}
+
+
+
+\end{document}  

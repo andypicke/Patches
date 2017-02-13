@@ -55,7 +55,7 @@ clear all
 run_test=0;
 
 % load patch data (from FindPatches_EQ14_Raw.m)
-patch_size_min=0.25  % min patch size
+patch_size_min=0.15  % min patch size
 usetemp=1
 
 savedir='/Users/Andy/Cruises_Research/ChiPod/Cham_Eq14_Compare/mfiles/Patches/data/ChamRawProc'
