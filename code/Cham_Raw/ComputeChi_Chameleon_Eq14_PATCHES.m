@@ -34,11 +34,11 @@ addpath(fullfile(mixpath,'chipod','compute_chi')); % get_chipod_chi.md
 makeplots=0
 savespec =0  % save wavenumber spectra
 
-patch_size_min = 0.25
+patch_size_min = 0.15
 usetemp = 1
 
 load( fullfile( '/Users/Andy/Cruises_Research/ChiPod/Cham_Eq14_Compare/mfiles/Patches/data/ChamRawProc',...
-    ['eq14_cham_minOT_' num2str(100*patch_size_min) '_usetemp_' num2str(usetemp) '_patches_diffn2dtdzgamma.mat']), 'patches' )
+    ['eq14_cham_minOT_' num2str(100*patch_size_min) '_usetemp_' num2str(usetemp) '_patches_diffn2dtdzgamma.mat']))
 
 % directory for chameleon casts we have (made w/ ProcessEq14Cham_AP.m)
 datdir='/Users/Andy/Cruises_Research/ChiPod/Cham_Eq14_Compare/Data/Cham_proc_AP/cal'
