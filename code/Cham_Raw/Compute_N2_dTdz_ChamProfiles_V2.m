@@ -23,7 +23,7 @@
 clear ; close all
 
 % patch options
-patch_size_min = 0.15  % min patch size
+patch_size_min = 0.25  % min patch size
 usetemp = 1
 
 % load patch data (from FindPatches_EQ14_Raw.m)
@@ -35,6 +35,7 @@ patches = struct() ;
 patches.cnum = patch_data(:,1) ;
 patches.p1   = patch_data(:,2) ;
 patches.p2   = patch_data(:,3) ;
+patches.n2_ot= patch_data(:,5) ;
 patches.Lt   = patch_data(:,6) ;
 
 % Make empty arrays for results
