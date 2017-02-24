@@ -168,8 +168,9 @@ eval(['binseries=cal.' upper(depth_or_time) ';'])
 eval(['series={''' depth_or_time ''' series{:}};'])
 
 %% now do the averaging over each bin (patch)
-min_ind=[];%nan*ones(length(pstarts),1);
-max_ind=[];%min_ind;
+min_ind = nan*ones(length(pstarts),1);
+max_ind = min_ind;
+
 for ip=1:length(pstarts)
     
     %firstbin=binsize*max(floor(min(binseries)/binsize),min_bin/binsize)+(whole_bins~=0)*binsize/2;
@@ -180,11 +181,11 @@ for ip=1:length(pstarts)
     clear iz
     iz=isin(binseries,[pstarts(ip) pstops(ip)]);
     if length(iz)>1
-        min_ind=[min_ind ; iz(1)];
-        max_ind=[max_ind ; iz(end)];
+        min_ind(ip)=[ iz(1)   ];
+        max_ind(ip)=[ iz(end) ];
     end
     
-end
+end % ip
 
 nmax=length(max_ind); %length(pstarts)
 
@@ -210,6 +211,9 @@ avail_series=fieldnames(cal);
 % calculate epsilon or chi
 for i=1:length(series)
     active=upper(char(series(i)));
+    
+    avg.(active)=nan*ones(length(nmax),1);
+    
     if strncmp(active,'EPSILON',7) | strncmp(active,'CHI',3)
         if head.direction~='d' % skip over the cast if the head is NOT 'd'
             if strncmp(active,'EPSILON',7)
@@ -271,34 +275,38 @@ for i=1:length(series)
                     prb='1';
                 end
                 for n=1:nmax %step through all depth bins
-                    nu=sw_visc(sal(n),temp(n),pres(n));  % calculate viscosity
-                    % 	  eval(['avg.EPSILON' prb '(n)=calc_epsilon(cal.S' prb '(1+(min_ind(n)-1)*head.irep.S' prb ...
-                    % 										  ':max_ind(n)*head.irep.S' prb '),avg.FALLSPD(n),nfft,nu,' ...
-                    % 								   'head.sensor_index.S' prb ');'])
-                    %
-                    Sdata = getfield(cal,['S' prb]); %find shear probe 1 or 2
-                    sensorindex = getfield(head.sensor_index,['S' prb]);
-                    irep = getfield(head.irep,['S' prb]);
-                    samplerate = head.slow_samp_rate.*irep;
-                    % cut-off and filter order for the anti-aliasing Butterworth
-                    % filter.  Needed to correct shear spectrum.
-                    filtord = 4;
-                    fcutoff = head.filter_freq(sensorindex);
-                    fallspd = avg.FALLSPD(n);
-                    sind = [1+(min_ind(n)-1)*irep:max_ind(n)*irep];
-                    [f,ss] = calc_shearspec(Sdata(sind),samplerate,nfft,0.01*fallspd,filtord,fcutoff);
-                    eval(['set_filters_' q.script.prefix]);
-                    %variables FILTERS K_START,K_STOP,KSTOP_COEF that used in the next statement are calculated
-                    %in set_filters script
-                    if avg.FALLSPD(n)<200
-                        eval(['avg.EPSILON' prb '(n)=calc_epsilon_filt1(ss,f,avg.FALLSPD(n),nfft,nu,' 'head.sensor_index.S' prb...
-                            ',filters,k_start,k_stop,kstop_coef);'])
-                    else
-                        eval(['avg.EPSILON' prb '(n)=NaN;'])
+                    
+                    if ~isnan(min_ind(n))
+                        
+                        nu=sw_visc(sal(n),temp(n),pres(n));  % calculate viscosity
+                        % 	  eval(['avg.EPSILON' prb '(n)=calc_epsilon(cal.S' prb '(1+(min_ind(n)-1)*head.irep.S' prb ...
+                        % 										  ':max_ind(n)*head.irep.S' prb '),avg.FALLSPD(n),nfft,nu,' ...
+                        % 								   'head.sensor_index.S' prb ');'])
+                        %
+                        Sdata = getfield(cal,['S' prb]); %find shear probe 1 or 2
+                        sensorindex = getfield(head.sensor_index,['S' prb]);
+                        irep = getfield(head.irep,['S' prb]);
+                        samplerate = head.slow_samp_rate.*irep;
+                        % cut-off and filter order for the anti-aliasing Butterworth
+                        % filter.  Needed to correct shear spectrum.
+                        filtord = 4;
+                        fcutoff = head.filter_freq(sensorindex);
+                        fallspd = avg.FALLSPD(n);
+                        sind = [1+(min_ind(n)-1)*irep:max_ind(n)*irep];
+                        [f,ss] = calc_shearspec(Sdata(sind),samplerate,nfft,0.01*fallspd,filtord,fcutoff);
+                        eval(['set_filters_' q.script.prefix]);
+                        %variables FILTERS K_START,K_STOP,KSTOP_COEF that used in the next statement are calculated
+                        %in set_filters script
+                        if avg.FALLSPD(n)<200
+                            eval(['avg.EPSILON' prb '(n)=calc_epsilon_filt1(ss,f,avg.FALLSPD(n),nfft,nu,' 'head.sensor_index.S' prb...
+                                ',filters,k_start,k_stop,kstop_coef);'])
+                        else
+                            eval(['avg.EPSILON' prb '(n)=NaN;'])
+                        end
+                        %       eval(['avg.EPSILON' prb '(n)=calc_epsilon_filt_gen(cal.S' prb '(1+(min_ind(n)-1)*head.irep.S' prb ...
+                        %                ':max_ind(n)*head.irep.S' prb '),avg.FALLSPD(n),nfft,nu,' 'head.sensor_index.S' prb...
+                        %                ',filters,k_start,k_stop,kstop_coef);'])
                     end
-                    %       eval(['avg.EPSILON' prb '(n)=calc_epsilon_filt_gen(cal.S' prb '(1+(min_ind(n)-1)*head.irep.S' prb ...
-                    %                ':max_ind(n)*head.irep.S' prb '),avg.FALLSPD(n),nfft,nu,' 'head.sensor_index.S' prb...
-                    %                ',filters,k_start,k_stop,kstop_coef);'])
                 end % nmax (looping =over depth bins)
                 
             elseif strncmp(active,'CHI',3)
@@ -321,19 +329,23 @@ for i=1:length(series)
                 end
                 avg=select_epsilon(avg,epsilon_glitch_factor);
                 for n=1:nmax
-                    eval(['	avg.CHI' from1 '(n)=calc_chi_AP(cal.' from '(1+(min_ind(n)-1)*head.irep.' from  ...
-                        ':max_ind(n)*head.irep.' from '),avg.FALLSPD(n),avg.EPSILON(n),nfft,sw_visc(sal(n),temp(n),pres(n)),' ...
-                        'sw_tdif(sal(n),temp(n),pres(n)),' ...
-                        ' head.sensor_index.' from ');'])
+                    if ~isnan(min_ind(n))
+                        eval(['	avg.CHI' from1 '(n)=calc_chi(cal.' from '(1+(min_ind(n)-1)*head.irep.' from  ...
+                            ':max_ind(n)*head.irep.' from '),avg.FALLSPD(n),avg.EPSILON(n),nfft,sw_visc(sal(n),temp(n),pres(n)),' ...
+                            'sw_tdif(sal(n),temp(n),pres(n)),' ...
+                            ' head.sensor_index.' from ');'])
+                    end
                 end
             end
         end
         
     else % average data that is NOT epsilon or chi
         for n=1:nmax
-            eval(['avg.' active '(n)=mean(cal.' active ...
-                '(1+(min_ind(n)-1)*head.irep.' active ...
-                ':max_ind(n)*head.irep.' active '));']);
+            if ~isnan(min_ind(n))
+                eval(['avg.' active '(n)=mean(cal.' active ...
+                    '(1+(min_ind(n)-1)*head.irep.' active ...
+                    ':max_ind(n)*head.irep.' active '));']);
+            end
         end
     end
 end
@@ -342,21 +354,21 @@ end
 %% compute N2, dTDz for each patch also
 % this was done in run_eq14.m, but that is using i m sections around each
 % point, and we want to compute it just over the patches
-rhoav=nanmean(avg.SIGMA)+1000;
-for n=1:nmax
-    
-    clear inds T S P dT dP sgth dSigma
-    %    inds=min_ind(n):max_ind(n);
-    T=cal.T1(min_ind(n)*head.irep.T1 : max_ind(n)*head.irep.T1);
-    S=cal.SAL(min_ind(n)*head.irep.SAL : max_ind(n)*head.irep.SAL);
-    P=cal.P(min_ind(n)*head.irep.P : max_ind(n)*head.irep.P);
-    dT=nanmax(T)-nanmin(T);
-    dP=nanmax(P)-nanmin(P);
-    avg.dTdz(n)=dT/dP;
-    sgth=sw_pden(S,T,P,0);
-    dSigma=nanmax(sgth)-nanmin(sgth);
-    avg.N2(n)=9.81/rhoav * dSigma;
-end
+% rhoav=nanmean(avg.SIGMA)+1000;
+% for n=1:nmax
+%
+%     clear inds T S P dT dP sgth dSigma
+%     %    inds=min_ind(n):max_ind(n);
+%     T=cal.T1(min_ind(n)*head.irep.T1 : max_ind(n)*head.irep.T1);
+%     S=cal.SAL(min_ind(n)*head.irep.SAL : max_ind(n)*head.irep.SAL);
+%     P=cal.P(min_ind(n)*head.irep.P : max_ind(n)*head.irep.P);
+% %    dT=nanmax(T)-nanmin(T);
+% %    dP=nanmax(P)-nanmin(P);
+% %    avg.dTdz(n)=dT/dP;
+% %    sgth=sw_pden(S,T,P,0);
+% %    dSigma=nanmax(sgth)-nanmin(sgth);
+% %    avg.N2(n)=9.81/rhoav * dSigma;
+% end
 
 %%
 function avg=select_epsilon(avg,epsilon_glitch_factor)
